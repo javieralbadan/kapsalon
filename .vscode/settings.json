@@ -1,0 +1,33 @@
+{
+  "autoimport.doubleQuotes": true,
+
+  "editor.codeActionsOnSave": ["source.organizeImports", "source.fixAll"],
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.guides.bracketPairs": true,
+  "editor.tabSize": 2,
+  "files.trimTrailingWhitespace": true,
+
+  "eslint.format.enable": true,
+  "eslint.validate": ["html", "javascript", "tsx"],
+
+  "gitlens.hovers.currentLine.over": "line",
+
+  "javascript.format.semicolons": "insert",
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "[javascript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+
+  "prettier.requireConfig": true,
+
+  "typescript.format.semicolons": "insert",
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "[typescript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  }
+}
