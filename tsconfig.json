@@ -1,14 +1,28 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "baseUrl": ".",
     "paths": {
-      "@components/*": ["components/*"],
-      "@constants/*": ["constants/*"],
-      "@utils/*": ["utils/*"],
-      "@db/*": ["db/*"],
-      "@hooks/*": ["hooks/*"]
+      "@components/*": [
+        "components/*"
+      ],
+      "@constants/*": [
+        "constants/*"
+      ],
+      "@utils/*": [
+        "utils/*"
+      ],
+      "@db/*": [
+        "db/*"
+      ],
+      "@hooks/*": [
+        "hooks/*"
+      ]
     },
     "allowJs": true,
     "skipLibCheck": true,
@@ -28,6 +42,14 @@
       }
     ]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "dist/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

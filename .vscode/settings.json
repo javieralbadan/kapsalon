@@ -2,14 +2,14 @@
   "autoimport.doubleQuotes": true,
 
   "editor.codeActionsOnSave": ["source.organizeImports", "source.fixAll"],
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
   "editor.guides.bracketPairs": true,
   "editor.tabSize": 2,
-  "files.trimTrailingWhitespace": true,
 
   "eslint.format.enable": true,
   "eslint.validate": ["html", "javascript", "tsx"],
+
+  "files.trimTrailingWhitespace": true,
 
   "gitlens.hovers.currentLine.over": "line",
 

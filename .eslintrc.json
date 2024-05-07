@@ -11,6 +11,14 @@
   ],
   "rules": {
     "@typescript-eslint/no-empty-function": 0,
+    "max-len": [
+			"error",
+			{
+				"code": 100,
+				"ignoreTrailingComments": true,
+				"ignoreStrings": true
+			}
+		],
     "react/prop-types": 0,
     "react/react-in-jsx-scope": 0,
     "quotes": ["error", "single"]
