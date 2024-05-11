@@ -278,15 +278,6 @@ export const AppLogo = ({ style = 'blue', className }: LogoStyle) => {
 			</defs>
 			<g transform="matrix(1.3333333,0,0,-1.3333333,0,2079.24)" id="g10">
 				<g transform="scale(0.1)" id="g12">
-					<g transform="scale(1.43558)" id="g14">
-						<path
-							id="path24"
-							style={parseStyle(
-								'fill:url(#radialGradient22);fill-opacity:1;fill-rule:nonzero;stroke:none',
-							)}
-							d="M 0,0 V 10862.5 H 16300 V 0"
-						/>
-					</g>
 					<path
 						id="path26"
 						style={parseStyle(shadowStyle)}

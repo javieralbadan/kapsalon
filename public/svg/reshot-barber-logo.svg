@@ -195,11 +195,6 @@
   </defs>
   <g transform="matrix(1.3333333,0,0,-1.3333333,0,2079.24)" id="g10">
     <g transform="scale(0.1)" id="g12">
-      <g transform="scale(1.43558)" id="g14">
-        <path id="path24"
-          style="fill:url(#radialGradient22);fill-opacity:1;fill-rule:nonzero;stroke:none"
-          d="M 0,0 V 10862.5 H 16300 V 0" />
-      </g>
       <path id="path26" style="fill:#1552d4;fill-opacity:0.5;fill-rule:nonzero;stroke:none"
         d="m 12959.6,6495.94 c 0,0 -108.9,-217.87 326.8,-217.87 435.7,0 544.7,-108.93 762.6,-108.93 217.8,0 435.7,108.93 435.7,108.93 l 108.9,108.94 c 0,0 -217.8,-108.94 -326.8,-108.94 -108.9,0 -217.8,217.87 -435.7,217.87 -217.9,0 -653.6,-217.87 -762.6,-108.93 -108.9,108.93 0,217.86 0,217.86 l -108.9,-108.93" />
       <path id="path28" style="fill:#1552d4;fill-opacity:0.5;fill-rule:nonzero;stroke:none"
