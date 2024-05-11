@@ -1,0 +1,72 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@tailwind variants;
+
+:root {
+	--color-black: #060606;
+	--color-black-soft: #333;
+	--color-dark: #1a1a36;
+	--color-dark-soft: #292941;
+	--color-gray: #808080;
+	--color-gray-soft: #b4b4b4;
+	--color-white: #fafaf7;
+	--color-light: #cacae7;
+	--color-yellow: #facc15;
+	--color-blue: #1d4ed8;
+	--color-red: #e11d48;
+	--color-white: #f0f0f0;
+	--color-text: var(--color-white);
+	--color-text-soft: var(--color-light);
+	--color-background: var(--color-black);
+	--color-background-soft: var(--color-black-soft);
+	--color-heading: var(--color-white);
+	--color-heading-inverted: var(--color-black-soft);
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  font-size: 15px;
+  font-family: Roboto, Ubuntu, 'Fira Sans', 'Helvetica Neue', sans-serif;
+  text-rendering: optimizelegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  display: block;
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2em;
+}
+h2 {
+  font-size: 1.5em;
+}
+h3 {
+  font-size: 1.2em;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+	margin: 0;
+	font-weight: normal;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.-highlight-text {
+  color: var(--color-blue);
+}
