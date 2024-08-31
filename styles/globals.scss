@@ -70,3 +70,10 @@ a {
 .-highlight-text {
   color: var(--color-blue);
 }
+
+.slick-dots.carousel-blue-dots {
+	li button,
+	li.slick-active button {
+		background: var(--color-blue);
+	}
+}

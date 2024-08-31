@@ -1,21 +1,28 @@
 'use server';
-import { AppLogo } from '@components/AppLogo';
+import { AppLogo } from '@/components/AppLogo';
+import { BUTTONS, CONTAINER } from '@/constants/ui-classes';
+import Link from 'next/link';
+
 // import { fetchShops } from './actions';
 
 const Header = () => {
+	const FLEX_CENTER = 'flex flex-col items-center justify-center';
 	return (
-		<header className="flex h-[calc(100vh-39px)] w-full flex-col items-center justify-center md:flex-row-reverse">
-			<div className="flex max-h-[300px] flex-col items-center justify-center px-20 sm:px-24 md:h-auto md:max-h-[600px] md:w-1/2 md:p-4">
+		<header className={`${CONTAINER.FULL_HEIGHT} ${FLEX_CENTER} md:flex-row-reverse`}>
+			<div
+				/* eslint-disable-next-line max-len */
+				className={`${FLEX_CENTER} max-h-[300px] px-20 sm:px-24 md:h-auto md:max-h-[600px] md:w-1/2 md:p-4`}
+			>
 				<AppLogo style="blue" />
 			</div>
-			<div className="flex flex-col items-center justify-center p-8 md:w-1/2 md:px-4 lg:px-24">
+			<div className={`${FLEX_CENTER} p-8 md:w-1/2 md:px-4 lg:px-24`}>
 				<h1 className="mb-8 text-center text-4xl font-bold text-black md:text-6xl">
 					Agenda tu cita de <span className="-highlight-text font-bold">barbería</span> en pocos
 					minutos
 				</h1>
-				<button className="rounded-sm bg-blue-700 px-6 py-2 font-bold text-white hover:bg-blue-900">
+				<Link href="/agendar-cita" className={BUTTONS.BLUE}>
 					Agendar
-				</button>
+				</Link>
 			</div>
 		</header>
 	);

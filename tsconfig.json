@@ -8,21 +8,13 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "@components/*": [
-        "components/*"
-      ],
-      "@constants/*": [
-        "constants/*"
-      ],
-      "@utils/*": [
-        "utils/*"
-      ],
-      "@db/*": [
-        "db/*"
-      ],
-      "@hooks/*": [
-        "hooks/*"
-      ]
+      "@/*": ["src/*"],
+      "@/components/*": ["components/*"],
+      "@/lib/utils/*": ["lib/utils/*"],
+      "@/constants/*": ["constants/*"],
+      "@/utils/*": ["utils/*"],
+      "@/db/*": ["db/*"],
+      "@/hooks/*": ["hooks/*"]
     },
     "allowJs": true,
     "skipLibCheck": true,
