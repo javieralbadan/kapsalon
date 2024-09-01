@@ -1,3 +1,5 @@
+import { Layout } from 'antd';
+import { Content, Footer } from 'antd/es/layout/layout';
 import type { Metadata } from 'next';
 import React from 'react';
 import '/styles/globals.scss';
@@ -23,14 +25,29 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 				<meta name="apple-mobile-web-app-status-bar-style" content="#1d4ed8" />
 			</head>
 			<body>
-				<div className="relative">
+				<Layout style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
 					<div className="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#afafaf2e_1px,transparent_1px),linear-gradient(to_bottom,#afafaf2e_1px,transparent_1px)] bg-[size:14px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
-					<div className="content relative">{children}</div>
-					<footer className="w-100 flex items-center justify-between bg-black px-4 py-2 text-white">
-						<p>Hecho con ❤️ por KapsalonApp</p>
-						<p>· Bogotá · 🇨🇴</p>
-					</footer>
-				</div>
+
+					<Content style={{ flex: 1 }}>{children}</Content>
+
+					<Footer
+						style={{
+							zIndex: 1,
+							width: '100%',
+							display: 'flex',
+							alignItems: 'center',
+							justifyContent: 'space-between',
+							backgroundColor: '#060606',
+							color: 'white',
+							padding: '0.5rem 1rem',
+						}}
+					>
+						<div className="m-auto flex w-full max-w-[1400px] justify-between">
+							<p>Hecho con ❤️ por KapsalonApp</p>
+							<p>Bogotá · 🇨🇴</p>
+						</div>
+					</Footer>
+				</Layout>
 			</body>
 		</html>
 	);

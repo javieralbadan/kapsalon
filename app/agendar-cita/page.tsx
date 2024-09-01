@@ -1,5 +1,4 @@
 'use server';
-
 import { AppointmentCarousel } from '@/components/AppointmentCarousel';
 import { GroupListItem } from 'types/ui';
 
@@ -75,7 +74,7 @@ const ScheduleAppointment = () => {
 	];
 
 	return (
-		<main className="p-4 text-center">
+		<div className="p-4 text-center">
 			<h1>Agendar cita</h1>
 			<AppointmentCarousel
 				barbersList={barbersList}
@@ -83,7 +82,7 @@ const ScheduleAppointment = () => {
 				daysList={daysList}
 				timesList={timesList}
 			/>
-		</main>
+		</div>
 	);
 };
 

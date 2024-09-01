@@ -1,30 +1,30 @@
 'use server';
 import { AppLogo } from '@/components/AppLogo';
-import { BUTTONS, CONTAINER } from '@/constants/ui-classes';
+import { Button } from 'antd';
 import Link from 'next/link';
-
 // import { fetchShops } from './actions';
 
-const Header = () => {
-	const FLEX_CENTER = 'flex flex-col items-center justify-center';
+const CLASSES = {
+	FLEX_CENTER: 'flex flex-col items-center justify-center',
+	CONTAINER: 'h-[calc(100vh-39px)] max-w-[1400px]',
+	LOGO: 'max-h-[300px] px-20 sm:px-24 md:h-auto md:max-h-[600px] md:w-1/2 md:p-4',
+};
+
+const Main = () => {
 	return (
-		<header className={`${CONTAINER.FULL_HEIGHT} ${FLEX_CENTER} md:flex-row-reverse`}>
-			<div
-				/* eslint-disable-next-line max-len */
-				className={`${FLEX_CENTER} max-h-[300px] px-20 sm:px-24 md:h-auto md:max-h-[600px] md:w-1/2 md:p-4`}
-			>
+		<div className={`${CLASSES.CONTAINER} ${CLASSES.FLEX_CENTER} m-auto md:flex-row-reverse`}>
+			<div className={`${CLASSES.FLEX_CENTER} ${CLASSES.LOGO}`}>
 				<AppLogo style="blue" />
 			</div>
-			<div className={`${FLEX_CENTER} p-8 md:w-1/2 md:px-4 lg:px-24`}>
+			<div className={`${CLASSES.FLEX_CENTER} p-8 md:w-1/2 md:px-4 lg:px-24`}>
 				<h1 className="mb-8 text-center text-4xl font-bold text-black md:text-6xl">
-					Agenda tu cita de <span className="-highlight-text font-bold">barbería</span> en pocos
-					minutos
+					Agenda tu cita de <span className="-highlight-text font-bold">barbería</span> en segundos
 				</h1>
-				<Link href="/agendar-cita" className={BUTTONS.BLUE}>
-					Agendar
+				<Link href="/agendar-cita">
+					<Button type="primary">Agendar</Button>
 				</Link>
 			</div>
-		</header>
+		</div>
 	);
 };
 
@@ -33,7 +33,7 @@ const HomePage = () => {
 	// console.log('🚀 ~ HomePage ~ data, error:', data, error);
 	return (
 		<>
-			<Header />
+			<Main />
 		</>
 	);
 };

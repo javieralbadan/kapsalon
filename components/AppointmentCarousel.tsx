@@ -1,7 +1,6 @@
 'use client';
-
 import { GroupList } from '@/components/ui/GroupList';
-import { Button, Carousel, Descriptions, DescriptionsProps } from 'antd';
+import { Button, Card, Carousel, Flex } from 'antd';
 import { CSSProperties, useRef, useState } from 'react';
 import type { GroupListItem } from 'types/ui';
 
@@ -10,6 +9,7 @@ interface Props {
 	servicesList: GroupListItem[];
 	daysList: GroupListItem[];
 	timesList: GroupListItem[];
+	confirmAppointment?: () => void;
 }
 
 interface AppointmentType {
@@ -19,9 +19,14 @@ interface AppointmentType {
 	time: GroupListItem;
 }
 
-interface SetOptionProps {
+interface SetOptionParams {
 	key: 'barber' | 'service' | 'day' | 'time';
 	listItem: GroupListItem;
+}
+
+interface CarouselMethods {
+	next: () => void;
+	prev: () => void;
 }
 
 const carouselStyle: CSSProperties = {
@@ -33,19 +38,18 @@ const carouselStyle: CSSProperties = {
 	alignItems: 'center',
 };
 
-const contentStyle: CSSProperties = {
-	display: 'flex',
-	flexDirection: 'column',
-	justifyContent: 'center',
-	alignItems: 'center',
-	minHeight: '400px',
+const STYLES = {
+	CONTENT: 'flex flex-col items-center justify-center min-h-[400px]',
+	TITLE: 'mb-4',
 };
 
-const titleStyle: CSSProperties = {
-	// margin: 0,
-};
-
-export const AppointmentCarousel = ({ barbersList, servicesList, daysList, timesList }: Props) => {
+export const AppointmentCarousel = ({
+	barbersList,
+	servicesList,
+	daysList,
+	timesList,
+	confirmAppointment,
+}: Props) => {
 	const carouselRef = useRef(null);
 	const [appointment, setAppointment] = useState<AppointmentType>({
 		barber: { id: '' },
@@ -59,90 +63,90 @@ export const AppointmentCarousel = ({ barbersList, servicesList, daysList, times
 			return;
 		}
 
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-call
-		step === 'next' ? carouselRef.current.next() : carouselRef.current.prev();
+		(carouselRef.current as CarouselMethods)[step]();
 	};
 
-	const setOption = ({ key, listItem }: SetOptionProps) => {
+	const setOption = ({ key, listItem }: SetOptionParams) => {
 		setAppointment({ ...appointment, [key]: listItem });
 		swipeCarousel('next');
 	};
 
-	const items: DescriptionsProps['items'] = [
-		{
-			key: '1',
-			label: 'Barbero',
-			children: appointment.barber.text,
-		},
-		{
-			key: '2',
-			label: 'Servicio',
-			children: appointment.service.text,
-		},
-		{
-			key: '3',
-			label: 'Día',
-			children: appointment.day.text,
-		},
-		{
-			key: '4',
-			label: 'Hora',
-			span: 2,
-			children: appointment.time.text,
-		},
-	];
-
-	const confirmAppointment = () => {
-		console.log('🚀 ~ confirmAppointment:', appointment);
+	const onConfirm = () => {
+		console.log('🚀 ~ onConfirm:', appointment);
+		confirmAppointment && confirmAppointment();
 	};
 
 	return (
 		<>
-			<Button type="link" onClick={() => swipeCarousel('prev')}>
-				Atrás
-			</Button>
 			<Carousel
 				ref={carouselRef}
 				dots={{ className: 'carousel-blue-dots' }}
 				infinite={false}
 				style={carouselStyle}
 			>
-				<div style={contentStyle}>
-					<h2 style={titleStyle}>Barbero:</h2>
-					{barbersList.length === 1 && <p className="mb-4">Próximamente más barberos</p>}
-					<GroupList
-						dataList={barbersList}
-						onSelectOption={(listItem) => setOption({ key: 'barber', listItem })}
-					/>
+				<div>
+					<section className={STYLES.CONTENT}>
+						<h2 className={STYLES.TITLE}>Barbero:</h2>
+						{barbersList.length === 1 && <p className="mb-4">Próximamente más barberos</p>}
+						<GroupList
+							dataList={barbersList}
+							onSelectOption={(listItem) => setOption({ key: 'barber', listItem })}
+						/>
+					</section>
 				</div>
-				<div style={contentStyle}>
-					<h2 style={titleStyle}>Servicio:</h2>
-					<GroupList
-						dataList={servicesList}
-						onSelectOption={(listItem) => setOption({ key: 'service', listItem })}
-					/>
+				<div>
+					<section className={STYLES.CONTENT}>
+						<h2 className={STYLES.TITLE}>Servicio:</h2>
+						<GroupList
+							dataList={servicesList}
+							onSelectOption={(listItem) => setOption({ key: 'service', listItem })}
+						/>
+					</section>
 				</div>
-				<div style={contentStyle}>
-					<h2 style={titleStyle}>Día:</h2>
-					<GroupList
-						dataList={daysList}
-						onSelectOption={(listItem) => setOption({ key: 'day', listItem })}
-					/>
+				<div>
+					<section className={STYLES.CONTENT}>
+						<h2 className={STYLES.TITLE}>Día:</h2>
+						<GroupList
+							dataList={daysList}
+							onSelectOption={(listItem) => setOption({ key: 'day', listItem })}
+						/>
+					</section>
 				</div>
-				<div style={contentStyle}>
-					<h2 style={titleStyle}>Hora:</h2>
-					<GroupList
-						dataList={timesList}
-						onSelectOption={(listItem) => setOption({ key: 'time', listItem })}
-					/>
+				<div>
+					<section className={STYLES.CONTENT}>
+						<h2 className={STYLES.TITLE}>Hora:</h2>
+						<GroupList
+							dataList={timesList}
+							onSelectOption={(listItem) => setOption({ key: 'time', listItem })}
+						/>
+					</section>
 				</div>
-				<div style={contentStyle}>
-					<Descriptions title="Confirmación:" layout="horizontal" column={1} items={items} />
-					<Button type="primary" onClick={() => confirmAppointment()}>
-						Confirmar cita
-					</Button>
+				<div>
+					<section className={STYLES.CONTENT}>
+						<Card title="Está todo bien?" bordered={true} className="m-auto w-[300px]">
+							<p>Barbero: {appointment.barber.text}</p>
+							<p>Servicio: {appointment.service.text}</p>
+							<p>
+								{appointment.day.text}, {appointment.time.text}
+							</p>
+
+							<Flex gap="small" className="mt-4">
+								<Button danger onClick={() => swipeCarousel('prev')}>
+									Editar algo
+								</Button>
+								<Button onClick={() => onConfirm()}>Si, confirmar cita</Button>
+							</Flex>
+						</Card>
+					</section>
 				</div>
 			</Carousel>
+			<Button
+				type="link"
+				onClick={() => swipeCarousel('prev')}
+				className="t-0 absolute ml-[-30px] mt-[-50px]"
+			>
+				Atrás
+			</Button>
 		</>
 	);
 };
