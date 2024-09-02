@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-redundant-type-constituents */
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
 export type Database = {
@@ -54,7 +53,7 @@ export type Database = {
 						foreignKeyName: 'public_appointments_staff_member_fkey';
 						columns: ['staff_member'];
 						isOneToOne: false;
-						referencedRelation: 'staff';
+						referencedRelation: 'staff_members';
 						referencedColumns: ['id'];
 					},
 				];
@@ -95,20 +94,31 @@ export type Database = {
 					description: string | null;
 					id: string;
 					name: string;
+					staff_member_id: string;
 				};
 				Insert: {
 					created_at?: string;
 					description?: string | null;
-					id: string;
+					id?: string;
 					name?: string;
+					staff_member_id: string;
 				};
 				Update: {
 					created_at?: string;
 					description?: string | null;
 					id?: string;
 					name?: string;
+					staff_member_id?: string;
 				};
-				Relationships: [];
+				Relationships: [
+					{
+						foreignKeyName: 'services_staff_member_id_fkey';
+						columns: ['staff_member_id'];
+						isOneToOne: false;
+						referencedRelation: 'staff_members';
+						referencedColumns: ['id'];
+					},
+				];
 			};
 			shops: {
 				Row: {
@@ -134,7 +144,7 @@ export type Database = {
 				};
 				Relationships: [];
 			};
-			staff: {
+			staff_members: {
 				Row: {
 					availability: Json | null;
 					created_at: string;
@@ -151,7 +161,7 @@ export type Database = {
 					email?: string;
 					enabled_notifications?: boolean | null;
 					first_name?: string;
-					id: string;
+					id?: string;
 					last_name?: string;
 					phone_number: number;
 				};

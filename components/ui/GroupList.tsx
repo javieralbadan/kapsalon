@@ -18,7 +18,7 @@ export const GroupList = ({ dataList, onSelectOption }: Props) => {
 						size="large"
 						onClick={() => onSelectOption(listItem)}
 					>
-						{listItem.text}
+						{listItem.name}
 					</Button>
 				);
 			})}

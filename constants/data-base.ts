@@ -1,7 +1,7 @@
-export const SUPABASE_TABLES = {
+export const ENTITIES = {
 	APPOINTMENTS: 'appointments',
 	CUSTOMERS: 'customers',
 	SERVICES: 'services',
 	SHOPS: 'shops',
-	STAFF: 'staff',
+	STAFF_MEMBERS: 'staff_members',
 };

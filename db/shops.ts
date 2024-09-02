@@ -1,5 +1,5 @@
 'use server';
-import { SUPABASE_TABLES } from 'constants/data-base';
+import { ENTITIES } from 'constants/data-base';
 import { ShopInsert, ShopResponseType, ShopRow, ShopsResponseType } from 'types/shops';
 import { supabaseClient } from 'utils/supabase/client';
 // import { createClient } from "utils/supabase/server";
@@ -7,7 +7,7 @@ import { supabaseClient } from 'utils/supabase/client';
 export const getShopsFromDB = async (): Promise<ShopsResponseType> => {
 	// const supabase = createClient();
 	const supabase = supabaseClient;
-	const { data, error } = await supabase.from(SUPABASE_TABLES.SHOPS).select('*');
+	const { data, error } = await supabase.from(ENTITIES.SHOPS).select('*');
 
 	return { data, error };
 };
@@ -15,7 +15,7 @@ export const getShopsFromDB = async (): Promise<ShopsResponseType> => {
 export const getShopByIdFromDB = async (cycleId: string): Promise<ShopResponseType> => {
 	// const supabase = createClient();
 	const supabase = supabaseClient;
-	const { data, error } = await supabase.from(SUPABASE_TABLES.SHOPS).select('*').eq('id', cycleId);
+	const { data, error } = await supabase.from(ENTITIES.SHOPS).select('*').eq('id', cycleId);
 
 	if (data && !error) {
 		return { data: data[0] as ShopRow, error };
@@ -27,7 +27,7 @@ export const getShopByIdFromDB = async (cycleId: string): Promise<ShopResponseTy
 export const createShopInDB = async (newShop: ShopInsert): Promise<ShopsResponseType> => {
 	// const supabase = createClient();
 	const supabase = supabaseClient;
-	const { data, error } = await supabase.from(SUPABASE_TABLES.SHOPS).insert(newShop).select();
+	const { data, error } = await supabase.from(ENTITIES.SHOPS).insert(newShop).select();
 
 	return { data, error };
 };
