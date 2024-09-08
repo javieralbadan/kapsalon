@@ -1,12 +1,10 @@
 'use client';
 import { GroupList } from '@/components/ui/GroupList';
-import { PostgrestError } from '@supabase/supabase-js';
-import { Button, Card, Carousel, Empty, Flex } from 'antd';
+import { Button, Card, Carousel, Flex } from 'antd';
 import { CSSProperties, useRef, useState } from 'react';
 import type { GroupListItem } from 'types/ui';
 
 interface Props {
-	error: PostgrestError | null;
 	barbersList: GroupListItem[];
 	servicesList: GroupListItem[];
 	daysList: GroupListItem[];
@@ -33,7 +31,7 @@ interface CarouselMethods {
 
 const carouselStyle: CSSProperties = {
 	margin: 0,
-	height: 'calc(100vh - 172px)',
+	height: 'calc(100vh - 180px)',
 	border: '1px solid gray',
 	borderRadius: '1rem',
 	display: 'flex',
@@ -47,7 +45,6 @@ const STYLES = {
 };
 
 export const AppointmentCarousel = ({
-	error,
 	barbersList,
 	servicesList,
 	daysList,
@@ -80,86 +77,82 @@ export const AppointmentCarousel = ({
 		confirmAppointment && confirmAppointment();
 	};
 
-	const hasData = !error && barbersList && servicesList;
-	console.log('🚀 ~ hasData:', hasData);
+	// const onChange = (currentSlide: number) => {
+	//   console.log(currentSlide);
+	// };
+	// afterChange={onChange}
 
 	return (
-		<Carousel
-			ref={carouselRef}
-			dots={{ className: 'carousel-blue-dots' }}
-			infinite={false}
-			style={carouselStyle}
-		>
-			{hasData ? (
-				<>
-					<div>
-						<section className={STYLES.CONTENT}>
-							<h2 className={STYLES.TITLE}>Barbero:</h2>
-							{barbersList.length === 1 && <p className="mb-4">Próximamente más barberos</p>}
-							<GroupList
-								dataList={barbersList}
-								onSelectOption={(listItem) => setOption({ key: 'barber', listItem })}
-							/>
-						</section>
-					</div>
-					<div>
-						<section className={STYLES.CONTENT}>
-							<h2 className={STYLES.TITLE}>Servicio:</h2>
-							<GroupList
-								dataList={servicesList}
-								onSelectOption={(listItem) => setOption({ key: 'service', listItem })}
-							/>
-						</section>
-					</div>
-					<div>
-						<section className={STYLES.CONTENT}>
-							<h2 className={STYLES.TITLE}>Día:</h2>
-							<GroupList
-								dataList={daysList}
-								onSelectOption={(listItem) => setOption({ key: 'day', listItem })}
-							/>
-						</section>
-					</div>
-					<div>
-						<section className={STYLES.CONTENT}>
-							<h2 className={STYLES.TITLE}>Hora:</h2>
-							<GroupList
-								dataList={timesList}
-								onSelectOption={(listItem) => setOption({ key: 'time', listItem })}
-							/>
-						</section>
-					</div>
-					<div>
-						<section className={STYLES.CONTENT}>
-							<Card title="Está todo bien?" bordered={true} className="m-auto w-[300px]">
-								<p>Barbero: {appointment.barber.name}</p>
-								<p>Servicio: {appointment.service.name}</p>
-								<p>
-									{appointment.day.name}, {appointment.time.name}
-								</p>
-
-								<Flex gap="small" className="mt-4">
-									<Button danger onClick={() => swipeCarousel('prev')}>
-										Editar algo
-									</Button>
-									<Button onClick={() => onConfirm()}>Si, confirmar cita</Button>
-								</Flex>
-							</Card>
-						</section>
-					</div>
-					<Button
-						type="link"
-						onClick={() => swipeCarousel('prev')}
-						className="t-0 absolute ml-[-30px] mt-[-50px]"
-					>
-						Atrás
-					</Button>
-				</>
-			) : (
+		<>
+			<Carousel
+				ref={carouselRef}
+				dots={{ className: 'carousel-blue-dots' }}
+				infinite={false}
+				style={carouselStyle}
+			>
 				<div>
-					<Empty />
+					<section className={STYLES.CONTENT}>
+						<h2 className={STYLES.TITLE}>Barbero:</h2>
+						{barbersList.length === 1 && <p className="mb-4">Próximamente más barberos</p>}
+						<GroupList
+							dataList={barbersList}
+							onSelectOption={(listItem) => setOption({ key: 'barber', listItem })}
+						/>
+					</section>
 				</div>
-			)}
-		</Carousel>
+				<div>
+					<section className={STYLES.CONTENT}>
+						<h2 className={STYLES.TITLE}>Servicio:</h2>
+						<GroupList
+							dataList={servicesList}
+							onSelectOption={(listItem) => setOption({ key: 'service', listItem })}
+						/>
+					</section>
+				</div>
+				<div>
+					<section className={STYLES.CONTENT}>
+						<h2 className={STYLES.TITLE}>Día:</h2>
+						<GroupList
+							dataList={daysList}
+							onSelectOption={(listItem) => setOption({ key: 'day', listItem })}
+						/>
+					</section>
+				</div>
+				<div>
+					<section className={STYLES.CONTENT}>
+						<h2 className={STYLES.TITLE}>Hora:</h2>
+						<GroupList
+							dataList={timesList}
+							onSelectOption={(listItem) => setOption({ key: 'time', listItem })}
+						/>
+					</section>
+				</div>
+				<div>
+					<section className={STYLES.CONTENT}>
+						<Card title="Está todo bien?" bordered={true} className="m-auto w-[300px]">
+							<p>Barbero: {appointment.barber.name}</p>
+							<p>Servicio: {appointment.service.name}</p>
+							<p>
+								{appointment.day.name}, {appointment.time.name}
+							</p>
+
+							<Flex gap="small" className="mt-4">
+								<Button danger onClick={() => swipeCarousel('prev')}>
+									Editar algo
+								</Button>
+								<Button onClick={() => onConfirm()}>Si, confirmar cita</Button>
+							</Flex>
+						</Card>
+					</section>
+				</div>
+			</Carousel>
+			<Button
+				type="link"
+				onClick={() => swipeCarousel('prev')}
+				className="t-0 absolute ml-[-30px] mt-[-50px]"
+			>
+				Atrás
+			</Button>
+		</>
 	);
 };

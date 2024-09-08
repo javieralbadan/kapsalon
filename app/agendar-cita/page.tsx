@@ -1,5 +1,6 @@
 'use server';
 import { AppointmentCarousel } from '@/components/AppointmentCarousel';
+import { Empty } from 'antd';
 import { ServicesResponseType } from 'types/services';
 import { StaffMembersResponseType } from 'types/staffMembers';
 import { GroupListItem } from 'types/ui';
@@ -7,14 +8,17 @@ import { fetchServices, fetchStaffMembers } from './actions';
 
 const ScheduleAppointment = async () => {
 	const { data: staff, error: error1 }: StaffMembersResponseType = await fetchStaffMembers();
-	console.log('🚀 ~ ScheduleAppointment ~ data, error:', staff, error1);
+	console.log('🚀 ~ ScheduleAppointment ~ staff, error:', staff, error1);
+
+	const barbersList: GroupListItem[] | [] =
+		staff?.map(({ id, first_name, last_name }) => ({
+			id,
+			name: `${first_name} ${last_name}`,
+		})) || [];
+	console.log('🚀 ~ ScheduleAppointment ~ barbersList:', barbersList);
 
 	const { data: services, error: error2 }: ServicesResponseType = await fetchServices();
 	console.log('🚀 ~ ScheduleAppointment ~ services, error:', services, error2);
-
-	const barbersList: GroupListItem[] | [] =
-		staff?.map(({ id, first_name }) => ({ id, name: first_name })) || [];
-	console.log('🚀 ~ ScheduleAppointment ~ barbersList:', barbersList);
 
 	const allServicesList: GroupListItem[] | [] =
 		services?.map(({ id, name }) => ({ id, name })) || [];
@@ -62,18 +66,23 @@ const ScheduleAppointment = async () => {
 		},
 	];
 
-	const error = error1 || error2;
+	const error: boolean = !!error1 || !!error2;
 
 	return (
 		<div className="p-4 text-center">
 			<h1>Agendar cita</h1>
-			<AppointmentCarousel
-				error={error}
-				barbersList={barbersList}
-				servicesList={allServicesList}
-				daysList={daysList}
-				timesList={timesList}
-			/>
+			{!error ? (
+				<AppointmentCarousel
+					barbersList={barbersList}
+					servicesList={allServicesList}
+					daysList={daysList}
+					timesList={timesList}
+				/>
+			) : (
+				<div className="flex h-[calc(100vh-180px)] items-center justify-center">
+					<Empty description="No fue posible cargar los datos" />
+				</div>
+			)}
 		</div>
 	);
 };

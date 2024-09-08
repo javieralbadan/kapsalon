@@ -9,19 +9,25 @@ export const getShopsFromDB = async (): Promise<ShopsResponseType> => {
 	const supabase = supabaseClient;
 	const { data, error } = await supabase.from(ENTITIES.SHOPS).select('*');
 
-	return { data, error };
-};
-
-export const getShopByIdFromDB = async (cycleId: string): Promise<ShopResponseType> => {
-	// const supabase = createClient();
-	const supabase = supabaseClient;
-	const { data, error } = await supabase.from(ENTITIES.SHOPS).select('*').eq('id', cycleId);
-
-	if (data && !error) {
-		return { data: data[0] as ShopRow, error };
+	if (error) {
+		console.error('🔎 Error fetching shops:', error);
+		return { data: [], error };
 	}
 
-	return { data, error };
+	return { data, error: null };
+};
+
+export const getShopByIdFromDB = async (shopId: string): Promise<ShopResponseType> => {
+	// const supabase = createClient();
+	const supabase = supabaseClient;
+	const { data, error } = await supabase.from(ENTITIES.SHOPS).select('*').eq('id', shopId);
+
+	if (!data && error) {
+		console.error('🔎 Error fetching shop by id:', error);
+		return { data: null, error };
+	}
+
+	return { data: data[0] as ShopRow, error: null };
 };
 
 export const createShopInDB = async (newShop: ShopInsert): Promise<ShopsResponseType> => {
@@ -29,5 +35,10 @@ export const createShopInDB = async (newShop: ShopInsert): Promise<ShopsResponse
 	const supabase = supabaseClient;
 	const { data, error } = await supabase.from(ENTITIES.SHOPS).insert(newShop).select();
 
-	return { data, error };
+	if (!data && error) {
+		console.error('🔎 Error creating shop:', error);
+		return { data: null, error };
+	}
+
+	return { data, error: null };
 };
