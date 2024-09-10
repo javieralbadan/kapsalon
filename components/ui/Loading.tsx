@@ -1,8 +1,10 @@
 'use client';
 import { Spin } from 'antd';
 
-const Loading = () => {
-	return <Spin tip="Cargando" />;
-};
+interface Props {
+	showText?: boolean;
+}
 
-export default Loading;
+export const Loading = ({ showText = false }: Props) => {
+	return <Spin size="large" tip={showText ? 'Cargando' : ''} fullscreen />;
+};

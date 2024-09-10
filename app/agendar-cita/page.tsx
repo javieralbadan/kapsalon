@@ -1,6 +1,6 @@
 'use client';
 import { AppointmentCarousel } from '@/components/AppointmentCarousel';
-import Loading from '@/components/ui/Loading';
+import { Loading } from '@/components/ui/Loading';
 import { getServicesFromDB } from '@/db/services';
 import { getShopsFromDB } from '@/db/shops';
 import { getStaffMembersFromDB } from '@/db/staffMembers';
@@ -12,9 +12,9 @@ import { GroupListItem } from 'types/ui';
 const ScheduleAppointment = () => {
 	const [isError, setError] = useState(false);
 	const [isLoading, setLoading] = useState(true);
-	const [shopsList, setShopsList] = useState<GroupListItem[] | []>([]);
 	const [barbersList, setBarbersList] = useState<GroupListItem[] | []>([]);
 	const [servicesList, setServicesList] = useState<GroupListItem[] | []>([]);
+	const [shopsList, setShopsList] = useState<GroupListItem[] | []>([]);
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -86,30 +86,20 @@ const ScheduleAppointment = () => {
 	return (
 		<div className="p-4 text-center">
 			<h1>Agendar cita</h1>
-			{isLoading && (
-				<div className="flex h-[calc(100vh-180px)] items-center justify-center">
-					<Loading />
-				</div>
-			)}
-			{isError && (
+			{isLoading && <Loading />}
+			{!isLoading && isError && (
 				<div className="flex h-[calc(100vh-180px)] items-center justify-center">
 					<Empty description="No fue posible cargar los datos" />
 				</div>
 			)}
 			{!isLoading && !isError && (
-				<>
-					<p>
-						{shopsList?.map((item, index) => {
-							return <span key={index}>{item.name}</span>;
-						})}
-					</p>
-					<AppointmentCarousel
-						barbersList={barbersList}
-						servicesList={servicesList}
-						daysList={daysList}
-						timesList={timesList}
-					/>
-				</>
+				<AppointmentCarousel
+					barbersList={barbersList}
+					servicesList={servicesList}
+					daysList={daysList}
+					shopsList={shopsList}
+					timesList={timesList}
+				/>
 			)}
 		</div>
 	);

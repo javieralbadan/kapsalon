@@ -1,6 +1,7 @@
 import { Layout } from 'antd';
 import { Content, Footer } from 'antd/es/layout/layout';
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import React from 'react';
 import '/styles/globals.scss';
 
@@ -43,7 +44,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 						}}
 					>
 						<div className="m-auto flex w-full max-w-[1400px] justify-between">
-							<p>Hecho con ❤️ por KapsalonApp</p>
+							<p>
+								Hecho con ❤️ por <Link href="/">KapsalonApp</Link>
+							</p>
 							<p>Bogotá · 🇨🇴</p>
 						</div>
 					</Footer>

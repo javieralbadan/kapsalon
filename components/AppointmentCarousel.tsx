@@ -7,6 +7,7 @@ import type { GroupListItem } from 'types/ui';
 interface Props {
 	barbersList: GroupListItem[] | [];
 	servicesList: GroupListItem[] | [];
+	shopsList: GroupListItem[] | [];
 	daysList: GroupListItem[] | [];
 	timesList: GroupListItem[] | [];
 	confirmAppointment?: () => void;
@@ -44,9 +45,16 @@ const STYLES = {
 	TITLE: 'mb-4',
 };
 
+const getShop = (shopsList: GroupListItem[]) => {
+	const mainShop = shopsList[0].name;
+
+	return <p className="mt-4">Próximamente más barberos de {mainShop}</p>;
+};
+
 export const AppointmentCarousel = ({
 	barbersList,
 	servicesList,
+	shopsList,
 	daysList,
 	timesList,
 	confirmAppointment,
@@ -77,27 +85,17 @@ export const AppointmentCarousel = ({
 		confirmAppointment && confirmAppointment();
 	};
 
-	// const onChange = (currentSlide: number) => {
-	//   console.log(currentSlide);
-	// };
-	// afterChange={onChange}
-
 	return (
 		<>
-			<Carousel
-				ref={carouselRef}
-				dots={{ className: 'carousel-blue-dots' }}
-				infinite={false}
-				style={carouselStyle}
-			>
+			<Carousel ref={carouselRef} dots={false} infinite={false} style={carouselStyle}>
 				<div>
 					<section className={STYLES.CONTENT}>
 						<h2 className={STYLES.TITLE}>Barbero:</h2>
-						{barbersList.length === 1 && <p className="mb-4">Próximamente más barberos</p>}
 						<GroupList
 							dataList={barbersList}
 							onSelectOption={(listItem) => setOption({ key: 'barber', listItem })}
 						/>
+						{barbersList.length === 1 && getShop(shopsList)}
 					</section>
 				</div>
 				<div>
@@ -149,7 +147,7 @@ export const AppointmentCarousel = ({
 			<Button
 				type="link"
 				onClick={() => swipeCarousel('prev')}
-				className="t-0 absolute ml-[-30px] mt-[-50px]"
+				className="t-0 absolute ml-[-30px] mt-[-40px]"
 			>
 				Atrás
 			</Button>
