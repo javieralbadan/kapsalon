@@ -42,20 +42,6 @@ export type Database = {
 						referencedRelation: 'customers';
 						referencedColumns: ['id'];
 					},
-					{
-						foreignKeyName: 'public_appointments_service_id_fkey';
-						columns: ['service_id'];
-						isOneToOne: false;
-						referencedRelation: 'services';
-						referencedColumns: ['id'];
-					},
-					{
-						foreignKeyName: 'public_appointments_staff_member_fkey';
-						columns: ['staff_member'];
-						isOneToOne: false;
-						referencedRelation: 'staff_members';
-						referencedColumns: ['id'];
-					},
 				];
 			};
 			customers: {
@@ -94,6 +80,33 @@ export type Database = {
 					description: string | null;
 					id: string;
 					name: string;
+					price: number;
+					staff_member_id: string;
+				};
+				Insert: {
+					created_at?: string;
+					description?: string | null;
+					id?: string;
+					name?: string;
+					price?: number;
+					staff_member_id: string;
+				};
+				Update: {
+					created_at?: string;
+					description?: string | null;
+					id?: string;
+					name?: string;
+					price?: number;
+					staff_member_id?: string;
+				};
+				Relationships: [];
+			};
+			services_duplicate: {
+				Row: {
+					created_at: string;
+					description: string | null;
+					id: string;
+					name: string;
 					staff_member_id: string;
 				};
 				Insert: {
@@ -110,15 +123,7 @@ export type Database = {
 					name?: string;
 					staff_member_id?: string;
 				};
-				Relationships: [
-					{
-						foreignKeyName: 'services_staff_member_id_fkey';
-						columns: ['staff_member_id'];
-						isOneToOne: false;
-						referencedRelation: 'staff_members';
-						referencedColumns: ['id'];
-					},
-				];
+				Relationships: [];
 			};
 			shops: {
 				Row: {
@@ -144,32 +149,26 @@ export type Database = {
 				};
 				Relationships: [];
 			};
-			staff_members: {
+			staff: {
 				Row: {
-					availability: Json | null;
 					created_at: string;
 					email: string;
-					enabled_notifications: boolean | null;
 					first_name: string;
 					id: string;
 					last_name: string;
 					phone_number: number;
 				};
 				Insert: {
-					availability?: Json | null;
 					created_at?: string;
 					email?: string;
-					enabled_notifications?: boolean | null;
-					first_name?: string;
+					first_name: string;
 					id?: string;
-					last_name?: string;
+					last_name: string;
 					phone_number: number;
 				};
 				Update: {
-					availability?: Json | null;
 					created_at?: string;
 					email?: string;
-					enabled_notifications?: boolean | null;
 					first_name?: string;
 					id?: string;
 					last_name?: string;

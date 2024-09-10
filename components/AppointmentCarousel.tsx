@@ -5,10 +5,10 @@ import { CSSProperties, useRef, useState } from 'react';
 import type { GroupListItem } from 'types/ui';
 
 interface Props {
-	barbersList: GroupListItem[];
-	servicesList: GroupListItem[];
-	daysList: GroupListItem[];
-	timesList: GroupListItem[];
+	barbersList: GroupListItem[] | [];
+	servicesList: GroupListItem[] | [];
+	daysList: GroupListItem[] | [];
+	timesList: GroupListItem[] | [];
 	confirmAppointment?: () => void;
 }
 

@@ -1,5 +1,4 @@
-'use server';
-import { ENTITIES } from 'constants/data-base';
+import { PostgrestError } from '@supabase/supabase-js';
 import {
 	StaffMemberInsert,
 	StaffMemberResponseType,
@@ -7,30 +6,28 @@ import {
 	StaffMembersResponseType,
 } from 'types/staffMembers';
 import { supabaseClient } from 'utils/supabase/client';
-// import { createClient } from "utils/supabase/server";
+
+const STAFF = 'staff';
 
 export const getStaffMembersFromDB = async (): Promise<StaffMembersResponseType> => {
-	// const supabase = createClient();
-	const supabase = supabaseClient;
-	const { data, error } = await supabase.from(ENTITIES.STAFF_MEMBERS).select('*');
+	try {
+		const { data, error }: StaffMembersResponseType = await supabaseClient.from(STAFF).select('*');
+		if (error) {
+			console.error('🔎 Error fetching staff members:', error);
+			return { data: [], error };
+		}
 
-	if (error) {
+		return { data, error: null };
+	} catch (error) {
 		console.error('🔎 Error fetching staff members:', error);
-		return { data: [], error };
+		return { data: [], error: error as PostgrestError | null };
 	}
-
-	return { data, error: null };
 };
 
 export const getStaffMemberByIdFromDB = async (
 	memberId: string,
 ): Promise<StaffMemberResponseType> => {
-	// const supabase = createClient();
-	const supabase = supabaseClient;
-	const { data, error } = await supabase
-		.from(ENTITIES.STAFF_MEMBERS)
-		.select('*')
-		.eq('id', memberId);
+	const { data, error } = await supabaseClient.from(STAFF).select('*').eq('id', memberId);
 
 	if (!data && error) {
 		console.error('🔎 Error fetching staff member by id:', error);
@@ -43,9 +40,7 @@ export const getStaffMemberByIdFromDB = async (
 export const createStaffMemberInDB = async (
 	newService: StaffMemberInsert,
 ): Promise<StaffMembersResponseType> => {
-	// const supabase = createClient();
-	const supabase = supabaseClient;
-	const { data, error } = await supabase.from(ENTITIES.STAFF_MEMBERS).insert(newService).select();
+	const { data, error } = await supabaseClient.from(STAFF).insert(newService).select();
 
 	if (!data && error) {
 		console.error('🔎 Error creating staff member:', error);

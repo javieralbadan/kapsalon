@@ -1,5 +1,4 @@
-'use server';
-import { ENTITIES } from 'constants/data-base';
+import { PostgrestError } from '@supabase/supabase-js';
 import {
 	ServiceInsert,
 	ServiceResponseType,
@@ -7,25 +6,26 @@ import {
 	ServicesResponseType,
 } from 'types/services';
 import { supabaseClient } from 'utils/supabase/client';
-// import { createClient } from "utils/supabase/server";
+
+const SERVICES = 'services';
 
 export const getServicesFromDB = async (): Promise<ServicesResponseType> => {
-	// const supabase = createClient();
-	const supabase = supabaseClient;
-	const { data, error } = await supabase.from(ENTITIES.SERVICES).select('*');
+	try {
+		const { data, error }: ServicesResponseType = await supabaseClient.from(SERVICES).select('*');
+		if (error) {
+			console.error('🔎 Error fetching services:', error);
+			return { data: [], error };
+		}
 
-	if (error) {
+		return { data, error: null };
+	} catch (error) {
 		console.error('🔎 Error fetching services:', error);
-		return { data: [], error };
+		return { data: [], error: error as PostgrestError | null };
 	}
-
-	return { data, error: null };
 };
 
 export const getServiceByIdFromDB = async (serviceId: string): Promise<ServiceResponseType> => {
-	// const supabase = createClient();
-	const supabase = supabaseClient;
-	const { data, error } = await supabase.from(ENTITIES.SERVICES).select('*').eq('id', serviceId);
+	const { data, error } = await supabaseClient.from(SERVICES).select('*').eq('id', serviceId);
 
 	if (!data && error) {
 		console.error('🔎 Error fetching service by id:', error);
@@ -38,9 +38,7 @@ export const getServiceByIdFromDB = async (serviceId: string): Promise<ServiceRe
 export const createServiceInDB = async (
 	newService: ServiceInsert,
 ): Promise<ServicesResponseType> => {
-	// const supabase = createClient();
-	const supabase = supabaseClient;
-	const { data, error } = await supabase.from(ENTITIES.SERVICES).insert(newService).select();
+	const { data, error } = await supabaseClient.from(SERVICES).insert(newService).select();
 
 	if (!data && error) {
 		console.error('🔎 Error creating service:', error);

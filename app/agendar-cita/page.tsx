@@ -1,28 +1,45 @@
-'use server';
+'use client';
 import { AppointmentCarousel } from '@/components/AppointmentCarousel';
+import Loading from '@/components/ui/Loading';
+import { getServicesFromDB } from '@/db/services';
+import { getShopsFromDB } from '@/db/shops';
+import { getStaffMembersFromDB } from '@/db/staffMembers';
+import { mapStaffList } from '@/utils/mappers/staffMembers';
 import { Empty } from 'antd';
-import { ServicesResponseType } from 'types/services';
-import { StaffMembersResponseType } from 'types/staffMembers';
+import { useEffect, useState } from 'react';
 import { GroupListItem } from 'types/ui';
-import { fetchServices, fetchStaffMembers } from './actions';
 
-const ScheduleAppointment = async () => {
-	const { data: staff, error: error1 }: StaffMembersResponseType = await fetchStaffMembers();
-	console.log('🚀 ~ ScheduleAppointment ~ staff, error:', staff, error1);
+const ScheduleAppointment = () => {
+	const [isError, setError] = useState(false);
+	const [isLoading, setLoading] = useState(true);
+	const [shopsList, setShopsList] = useState<GroupListItem[] | []>([]);
+	const [barbersList, setBarbersList] = useState<GroupListItem[] | []>([]);
+	const [servicesList, setServicesList] = useState<GroupListItem[] | []>([]);
 
-	const barbersList: GroupListItem[] | [] =
-		staff?.map(({ id, first_name, last_name }) => ({
-			id,
-			name: `${first_name} ${last_name}`,
-		})) || [];
-	console.log('🚀 ~ ScheduleAppointment ~ barbersList:', barbersList);
+	useEffect(() => {
+		const fetchData = async () => {
+			const { data: shops, error: errorShops } = await getShopsFromDB();
+			if (!errorShops && shops?.length) {
+				setShopsList(shops);
+			}
 
-	const { data: services, error: error2 }: ServicesResponseType = await fetchServices();
-	console.log('🚀 ~ ScheduleAppointment ~ services, error:', services, error2);
+			const { data: staff, error: errorStaff } = await getStaffMembersFromDB();
+			if (!errorStaff && staff?.length) {
+				setBarbersList(mapStaffList(staff));
+			}
 
-	const allServicesList: GroupListItem[] | [] =
-		services?.map(({ id, name }) => ({ id, name })) || [];
-	console.log('🚀 ~ ScheduleAppointment ~ allServicesList:', allServicesList);
+			const { data: services, error: errorServices } = await getServicesFromDB();
+			if (!errorServices && services?.length) {
+				setServicesList(services);
+			}
+
+			const generalError: boolean = !!errorShops || !!errorStaff || !!errorServices;
+			setError(generalError);
+			setLoading(false);
+		};
+
+		void fetchData();
+	}, []);
 
 	const daysList: GroupListItem[] = [
 		{
@@ -66,22 +83,33 @@ const ScheduleAppointment = async () => {
 		},
 	];
 
-	const error: boolean = !!error1 || !!error2;
-
 	return (
 		<div className="p-4 text-center">
 			<h1>Agendar cita</h1>
-			{!error ? (
-				<AppointmentCarousel
-					barbersList={barbersList}
-					servicesList={allServicesList}
-					daysList={daysList}
-					timesList={timesList}
-				/>
-			) : (
+			{isLoading && (
+				<div className="flex h-[calc(100vh-180px)] items-center justify-center">
+					<Loading />
+				</div>
+			)}
+			{isError && (
 				<div className="flex h-[calc(100vh-180px)] items-center justify-center">
 					<Empty description="No fue posible cargar los datos" />
 				</div>
+			)}
+			{!isLoading && !isError && (
+				<>
+					<p>
+						{shopsList?.map((item, index) => {
+							return <span key={index}>{item.name}</span>;
+						})}
+					</p>
+					<AppointmentCarousel
+						barbersList={barbersList}
+						servicesList={servicesList}
+						daysList={daysList}
+						timesList={timesList}
+					/>
+				</>
 			)}
 		</div>
 	);

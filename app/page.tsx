@@ -1,8 +1,8 @@
-'use server';
+'use client';
+
 import { AppLogo } from '@/components/AppLogo';
 import { Button } from 'antd';
 import Link from 'next/link';
-// import { fetchShops } from './actions';
 
 const CLASSES = {
 	FLEX_CENTER: 'flex flex-col items-center justify-center',
@@ -10,7 +10,7 @@ const CLASSES = {
 	LOGO: 'max-h-[300px] px-20 sm:px-24 md:h-auto md:max-h-[600px] md:w-1/2 md:p-4',
 };
 
-const Main = () => {
+const HomePage = () => {
 	return (
 		<div className={`${CLASSES.CONTAINER} ${CLASSES.FLEX_CENTER} m-auto md:flex-row-reverse`}>
 			<div className={`${CLASSES.FLEX_CENTER} ${CLASSES.LOGO}`}>
@@ -25,16 +25,6 @@ const Main = () => {
 				</Link>
 			</div>
 		</div>
-	);
-};
-
-const HomePage = () => {
-	// const { data, error } = await fetchShops();
-	// console.log('🚀 ~ HomePage ~ data, error:', data, error);
-	return (
-		<>
-			<Main />
-		</>
 	);
 };
 

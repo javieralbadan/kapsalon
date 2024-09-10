@@ -1,26 +1,26 @@
-'use server';
-import { ENTITIES } from 'constants/data-base';
+import { PostgrestError } from '@supabase/supabase-js';
 import { ShopInsert, ShopResponseType, ShopRow, ShopsResponseType } from 'types/shops';
 import { supabaseClient } from 'utils/supabase/client';
-// import { createClient } from "utils/supabase/server";
+
+const SHOPS = 'shops';
 
 export const getShopsFromDB = async (): Promise<ShopsResponseType> => {
-	// const supabase = createClient();
-	const supabase = supabaseClient;
-	const { data, error } = await supabase.from(ENTITIES.SHOPS).select('*');
+	try {
+		const { data, error }: ShopsResponseType = await supabaseClient.from(SHOPS).select('*');
+		if (error) {
+			console.error('🔎 Error fetching shops:', error);
+			return { data: [], error };
+		}
 
-	if (error) {
+		return { data, error: null };
+	} catch (error) {
 		console.error('🔎 Error fetching shops:', error);
-		return { data: [], error };
+		return { data: [], error: error as PostgrestError | null };
 	}
-
-	return { data, error: null };
 };
 
 export const getShopByIdFromDB = async (shopId: string): Promise<ShopResponseType> => {
-	// const supabase = createClient();
-	const supabase = supabaseClient;
-	const { data, error } = await supabase.from(ENTITIES.SHOPS).select('*').eq('id', shopId);
+	const { data, error } = await supabaseClient.from(SHOPS).select('*').eq('id', shopId);
 
 	if (!data && error) {
 		console.error('🔎 Error fetching shop by id:', error);
@@ -31,9 +31,7 @@ export const getShopByIdFromDB = async (shopId: string): Promise<ShopResponseTyp
 };
 
 export const createShopInDB = async (newShop: ShopInsert): Promise<ShopsResponseType> => {
-	// const supabase = createClient();
-	const supabase = supabaseClient;
-	const { data, error } = await supabase.from(ENTITIES.SHOPS).insert(newShop).select();
+	const { data, error } = await supabaseClient.from(SHOPS).insert(newShop).select();
 
 	if (!data && error) {
 		console.error('🔎 Error creating shop:', error);
