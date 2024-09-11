@@ -6,40 +6,63 @@ export type Database = {
 			appointments: {
 				Row: {
 					created_at: string;
-					customer: string;
-					date: string;
+					customer_id: string;
+					date_time: string | null;
 					id: string;
+					price_override: number | null;
 					rating: number | null;
 					service_id: string;
-					staff_member: string;
+					staff_member_id: string;
+					status: Database['public']['Enums']['appointment_status'];
 					time: string;
+					updated_at: string;
 				};
 				Insert: {
 					created_at?: string;
-					customer: string;
-					date: string;
+					customer_id: string;
+					date_time?: string | null;
 					id?: string;
+					price_override?: number | null;
 					rating?: number | null;
 					service_id: string;
-					staff_member: string;
+					staff_member_id: string;
+					status?: Database['public']['Enums']['appointment_status'];
 					time?: string;
+					updated_at?: string;
 				};
 				Update: {
 					created_at?: string;
-					customer?: string;
-					date?: string;
+					customer_id?: string;
+					date_time?: string | null;
 					id?: string;
+					price_override?: number | null;
 					rating?: number | null;
 					service_id?: string;
-					staff_member?: string;
+					staff_member_id?: string;
+					status?: Database['public']['Enums']['appointment_status'];
 					time?: string;
+					updated_at?: string;
 				};
 				Relationships: [
 					{
-						foreignKeyName: 'public_appointments_customer_fkey';
-						columns: ['customer'];
+						foreignKeyName: 'appointments_customer_id_fkey';
+						columns: ['customer_id'];
 						isOneToOne: false;
 						referencedRelation: 'customers';
+						referencedColumns: ['id'];
+					},
+					{
+						foreignKeyName: 'appointments_service_id_fkey';
+						columns: ['service_id'];
+						isOneToOne: false;
+						referencedRelation: 'services';
+						referencedColumns: ['id'];
+					},
+					{
+						foreignKeyName: 'appointments_staff_member_id_fkey';
+						columns: ['staff_member_id'];
+						isOneToOne: false;
+						referencedRelation: 'staff';
 						referencedColumns: ['id'];
 					},
 				];
@@ -78,6 +101,7 @@ export type Database = {
 				Row: {
 					created_at: string;
 					description: string | null;
+					duration: number;
 					id: string;
 					name: string;
 					price: number;
@@ -86,6 +110,7 @@ export type Database = {
 				Insert: {
 					created_at?: string;
 					description?: string | null;
+					duration?: number;
 					id?: string;
 					name?: string;
 					price?: number;
@@ -94,33 +119,10 @@ export type Database = {
 				Update: {
 					created_at?: string;
 					description?: string | null;
+					duration?: number;
 					id?: string;
 					name?: string;
 					price?: number;
-					staff_member_id?: string;
-				};
-				Relationships: [];
-			};
-			services_duplicate: {
-				Row: {
-					created_at: string;
-					description: string | null;
-					id: string;
-					name: string;
-					staff_member_id: string;
-				};
-				Insert: {
-					created_at?: string;
-					description?: string | null;
-					id?: string;
-					name?: string;
-					staff_member_id: string;
-				};
-				Update: {
-					created_at?: string;
-					description?: string | null;
-					id?: string;
-					name?: string;
 					staff_member_id?: string;
 				};
 				Relationships: [];
@@ -151,30 +153,88 @@ export type Database = {
 			};
 			staff: {
 				Row: {
+					active: boolean;
 					created_at: string;
 					email: string;
 					first_name: string;
 					id: string;
 					last_name: string;
 					phone_number: number;
+					profile_image: string | null;
+					shop_id: string | null;
 				};
 				Insert: {
+					active?: boolean;
 					created_at?: string;
 					email?: string;
 					first_name: string;
 					id?: string;
 					last_name: string;
 					phone_number: number;
+					profile_image?: string | null;
+					shop_id?: string | null;
 				};
 				Update: {
+					active?: boolean;
 					created_at?: string;
 					email?: string;
 					first_name?: string;
 					id?: string;
 					last_name?: string;
 					phone_number?: number;
+					profile_image?: string | null;
+					shop_id?: string | null;
 				};
-				Relationships: [];
+				Relationships: [
+					{
+						foreignKeyName: 'staff_shop_id_fkey';
+						columns: ['shop_id'];
+						isOneToOne: false;
+						referencedRelation: 'shops';
+						referencedColumns: ['id'];
+					},
+				];
+			};
+			staff_availability: {
+				Row: {
+					created_at: string;
+					day_of_week: number;
+					end_time: string;
+					id: string;
+					is_available: boolean;
+					staff_member_id: string;
+					start_time: string;
+					updated_at: string;
+				};
+				Insert: {
+					created_at?: string;
+					day_of_week: number;
+					end_time: string;
+					id?: string;
+					is_available?: boolean;
+					staff_member_id: string;
+					start_time: string;
+					updated_at?: string;
+				};
+				Update: {
+					created_at?: string;
+					day_of_week?: number;
+					end_time?: string;
+					id?: string;
+					is_available?: boolean;
+					staff_member_id?: string;
+					start_time?: string;
+					updated_at?: string;
+				};
+				Relationships: [
+					{
+						foreignKeyName: 'staff_availability_staff_member_id_fkey';
+						columns: ['staff_member_id'];
+						isOneToOne: false;
+						referencedRelation: 'staff';
+						referencedColumns: ['id'];
+					},
+				];
 			};
 		};
 		Views: {
@@ -184,7 +244,7 @@ export type Database = {
 			[_ in never]: never;
 		};
 		Enums: {
-			[_ in never]: never;
+			appointment_status: 'pending' | 'confirmed' | 'completed' | 'cancelled';
 		};
 		CompositeTypes: {
 			[_ in never]: never;
