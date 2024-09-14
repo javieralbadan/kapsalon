@@ -3,7 +3,10 @@ import { AppointmentCarousel } from '@/components/AppointmentCarousel';
 import { Loading } from '@/components/ui/Loading';
 import { getServicesFromDB } from '@/db/services';
 import { getShopsFromDB } from '@/db/shops';
+import { getAvailabilitiesFromDB } from '@/db/staffAvailability';
 import { getStaffMembersFromDB } from '@/db/staffMembers';
+import { StaffAvailabilityRow } from '@/types/staffAvailability';
+import { mapServiceList } from '@/utils/mappers/services';
 import { mapStaffList } from '@/utils/mappers/staffMembers';
 import { Empty } from 'antd';
 import { useEffect, useState } from 'react';
@@ -15,73 +18,43 @@ const ScheduleAppointment = () => {
 	const [barbersList, setBarbersList] = useState<GroupListItem[] | []>([]);
 	const [servicesList, setServicesList] = useState<GroupListItem[] | []>([]);
 	const [shopsList, setShopsList] = useState<GroupListItem[] | []>([]);
+	const [availabilitiesList, setAvailabilitiesList] = useState<StaffAvailabilityRow[] | []>([]);
 
 	useEffect(() => {
 		const fetchData = async () => {
 			const { data: shops, error: errorShops } = await getShopsFromDB();
+			console.log('errorShops, shops', errorShops, shops);
 			if (!errorShops && shops?.length) {
 				setShopsList(shops);
 			}
 
 			const { data: staff, error: errorStaff } = await getStaffMembersFromDB();
+			console.log('errorStaff, staff', errorStaff, staff);
 			if (!errorStaff && staff?.length) {
 				setBarbersList(mapStaffList(staff));
 			}
 
 			const { data: services, error: errorServices } = await getServicesFromDB();
+			console.log('errorServices, services', errorServices, services);
 			if (!errorServices && services?.length) {
-				setServicesList(services);
+				setServicesList(mapServiceList(services));
 			}
 
-			const generalError: boolean = !!errorShops || !!errorStaff || !!errorServices;
+			const { data: slots, error: errorAvailability } = await getAvailabilitiesFromDB();
+			console.log('errorAvailability, slots', errorAvailability, slots);
+			if (!errorAvailability && slots?.length) {
+				setAvailabilitiesList(slots);
+			}
+
+			const generalError: boolean =
+				!!errorShops || !!errorStaff || !!errorServices || !!errorAvailability;
+
 			setError(generalError);
 			setLoading(false);
 		};
 
 		void fetchData();
 	}, []);
-
-	const daysList: GroupListItem[] = [
-		{
-			id: '02-09-2024',
-			name: 'Lunes 2 de Septiembre',
-		},
-		{
-			id: '03-09-2024',
-			name: 'Martes 3 de Septiembre',
-		},
-		{
-			id: '04-09-2024',
-			name: 'Miércoles 4 de Septiembre',
-		},
-		{
-			id: '05-09-2024',
-			name: 'Jueves 5 de Septiembre',
-		},
-	];
-
-	const timesList: GroupListItem[] = [
-		{
-			id: '10:00',
-			name: '10:00',
-		},
-		{
-			id: '11:00',
-			name: '11:00',
-		},
-		{
-			id: '12:00',
-			name: '12:00',
-		},
-		{
-			id: '13:00',
-			name: '13:00',
-		},
-		{
-			id: '14:00',
-			name: '14:00',
-		},
-	];
 
 	return (
 		<div className="p-4 text-center">
@@ -94,11 +67,10 @@ const ScheduleAppointment = () => {
 			)}
 			{!isLoading && !isError && (
 				<AppointmentCarousel
+					shopsList={shopsList}
 					barbersList={barbersList}
 					servicesList={servicesList}
-					daysList={daysList}
-					shopsList={shopsList}
-					timesList={timesList}
+					availabilitiesList={availabilitiesList}
 				/>
 			)}
 		</div>

@@ -1,15 +1,16 @@
 'use client';
 import { GroupList } from '@/components/ui/GroupList';
+import { StaffAvailabilityRow } from '@/types/staffAvailability';
+import { getUpcomingDays, mapTimeSlotList } from '@/utils/mappers/staffAvailability';
 import { Button, Card, Carousel, Flex } from 'antd';
 import { CSSProperties, useRef, useState } from 'react';
-import type { GroupListItem } from 'types/ui';
+import type { GroupListItem, SlotOption } from 'types/ui';
 
 interface Props {
 	barbersList: GroupListItem[] | [];
 	servicesList: GroupListItem[] | [];
 	shopsList: GroupListItem[] | [];
-	daysList: GroupListItem[] | [];
-	timesList: GroupListItem[] | [];
+	availabilitiesList: StaffAvailabilityRow[] | [];
 	confirmAppointment?: () => void;
 }
 
@@ -22,7 +23,7 @@ interface AppointmentType {
 
 interface SetOptionParams {
 	key: 'barber' | 'service' | 'day' | 'time';
-	listItem: GroupListItem;
+	listItem: GroupListItem | SlotOption;
 }
 
 interface CarouselMethods {
@@ -55,11 +56,11 @@ export const AppointmentCarousel = ({
 	barbersList,
 	servicesList,
 	shopsList,
-	daysList,
-	timesList,
+	availabilitiesList,
 	confirmAppointment,
 }: Props) => {
 	const carouselRef = useRef(null);
+	const [timesList, setTimesList] = useState<GroupListItem[] | []>([]);
 	const [appointment, setAppointment] = useState<AppointmentType>({
 		barber: { id: '' },
 		service: { id: '' },
@@ -75,8 +76,25 @@ export const AppointmentCarousel = ({
 		(carouselRef.current as CarouselMethods)[step]();
 	};
 
+	const daysList = getUpcomingDays(availabilitiesList);
+	console.log('daysList', daysList);
+
 	const setOption = ({ key, listItem }: SetOptionParams) => {
 		setAppointment({ ...appointment, [key]: listItem });
+
+		if (key === 'day') {
+			const { date } = listItem as SlotOption;
+			const dayOfTheWeek = date.getDay();
+
+			const availableDay = availabilitiesList.find((day) => day.day_of_week === dayOfTheWeek);
+
+			const slots = mapTimeSlotList({
+				startTime: availableDay?.start_time || '',
+				endTime: availableDay?.end_time || '',
+			});
+			console.log('slots', slots);
+			setTimesList(slots);
+		}
 		swipeCarousel('next');
 	};
 
