@@ -4,7 +4,7 @@ import { StaffAvailabilityRow } from '@/types/staffAvailability';
 import { getUpcomingDays, mapTimeSlotList } from '@/utils/mappers/staffAvailability';
 import { Button, Card, Carousel, Flex } from 'antd';
 import { CSSProperties, useRef, useState } from 'react';
-import type { GroupListItem, SlotOption } from 'types/ui';
+import type { GroupListItem } from 'types/ui';
 
 interface Props {
 	barbersList: GroupListItem[] | [];
@@ -23,7 +23,7 @@ interface AppointmentType {
 
 interface SetOptionParams {
 	key: 'barber' | 'service' | 'day' | 'time';
-	listItem: GroupListItem | SlotOption;
+	listItem: GroupListItem;
 }
 
 interface CarouselMethods {
@@ -42,7 +42,7 @@ const carouselStyle: CSSProperties = {
 };
 
 const STYLES = {
-	CONTENT: 'flex flex-col items-center justify-center min-h-[400px]',
+	CONTENT: 'flex flex-col items-center justify-start max-h-[400px] overflow-y-scroll',
 	TITLE: 'mb-4',
 };
 
@@ -77,22 +77,18 @@ export const AppointmentCarousel = ({
 	};
 
 	const daysList = getUpcomingDays(availabilitiesList);
-	console.log('daysList', daysList);
 
 	const setOption = ({ key, listItem }: SetOptionParams) => {
 		setAppointment({ ...appointment, [key]: listItem });
 
 		if (key === 'day') {
-			const { date } = listItem as SlotOption;
-			const dayOfTheWeek = date.getDay();
-
+			const dayOfTheWeek = new Date(listItem.id).getDay();
 			const availableDay = availabilitiesList.find((day) => day.day_of_week === dayOfTheWeek);
 
 			const slots = mapTimeSlotList({
 				startTime: availableDay?.start_time || '',
 				endTime: availableDay?.end_time || '',
 			});
-			console.log('slots', slots);
 			setTimesList(slots);
 		}
 		swipeCarousel('next');
@@ -105,7 +101,13 @@ export const AppointmentCarousel = ({
 
 	return (
 		<>
-			<Carousel ref={carouselRef} dots={false} infinite={false} style={carouselStyle}>
+			<Carousel
+				ref={carouselRef}
+				dots={false}
+				draggable={false}
+				infinite={false}
+				style={carouselStyle}
+			>
 				<div>
 					<section className={STYLES.CONTENT}>
 						<h2 className={STYLES.TITLE}>Barbero:</h2>
@@ -140,6 +142,7 @@ export const AppointmentCarousel = ({
 						<GroupList
 							dataList={timesList}
 							onSelectOption={(listItem) => setOption({ key: 'time', listItem })}
+							vertical={false}
 						/>
 					</section>
 				</div>

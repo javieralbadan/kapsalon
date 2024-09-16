@@ -5,11 +5,12 @@ import { Button, Empty, Flex } from 'antd';
 interface Props {
 	dataList: GroupListItem[];
 	onSelectOption: (listItem: GroupListItem) => void;
+	vertical?: boolean;
 }
 
-export const GroupList = ({ dataList, onSelectOption }: Props) => {
+export const GroupList = ({ dataList, onSelectOption, vertical = true }: Props) => {
 	return (
-		<Flex gap="small" align="center" justify="center" wrap>
+		<Flex gap="middle" align="center" justify="center" vertical={vertical} wrap>
 			{dataList.length ? (
 				dataList.map((listItem) => {
 					return (
@@ -20,9 +21,9 @@ export const GroupList = ({ dataList, onSelectOption }: Props) => {
 							size="large"
 							onClick={() => onSelectOption(listItem)}
 						>
-							<span className="text-base leading-4">{listItem.name}</span>
+							<span className="text-base leading-6">{listItem.name}</span>
 							{listItem.description && (
-								<span className="text-xs leading-4 text-green-700">{listItem.description}</span>
+								<span className="text-xs text-green-700">{listItem.description}</span>
 							)}
 						</Button>
 					);

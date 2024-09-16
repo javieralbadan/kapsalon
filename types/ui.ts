@@ -3,9 +3,3 @@ export interface GroupListItem {
 	name?: string;
 	description?: string;
 }
-
-export interface SlotOption {
-	id: string;
-	name: string;
-	date: Date;
-}
