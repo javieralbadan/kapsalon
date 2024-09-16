@@ -6,11 +6,11 @@ import { getShopsFromDB } from '@/db/shops';
 import { getAvailabilitiesFromDB } from '@/db/staffAvailability';
 import { getStaffMembersFromDB } from '@/db/staffMembers';
 import { StaffAvailabilityRow } from '@/types/staffAvailability';
+import { GroupListItem } from '@/types/ui';
 import { mapServiceList } from '@/utils/mappers/services';
 import { mapStaffList } from '@/utils/mappers/staffMembers';
 import { Empty } from 'antd';
 import { useEffect, useState } from 'react';
-import { GroupListItem } from 'types/ui';
 
 const ScheduleAppointment = () => {
 	const [isError, setError] = useState(false);
@@ -23,6 +23,7 @@ const ScheduleAppointment = () => {
 	useEffect(() => {
 		const fetchData = async () => {
 			const { data: shops, error: errorShops } = await getShopsFromDB();
+			// TODO: Delete these logs
 			console.log('errorShops, shops', errorShops, shops);
 			if (!errorShops && shops?.length) {
 				setShopsList(shops);

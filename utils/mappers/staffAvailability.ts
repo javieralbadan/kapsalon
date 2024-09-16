@@ -1,8 +1,15 @@
 import { StaffAvailabilityRow } from '@/types/staffAvailability';
 import { GroupListItem } from '@/types/ui';
-import { addDays, formatDate, SHORT_DATE_OPTIONS, SHORT_TIME_OPTIONS } from '../formatters';
+import {
+	addDays,
+	formatDate,
+	LONG_DATE_OPTIONS,
+	SHORT_DATE_OPTIONS,
+	SHORT_TIME_OPTIONS,
+} from '@/utils/formatters';
 
 interface Props {
+	date: string;
 	startTime: string;
 	endTime: string;
 }
@@ -12,6 +19,7 @@ const MINUTES_TO_INCREASE = 30;
 const TODAY: Date = new Date();
 const TOMORROW: Date = addDays(TODAY, 1);
 const ENABLE_TODAY = TODAY.getHours() < 12;
+const YYYY_MM_DD_FORMAT = 'en-CA';
 
 export const getUpcomingDays = (availabilities: StaffAvailabilityRow[]): GroupListItem[] => {
 	const availableDays: GroupListItem[] = [];
@@ -33,7 +41,11 @@ export const getUpcomingDays = (availabilities: StaffAvailabilityRow[]): GroupLi
 			);
 			if (!isAlreadyAdded) {
 				const item: GroupListItem = {
-					id: formatDate({ date: currentDay, options: SHORT_DATE_OPTIONS, locale: 'en-CA' }),
+					id: formatDate({
+						date: currentDay,
+						options: SHORT_DATE_OPTIONS,
+						locale: YYYY_MM_DD_FORMAT,
+					}),
 					name: formatDate({ date: currentDay }),
 				};
 				availableDays.push(item);
@@ -47,14 +59,18 @@ export const getUpcomingDays = (availabilities: StaffAvailabilityRow[]): GroupLi
 	return availableDays;
 };
 
-export const mapTimeSlotList = ({ startTime, endTime }: Props): GroupListItem[] => {
-	let startDateTime: Date = new Date(`1970-01-01T${startTime}`);
-	const endDateTime: Date = new Date(`1970-01-01T${endTime}`);
+export const mapTimeSlotList = ({ date, startTime, endTime }: Props): GroupListItem[] => {
+	let startDateTime: Date = new Date(`${date}T${startTime}`);
+	const endDateTime: Date = new Date(`${date}T${endTime}`);
 	const timeSlots: GroupListItem[] = [];
 
 	while (startDateTime < endDateTime) {
 		timeSlots.push({
-			id: formatDate({ date: startDateTime, options: SHORT_TIME_OPTIONS }),
+			id: formatDate({
+				date: startDateTime,
+				options: LONG_DATE_OPTIONS,
+				locale: YYYY_MM_DD_FORMAT,
+			}),
 			name: formatDate({ date: startDateTime, options: SHORT_TIME_OPTIONS }),
 		});
 

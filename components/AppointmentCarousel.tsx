@@ -1,10 +1,12 @@
 'use client';
+import { AppointmentConfirmation } from '@/components/AppointmentConfirmation';
 import { GroupList } from '@/components/ui/GroupList';
+import { AppointmentCreationType } from '@/types/appointments';
 import { StaffAvailabilityRow } from '@/types/staffAvailability';
+import type { GroupListItem } from '@/types/ui';
 import { getUpcomingDays, mapTimeSlotList } from '@/utils/mappers/staffAvailability';
-import { Button, Card, Carousel, Flex } from 'antd';
+import { Button, Carousel } from 'antd';
 import { CSSProperties, useRef, useState } from 'react';
-import type { GroupListItem } from 'types/ui';
 
 interface Props {
 	barbersList: GroupListItem[] | [];
@@ -12,13 +14,6 @@ interface Props {
 	shopsList: GroupListItem[] | [];
 	availabilitiesList: StaffAvailabilityRow[] | [];
 	confirmAppointment?: () => void;
-}
-
-interface AppointmentType {
-	barber: GroupListItem;
-	service: GroupListItem;
-	day: GroupListItem;
-	time: GroupListItem;
 }
 
 interface SetOptionParams {
@@ -32,8 +27,10 @@ interface CarouselMethods {
 }
 
 const carouselStyle: CSSProperties = {
-	margin: 0,
-	height: 'calc(100vh - 180px)',
+	margin: '0 auto',
+	padding: '1rem',
+	height: 'calc(100vh - 150px)',
+	maxWidth: '800px',
 	border: '1px solid gray',
 	borderRadius: '1rem',
 	display: 'flex',
@@ -42,7 +39,7 @@ const carouselStyle: CSSProperties = {
 };
 
 const STYLES = {
-	CONTENT: 'flex flex-col items-center justify-start max-h-[400px] overflow-y-scroll',
+	CONTENT: 'flex flex-col items-center justify-start max-h-[calc(100vh-220px)] overflow-y-auto',
 	TITLE: 'mb-4',
 };
 
@@ -61,7 +58,7 @@ export const AppointmentCarousel = ({
 }: Props) => {
 	const carouselRef = useRef(null);
 	const [timesList, setTimesList] = useState<GroupListItem[] | []>([]);
-	const [appointment, setAppointment] = useState<AppointmentType>({
+	const [appointment, setAppointment] = useState<AppointmentCreationType>({
 		barber: { id: '' },
 		service: { id: '' },
 		day: { id: '' },
@@ -78,18 +75,26 @@ export const AppointmentCarousel = ({
 
 	const daysList = getUpcomingDays(availabilitiesList);
 
+	const updateTimeSlots = (dateSelected: string) => {
+		const dayOfTheWeek = new Date(dateSelected).getDay();
+		const availableDay = availabilitiesList.find((item) => item.day_of_week === dayOfTheWeek);
+		if (!availableDay) {
+			return;
+		}
+
+		const slots = mapTimeSlotList({
+			date: dateSelected,
+			startTime: availableDay.start_time,
+			endTime: availableDay.end_time,
+		});
+		setTimesList(slots);
+	};
+
 	const setOption = ({ key, listItem }: SetOptionParams) => {
 		setAppointment({ ...appointment, [key]: listItem });
 
-		if (key === 'day') {
-			const dayOfTheWeek = new Date(listItem.id).getDay();
-			const availableDay = availabilitiesList.find((day) => day.day_of_week === dayOfTheWeek);
-
-			const slots = mapTimeSlotList({
-				startTime: availableDay?.start_time || '',
-				endTime: availableDay?.end_time || '',
-			});
-			setTimesList(slots);
+		if (key === 'day' && typeof listItem.id === 'string') {
+			updateTimeSlots(listItem.id);
 		}
 		swipeCarousel('next');
 	};
@@ -148,28 +153,15 @@ export const AppointmentCarousel = ({
 				</div>
 				<div>
 					<section className={STYLES.CONTENT}>
-						<Card title="Está todo bien?" bordered={true} className="m-auto w-[300px]">
-							<p>Barbero: {appointment.barber.name}</p>
-							<p>Servicio: {appointment.service.name}</p>
-							<p>
-								{appointment.day.name}, {appointment.time.name}
-							</p>
-
-							<Flex gap="small" className="mt-4">
-								<Button danger onClick={() => swipeCarousel('prev')}>
-									Editar algo
-								</Button>
-								<Button onClick={() => onConfirm()}>Si, confirmar cita</Button>
-							</Flex>
-						</Card>
+						<AppointmentConfirmation
+							appointment={appointment}
+							goBack={() => swipeCarousel('prev')}
+							onConfirm={() => onConfirm()}
+						/>
 					</section>
 				</div>
 			</Carousel>
-			<Button
-				type="link"
-				onClick={() => swipeCarousel('prev')}
-				className="t-0 absolute ml-[-30px] mt-[-40px]"
-			>
+			<Button type="link" onClick={() => swipeCarousel('prev')} className="t-0 absolute ml-[-30px]">
 				Atrás
 			</Button>
 		</>

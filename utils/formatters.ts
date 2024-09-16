@@ -27,6 +27,11 @@ export const SHORT_DATE_OPTIONS: Intl.DateTimeFormatOptions = {
 	day: '2-digit',
 };
 
+export const LONG_DATE_OPTIONS: Intl.DateTimeFormatOptions = {
+	timeStyle: 'full',
+	dateStyle: 'full',
+};
+
 export const SHORT_TIME_OPTIONS: Intl.DateTimeFormatOptions = {
 	hour: 'numeric',
 	minute: '2-digit',
@@ -55,6 +60,7 @@ export const addDays = (originalDate: Date, numberDays = 1): Date => {
 const DEFAULT_CURRENCY_OPTIONS: Intl.NumberFormatOptions = {
 	style: 'currency',
 	currency: DEFAULT.CURRENCY,
+	maximumSignificantDigits: 3,
 };
 
 export const formatCurrency = ({ value, options = DEFAULT_CURRENCY_OPTIONS }: CurrencyProps) => {
