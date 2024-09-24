@@ -5,9 +5,9 @@
 
 :root {
 	--color-black: #060606;
-	--color-black-soft: #333;
+	--color-black-soft: #292941;
 	--color-dark: #1a1a36;
-	--color-dark-soft: #292941;
+	--color-dark-soft:  #333;
 	--color-gray: #808080;
 	--color-gray-soft: #b4b4b4;
 	--color-white: #fafaf7;
@@ -71,9 +71,33 @@ a {
   color: var(--color-blue);
 }
 
-.slick-dots.carousel-blue-dots {
-	li button,
-	li.slick-active button {
-		background: var(--color-blue);
-	}
+/* Arrows */
+.ant-carousel .slick-prev, .ant-carousel .slick-next {
+	border: 1px solid var(--color-blue);
+	background: var(--color-gray);
+	border-radius: 50%;
+	padding: 0.7rem;
+	font-size: 2rem;
+	color: var(--color-white);
+}
+
+.ant-carousel .slick-prev::after {
+	top: 30%;
+	left: 30%;
+}
+.ant-carousel .slick-next::after {
+	top: 30%;
+	left: 15%;
+}
+
+.ant-carousel .slick-prev:hover, .ant-carousel .slick-next:hover {
+	background: var(--color-blue);
+}
+
+/* Dots */
+.ant-carousel .slick-dots li button {
+	background: var(--color-black-soft);
+}
+.ant-carousel .slick-dots li.slick-active button {
+	background: var(--color-red);
 }

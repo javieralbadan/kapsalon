@@ -12,3 +12,8 @@ export interface StaffAvailabilitiesResponseType {
 	data: StaffAvailabilityRow[] | null;
 	error: PostgrestError | null;
 }
+
+export interface AvailabilitySlot {
+	startTime: 'string';
+	endTime: 'string';
+}
