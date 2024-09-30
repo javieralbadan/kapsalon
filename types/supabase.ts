@@ -1,3 +1,7 @@
+<<<<<<< Updated upstream
+=======
+/* eslint-disable @typescript-eslint/no-redundant-type-constituents */
+>>>>>>> Stashed changes
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
 export type Database = {
@@ -6,6 +10,7 @@ export type Database = {
 			appointments: {
 				Row: {
 					created_at: string;
+<<<<<<< Updated upstream
 					customer_id: string;
 					date_time: string | null;
 					id: string;
@@ -47,20 +52,63 @@ export type Database = {
 					{
 						foreignKeyName: 'appointments_customer_id_fkey';
 						columns: ['customer_id'];
+=======
+					customer: string;
+					date: string;
+					id: string;
+					rating: number | null;
+					service_id: string;
+					staff_member: string;
+					time: string;
+				};
+				Insert: {
+					created_at?: string;
+					customer: string;
+					date: string;
+					id?: string;
+					rating?: number | null;
+					service_id: string;
+					staff_member: string;
+					time?: string;
+				};
+				Update: {
+					created_at?: string;
+					customer?: string;
+					date?: string;
+					id?: string;
+					rating?: number | null;
+					service_id?: string;
+					staff_member?: string;
+					time?: string;
+				};
+				Relationships: [
+					{
+						foreignKeyName: 'public_appointments_customer_fkey';
+						columns: ['customer'];
+>>>>>>> Stashed changes
 						isOneToOne: false;
 						referencedRelation: 'customers';
 						referencedColumns: ['id'];
 					},
 					{
+<<<<<<< Updated upstream
 						foreignKeyName: 'appointments_service_id_fkey';
+=======
+						foreignKeyName: 'public_appointments_service_id_fkey';
+>>>>>>> Stashed changes
 						columns: ['service_id'];
 						isOneToOne: false;
 						referencedRelation: 'services';
 						referencedColumns: ['id'];
 					},
 					{
+<<<<<<< Updated upstream
 						foreignKeyName: 'appointments_staff_member_id_fkey';
 						columns: ['staff_member_id'];
+=======
+						foreignKeyName: 'public_appointments_staff_member_fkey';
+						columns: ['staff_member'];
+>>>>>>> Stashed changes
 						isOneToOne: false;
 						referencedRelation: 'staff';
 						referencedColumns: ['id'];
@@ -101,29 +149,44 @@ export type Database = {
 				Row: {
 					created_at: string;
 					description: string | null;
+<<<<<<< Updated upstream
 					duration: number;
 					id: string;
 					name: string;
 					price: number;
 					staff_member_id: string;
+=======
+					id: string;
+					name: string;
+>>>>>>> Stashed changes
 				};
 				Insert: {
 					created_at?: string;
 					description?: string | null;
+<<<<<<< Updated upstream
 					duration?: number;
 					id?: string;
 					name?: string;
 					price?: number;
 					staff_member_id: string;
+=======
+					id: string;
+					name?: string;
+>>>>>>> Stashed changes
 				};
 				Update: {
 					created_at?: string;
 					description?: string | null;
+<<<<<<< Updated upstream
 					duration?: number;
 					id?: string;
 					name?: string;
 					price?: number;
 					staff_member_id?: string;
+=======
+					id?: string;
+					name?: string;
+>>>>>>> Stashed changes
 				};
 				Relationships: [];
 			};
@@ -153,13 +216,21 @@ export type Database = {
 			};
 			staff: {
 				Row: {
+<<<<<<< Updated upstream
 					active: boolean;
 					created_at: string;
 					email: string;
+=======
+					availability: Json | null;
+					created_at: string;
+					email: string;
+					enabled_notifications: boolean | null;
+>>>>>>> Stashed changes
 					first_name: string;
 					id: string;
 					last_name: string;
 					phone_number: number;
+<<<<<<< Updated upstream
 					profile_image: string | null;
 					shop_id: string | null;
 				};
@@ -178,10 +249,29 @@ export type Database = {
 					active?: boolean;
 					created_at?: string;
 					email?: string;
+=======
+				};
+				Insert: {
+					availability?: Json | null;
+					created_at?: string;
+					email?: string;
+					enabled_notifications?: boolean | null;
+					first_name?: string;
+					id: string;
+					last_name?: string;
+					phone_number: number;
+				};
+				Update: {
+					availability?: Json | null;
+					created_at?: string;
+					email?: string;
+					enabled_notifications?: boolean | null;
+>>>>>>> Stashed changes
 					first_name?: string;
 					id?: string;
 					last_name?: string;
 					phone_number?: number;
+<<<<<<< Updated upstream
 					profile_image?: string | null;
 					shop_id?: string | null;
 				};
@@ -235,6 +325,10 @@ export type Database = {
 						referencedColumns: ['id'];
 					},
 				];
+=======
+				};
+				Relationships: [];
+>>>>>>> Stashed changes
 			};
 		};
 		Views: {
@@ -244,7 +338,11 @@ export type Database = {
 			[_ in never]: never;
 		};
 		Enums: {
+<<<<<<< Updated upstream
 			appointment_status: 'pending' | 'confirmed' | 'completed' | 'cancelled';
+=======
+			[_ in never]: never;
+>>>>>>> Stashed changes
 		};
 		CompositeTypes: {
 			[_ in never]: never;

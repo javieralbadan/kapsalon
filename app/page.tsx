@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 'use client';
 
 import { AppLogo } from '@/components/AppLogo';
@@ -9,6 +10,15 @@ const CLASSES = {
 	CONTAINER: 'h-[calc(100vh-39px)] max-w-[1400px]',
 	LOGO: 'max-h-[300px] px-20 sm:px-24 md:h-auto md:max-h-[600px] md:w-1/2 md:p-4',
 };
+=======
+'use server';
+// import { signInWithGoogle } from "@utils/auth/googleAuth";
+import ShopsList from 'components/ShopsList';
+import { fetchShops } from './actions';
+
+export default async function HomePage() {
+	const { data, error } = await fetchShops();
+>>>>>>> Stashed changes
 
 const HomePage = () => {
 	return (
@@ -28,4 +38,20 @@ const HomePage = () => {
 	);
 };
 
+<<<<<<< Updated upstream
 export default HomePage;
+=======
+	return (
+		<main className="flex h-screen items-center justify-center lg:px-12 xl:px-44">
+			<div className="min-w-[340px]">
+				<h1>Bienvenid@</h1>
+				<div className="mb-4 text-lg text-neutral-500">
+					Agenda tu cita con solo tu email y número de whatsapp
+				</div>
+				<ShopsList data={data} error={error} />
+				<button>Registrarme</button>
+			</div>
+		</main>
+	);
+}
+>>>>>>> Stashed changes
