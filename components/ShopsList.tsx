@@ -1,7 +1,21 @@
 'use client';
+<<<<<<< Updated upstream
 import { ShopsResponseType } from 'types/shops';
 
 export default function ShopsList({ data: shops, error }: ShopsResponseType) {
+=======
+import { PostgrestError } from '@supabase/supabase-js';
+import { Database } from 'types/supabase';
+
+type ShopRow = Database['public']['Tables']['shops']['Row'];
+
+interface ShowsResponseType {
+	data: ShopRow[] | null;
+	error: PostgrestError | null;
+}
+
+export default function ShopsList({ data: shops, error }: ShowsResponseType) {
+>>>>>>> Stashed changes
 	if (error) {
 		return <div>Error {error.message}</div>;
 	}

@@ -1,9 +1,15 @@
+<<<<<<< Updated upstream
 import { Layout } from 'antd';
 import { Content, Footer } from 'antd/es/layout/layout';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import React from 'react';
 import '/styles/globals.scss';
+=======
+import type { Metadata } from 'next';
+import React from 'react';
+import '../assets/styles/globals.scss';
+>>>>>>> Stashed changes
 
 export const metadata: Metadata = {
 	title: 'Kapsalon · Agenda tu cita de barbería en pocos minutos',
@@ -11,6 +17,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
+<<<<<<< Updated upstream
 		<html lang="es">
 			<head>
 				<meta name="title" content="Kapsalon" />
@@ -52,6 +59,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 					</Footer>
 				</Layout>
 			</body>
+=======
+		<html lang="en">
+			<body>{children}</body>
+>>>>>>> Stashed changes
 		</html>
 	);
 }

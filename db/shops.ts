@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 import { PostgrestError } from '@supabase/supabase-js';
 import { ShopInsert, ShopResponseType, ShopRow, ShopsResponseType } from 'types/shops';
 import { supabaseClient } from 'utils/supabase/client';
@@ -39,4 +40,52 @@ export const createShopInDB = async (newShop: ShopInsert): Promise<ShopsResponse
 	}
 
 	return { data, error: null };
+=======
+'use server';
+import { SUPABASE_TABLES } from '@constants/data-base';
+import { PostgrestError } from '@supabase/supabase-js';
+import { supabaseClient } from '@utils/supabase/client';
+// import { createClient } from "@utils/supabase/server";
+import type { Database } from 'types/supabase';
+
+type ShowRow = Database['public']['Tables']['shops']['Row'];
+type ShowInsert = Database['public']['Tables']['shops']['Insert'];
+
+interface ShowResponseType {
+	data: ShowRow | null;
+	error: PostgrestError | null;
+}
+
+interface ShowsResponseType {
+	data: ShowRow[] | null;
+	error: PostgrestError | null;
+}
+
+export const getShopsFromDB = async (): Promise<ShowsResponseType> => {
+	// const supabase = createClient();
+	const supabase = supabaseClient;
+	const { data, error } = await supabase.from(SUPABASE_TABLES.SHOPS).select('*');
+
+	return { data, error };
+};
+
+export const getShopByIdFromDB = async (cycleId: string): Promise<ShowResponseType> => {
+	// const supabase = createClient();
+	const supabase = supabaseClient;
+	const { data, error } = await supabase.from(SUPABASE_TABLES.SHOPS).select('*').eq('id', cycleId);
+
+	if (data && !error) {
+		return { data: data[0] as ShowRow, error };
+	}
+
+	return { data, error };
+};
+
+export const createShopInDB = async (newShop: ShowInsert): Promise<ShowsResponseType> => {
+	// const supabase = createClient();
+	const supabase = supabaseClient;
+	const { data, error } = await supabase.from(SUPABASE_TABLES.SHOPS).insert(newShop).select();
+
+	return { data, error };
+>>>>>>> Stashed changes
 };
