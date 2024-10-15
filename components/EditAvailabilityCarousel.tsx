@@ -1,14 +1,21 @@
 'use client';
 import { AvailabilitySlot, StaffAvailabilityRow } from '@/types/staffAvailability';
 import { Button, Carousel, TimePicker } from 'antd';
-import dayjs from 'dayjs';
+import { RangePickerProps } from 'antd/es/date-picker/generatePicker/interface';
 import { CSSProperties, useRef, useState } from 'react';
 import { DaySlots } from './DaySlots';
 const { RangePicker } = TimePicker;
 
+interface AddRangeProps {
+	dayOfWeek: number;
+	startTime: string;
+	endTime: string;
+}
+
 interface Props {
 	availabilitiesList: StaffAvailabilityRow[] | [];
-	saveChanges?: () => void;
+	removeAvailability: (removeId: string) => void;
+	addRange: (props: AddRangeProps) => Promise<void>;
 }
 
 const carouselStyle: CSSProperties = {
@@ -25,77 +32,81 @@ const carouselStyle: CSSProperties = {
 
 const STYLES = {
 	CONTENT:
-		'flex flex-col items-center justify-start max-h-[calc(100vh-220px)] w-[calc(100%-40px)] m-auto px-4 overflow-y-auto',
+		'flex flex-col items-center justify-start max-h-[calc(100vh-220px)] w-[calc(100%-100px)] min-w-[220px] mx-auto mb-4 px-4 overflow-y-auto',
 	TITLE: 'mb-4',
 };
 
-export const EditAvailabilityCarousel = ({ availabilitiesList, saveChanges }: Props) => {
+const DAYS_NAMES = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+
+export const EditAvailabilityCarousel = ({
+	availabilitiesList,
+	removeAvailability,
+	addRange,
+}: Props) => {
 	const carouselRef = useRef(null);
-	// const [minDate, setMinDate] = useState<Dayjs | undefined>(undefined);
-	// const [maxDate, setMaxDate] = useState<Dayjs | undefined>(undefined);
-	// const [timesList, setTimesList] = useState<GroupListItem[] | []>([]);
-	const [newSlots, setSlots] = useState<StaffAvailabilityRow | undefined>(undefined);
+	const [range, setRange] = useState<[string, string] | [null, null]>([null, null]);
 
-	const DAYS_NAMES = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
-
-	// const setSlot = (listItem: GroupListItem) => {
-	// 	console.log('🚀 ~ setSlot:', listItem);
-	// };
-
-	const getAvailableSlots = (index: number): AvailabilitySlot[] => {
+	const getAvailableSlots = (indexDay: number): AvailabilitySlot[] => {
 		return availabilitiesList
-			.filter((d) => d.day_of_week === index)
+			.filter((d) => d.day_of_week === indexDay)
 			.map((d) => ({
+				id: d.id,
 				startTime: d.start_time,
 				endTime: d.end_time,
 			})) as AvailabilitySlot[];
 	};
 
-	const onConfirm = () => {
-		console.log('🚀 ~ onConfirm:', newSlots);
-		setSlots(newSlots);
-		saveChanges && saveChanges();
+	const onSelectRange: RangePickerProps['onChange'] = (time, timeRange) => {
+		console.log('onSelectRange', time, timeRange);
+		setRange(timeRange);
 	};
 
 	return (
-		<>
-			<Button type="primary" onClick={() => onConfirm()} className="my-4">
-				Guardar cambios
-			</Button>
-			<Carousel
-				ref={carouselRef}
-				arrows={true}
-				style={carouselStyle}
-				className="bg-white bg-opacity-50"
-			>
-				{DAYS_NAMES.map((day, index) => {
-					const availableSlots = getAvailableSlots(index);
-					return (
-						<div key={index}>
-							<section className={STYLES.CONTENT}>
-								<h2 className={STYLES.TITLE}>{day}:</h2>
+		<Carousel
+			ref={carouselRef}
+			arrows={true}
+			style={carouselStyle}
+			className="bg-white bg-opacity-50"
+		>
+			{DAYS_NAMES.map((day, index) => {
+				const availableSlots = getAvailableSlots(index);
 
-								<RangePicker
-									format={'h:mm a'}
-									minuteStep={30}
-									mode={['time', 'time']}
-									minDate={dayjs('2024-09-24 8:00')}
-									maxDate={dayjs('2024-09-24 22:00')}
-									needConfirm={false}
-									use12Hours
-								/>
+				return (
+					<div key={index}>
+						<section className={STYLES.CONTENT}>
+							<h2 className={STYLES.TITLE}>{day}:</h2>
 
-								<Button type="default" onClick={() => onConfirm()} className="my-4">
-									Agregar rango
-								</Button>
+							<RangePicker
+								format={'H:mm'}
+								minuteStep={30}
+								mode={['time', 'time']}
+								placeholder={['Hora inicio', 'Hora fin']}
+								onChange={onSelectRange}
+							/>
+							{/* disabledTime={{ disabledHours: [0, 1, 2] }} */}
 
-								<p className="my-1 text-gray-500">Rangos en este día: {availableSlots.length}</p>
-								<DaySlots availableSlots={availableSlots} />
-							</section>
-						</div>
-					);
-				})}
-			</Carousel>
-		</>
+							<Button
+								type="default"
+								disabled={!range[0] || !range[1]}
+								onClick={() => {
+									void addRange({
+										dayOfWeek: index,
+										startTime: range[0] || '',
+										endTime: range[1] || '',
+									});
+								}}
+								className="my-4"
+							>
+								Agregar rango
+							</Button>
+
+							<p className="my-1 text-gray-500">Rangos en este día: {availableSlots.length}</p>
+							{/* eslint-disable-next-line max-len */}
+							<DaySlots availableSlots={availableSlots} removeAvailability={removeAvailability} />
+						</section>
+					</div>
+				);
+			})}
+		</Carousel>
 	);
 };

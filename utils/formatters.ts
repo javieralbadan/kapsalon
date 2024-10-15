@@ -38,6 +38,11 @@ export const SHORT_TIME_OPTIONS: Intl.DateTimeFormatOptions = {
 	hour12: true,
 };
 
+export const ONLY_HOUR_OPTIONS: Intl.DateTimeFormatOptions = {
+	hour: 'numeric',
+	hour12: true,
+};
+
 export const formatDate = ({
 	date,
 	options = DEFAULT_DATE_OPTIONS,
@@ -55,6 +60,21 @@ export const addDays = (originalDate: Date, numberDays = 1): Date => {
 	const newDateObject = cloneDate.setDate(cloneDate.getDate() + numberDays);
 
 	return new Date(newDateObject);
+};
+
+export const formatTime = (time24h: string, locale = DEFAULT.LANGUAGE): string => {
+	const [hours, minutes] = time24h.split(':');
+	const date = new Date();
+	date.setHours(parseInt(hours));
+
+	let options = ONLY_HOUR_OPTIONS;
+	if (minutes) {
+		date.setMinutes(parseInt(minutes));
+		options = SHORT_TIME_OPTIONS;
+	}
+
+	const formattedTime = new Intl.DateTimeFormat(locale, options).format(date);
+	return formattedTime.replaceAll('.', '').replace(/\s*([ap])\s*m\s*$/i, '$1m');
 };
 
 const DEFAULT_CURRENCY_OPTIONS: Intl.NumberFormatOptions = {

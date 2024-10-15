@@ -2,6 +2,7 @@ import { PostgrestError } from '@supabase/supabase-js';
 import type { Database } from 'types/supabase';
 
 export type StaffAvailabilityRow = Database['public']['Tables']['staff_availability']['Row'];
+export type StaffAvailabilityInsert = Database['public']['Tables']['staff_availability']['Insert'];
 
 export interface StaffAvailabilityResponseType {
 	data: StaffAvailabilityRow | null;
@@ -14,6 +15,7 @@ export interface StaffAvailabilitiesResponseType {
 }
 
 export interface AvailabilitySlot {
+	id: 'string';
 	startTime: 'string';
 	endTime: 'string';
 }
