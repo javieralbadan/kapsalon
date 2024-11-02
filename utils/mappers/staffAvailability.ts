@@ -39,17 +39,18 @@ export const getUpcomingDays = (availabilities: StaffAvailabilityRow[]): GroupLi
 			const isAlreadyAdded = availableDays.some(
 				({ id }) => currentDay.getTime() === new Date(id).getTime(),
 			);
+
 			if (!isAlreadyAdded) {
-				const item: GroupListItem = {
+				availableDays.push({
 					id: formatDate({
 						date: currentDay,
 						options: SHORT_DATE_OPTIONS,
 						locale: YYYY_MM_DD_FORMAT,
 					}),
 					name: formatDate({ date: currentDay }),
-				};
-				availableDays.push(item);
+				});
 			}
+
 			daysAdded++;
 		}
 

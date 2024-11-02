@@ -13,7 +13,6 @@ interface Props {
 	servicesList: GroupListItem[] | [];
 	shopsList: GroupListItem[] | [];
 	availabilitiesList: StaffAvailabilityRow[] | [];
-	confirmAppointment?: () => void;
 }
 
 interface SetOptionParams {
@@ -54,7 +53,6 @@ export const AppointmentCarousel = ({
 	servicesList,
 	shopsList,
 	availabilitiesList,
-	confirmAppointment,
 }: Props) => {
 	const carouselRef = useRef(null);
 	const [timesList, setTimesList] = useState<GroupListItem[] | []>([]);
@@ -97,11 +95,6 @@ export const AppointmentCarousel = ({
 			updateTimeSlots(listItem.id);
 		}
 		swipeCarousel('next');
-	};
-
-	const onConfirm = () => {
-		console.log('🚀 ~ onConfirm:', appointment);
-		confirmAppointment && confirmAppointment();
 	};
 
 	return (
@@ -156,7 +149,6 @@ export const AppointmentCarousel = ({
 						<AppointmentConfirmation
 							appointment={appointment}
 							goBack={() => swipeCarousel('prev')}
-							onConfirm={() => onConfirm()}
 						/>
 					</section>
 				</div>
