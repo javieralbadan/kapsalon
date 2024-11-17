@@ -1,6 +1,6 @@
 'use client';
 import { AppointmentCreationType } from '@/types/appointments';
-import { Button, Card, Result, Space } from 'antd';
+import { Button, Card, Result } from 'antd';
 import { useState } from 'react';
 import { CodeOTPForm } from './CodeOTPForm';
 import { UserInfoForm } from './UserInfoForm';
@@ -17,6 +17,8 @@ interface ValuesType {
 export const AppointmentConfirmation = ({ appointment, goBack }: Props) => {
 	const [codeOTP, setCodeOTP] = useState<string>('');
 	const [customerInfo, setCustomerInfo] = useState<ValuesType>({});
+	const [isSending, setIsSending] = useState<boolean>(false);
+
 	const isConfirmDisabled: boolean =
 		!appointment.barber.id ||
 		!appointment.service.id ||
@@ -24,9 +26,12 @@ export const AppointmentConfirmation = ({ appointment, goBack }: Props) => {
 		!appointment.time.id;
 
 	const confirmAppointment = (codeOTP: ValuesType) => {
+		setIsSending(true);
 		console.log('confirmAppointment:', { appointment, customerInfo });
 		console.log('Form:', codeOTP);
-		console.log('confirmAppointment · Create appointment in DB');
+		console.log('confirmAppointment · Create user & appointment in DB');
+		// TODO: Create appointment in DB
+		setTimeout(() => setIsSending(false), 2000);
 	};
 
 	return (
@@ -43,23 +48,39 @@ export const AppointmentConfirmation = ({ appointment, goBack }: Props) => {
 					}
 				/>
 			) : (
-				<Card title="Confirma tu cita" bordered={true} className="m-auto w-[400px]">
-					<Space direction="vertical" size="middle" style={{ display: 'flex' }}>
-						<div className="mb-4 mt-2 flex flex-col items-center justify-center gap-0">
-							<p>💇 Servicio: {appointment.service.name}</p>
-							<p>🍺 Barbero: {appointment.barber.name}</p>
-							<p>
-								📅 {appointment.day.name}, {appointment.time.name}
-							</p>
+				<Card bordered={true} className="m-auto max-w-[400px]">
+					<h2>Confirma tu cita</h2>
+					<div className="flex flex-col items-center justify-center gap-0">
+						<p>💇 Servicio: {appointment.service.name}</p>
+						<p>🍺 Barbero: {appointment.barber.name}</p>
+						<p>
+							📅 {appointment.day.name}, {appointment.time.name}
+						</p>
+					</div>
 
-							<Button danger onClick={goBack} className="mt-4">
-								Editar algo
-							</Button>
-						</div>
+					<p className="my-3 leading-5 text-gray-500">
+						Si todo pinta bien, porfa añade tu info. Si no, puedes
+						<span
+							className={`ml-1 underline decoration-blue-400 text-${
+								!codeOTP ? 'blue' : 'gray'
+							}-400`}
+							onClick={() => !codeOTP && goBack}
+						>
+							volver y editar
+						</span>
+						.
+					</p>
 
-						<UserInfoForm setCodeOTP={setCodeOTP} setCustomerInfo={setCustomerInfo} />
-						<CodeOTPForm codeOTP={codeOTP} confirmAppointment={confirmAppointment} />
-					</Space>
+					<UserInfoForm
+						codeOTP={codeOTP}
+						setCodeOTP={setCodeOTP}
+						setCustomerInfo={setCustomerInfo}
+					/>
+					<CodeOTPForm
+						codeOTP={codeOTP}
+						confirmAppointment={confirmAppointment}
+						isSending={isSending}
+					/>
 				</Card>
 			)}
 		</>

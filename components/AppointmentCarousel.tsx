@@ -55,6 +55,7 @@ export const AppointmentCarousel = ({
 	availabilitiesList,
 }: Props) => {
 	const carouselRef = useRef(null);
+	const [currentStep, setCurrentStep] = useState<number>(0);
 	const [timesList, setTimesList] = useState<GroupListItem[] | []>([]);
 	const [appointment, setAppointment] = useState<AppointmentCreationType>({
 		barber: { id: '' },
@@ -105,6 +106,7 @@ export const AppointmentCarousel = ({
 				draggable={false}
 				infinite={false}
 				style={carouselStyle}
+				afterChange={(current) => setCurrentStep(current)}
 			>
 				<div>
 					<section className={STYLES.CONTENT}>
@@ -153,9 +155,15 @@ export const AppointmentCarousel = ({
 					</section>
 				</div>
 			</Carousel>
-			<Button type="link" onClick={() => swipeCarousel('prev')} className="t-0 absolute ml-[-30px]">
-				Atrás
-			</Button>
+			{currentStep < 4 && (
+				<Button
+					type="link"
+					className="t-0 absolute ml-[-30px]"
+					onClick={() => swipeCarousel('prev')}
+				>
+					Atrás
+				</Button>
+			)}
 		</>
 	);
 };

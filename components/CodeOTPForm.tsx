@@ -1,5 +1,6 @@
+'use client';
 import type { GetProps } from 'antd';
-import { Flex, Form, Input } from 'antd';
+import { Form, Input } from 'antd';
 import { useState } from 'react';
 import { SubmitButton } from './ui/SubmitButton';
 
@@ -12,35 +13,30 @@ interface ValuesType {
 interface Props {
 	codeOTP: string;
 	confirmAppointment: (values: ValuesType) => void;
+	isSending: boolean;
 }
 
-export const CodeOTPForm = ({ codeOTP, confirmAppointment }: Props) => {
+export const CodeOTPForm = ({ codeOTP, confirmAppointment, isSending }: Props) => {
 	const [otpForm] = Form.useForm();
-	const [enabledSubmit, setEnabledSubmit] = useState<boolean>(false);
+	const [currentOTP, setCurrentOTP] = useState<string>('');
 
-	const onChange: OTPProps['onChange'] = (text) => {
-		setEnabledSubmit(text === codeOTP);
-	};
+	const onChange: OTPProps['onChange'] = (text) => setCurrentOTP(text);
+	const isCodeComplete = currentOTP.length === 6;
+	const isCurrentCodeWrong = isCodeComplete && currentOTP !== codeOTP;
 
 	return (
-		<Form
-			form={otpForm}
-			disabled={!codeOTP}
-			layout="horizontal"
-			labelCol={{ span: 6 }}
-			onFinish={confirmAppointment}
-		>
-			<div className="-mt-4 flex flex-col items-center gap-2">
-				<Form.Item name="verificationCode" hasFeedback validateStatus="success">
-					<Input.OTP onChange={onChange} />
-				</Form.Item>
-			</div>
+		<Form form={otpForm} disabled={!codeOTP} onFinish={confirmAppointment}>
+			<Form.Item name="verificationCode" className="mb-4">
+				<Input.OTP onChange={onChange} status={isCurrentCodeWrong ? 'error' : ''} />
+			</Form.Item>
 
-			<Flex gap="small" justify="center">
-				<SubmitButton form={otpForm} isDisabled={!enabledSubmit}>
-					Confirmar cita
-				</SubmitButton>
-			</Flex>
+			<SubmitButton
+				form={otpForm}
+				isDisabled={!isCodeComplete || isCurrentCodeWrong}
+				isLoading={isSending}
+			>
+				Confirmar cita
+			</SubmitButton>
 		</Form>
 	);
 };

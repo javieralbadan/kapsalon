@@ -1,69 +1,82 @@
 'use client';
-import { Form, Input, Typography } from 'antd';
+import { UserOutlined, WhatsAppOutlined } from '@ant-design/icons';
+import { Form, Input } from 'antd';
+import { Rule } from 'antd/es/form';
+import { useState } from 'react';
 import { SubmitButton } from './ui/SubmitButton';
-const { Text } = Typography;
 
 interface ValuesType {
 	[key: string]: string;
 }
 
 interface Props {
+	codeOTP: string;
 	setCodeOTP: (val: string) => void;
 	setCustomerInfo: (values: ValuesType) => void;
 }
+
+const TEXT_INPUT_RULES: Rule = {
+	required: true,
+	type: 'string',
+	min: 4,
+	max: 20,
+	whitespace: true,
+};
+const WS_INPUT_RULES: Rule = {
+	required: true,
+	len: 10,
+	message: 'Ingresa los 10 dígitos de tu WhatsApp',
+};
 
 const generateOTP = (): string => {
 	return Math.floor(100000 + Math.random() * 900000).toString();
 };
 
-export const UserInfoForm = ({ setCodeOTP, setCustomerInfo }: Props) => {
+export const UserInfoForm = ({ codeOTP, setCodeOTP, setCustomerInfo }: Props) => {
 	const [userForm] = Form.useForm();
+	const [isSending, setIsSending] = useState<boolean>(false);
 
 	const sendVerificationCode = (values: ValuesType) => {
+		setIsSending(true);
 		setCustomerInfo(values);
-		const codeOTP: string = generateOTP();
-		console.log('Enviando código OTP', codeOTP);
-		setCodeOTP(codeOTP);
-		console.log('sendVerificationCode · Create customer in DB');
+		const randomCode: string = generateOTP();
+		console.log('Enviando código OTP:', randomCode);
+		setCodeOTP(randomCode);
+		// TODO: Send via Twillio
+		// TODO: Save in storage with expired timestamp
+		setTimeout(() => setIsSending(false), 2000);
 	};
 
 	return (
-		<Form
-			form={userForm}
-			layout="horizontal"
-			labelCol={{ span: 6 }}
-			onFinish={sendVerificationCode}
-		>
+		<Form form={userForm} disabled={!!codeOTP} layout="horizontal" onFinish={sendVerificationCode}>
 			<Form.Item
 				name="lastName"
-				label="Apellido"
-				rules={[{ required: true, message: 'Ingresa tu apellido' }]}
+				className="mb-3"
+				rules={[{ ...TEXT_INPUT_RULES, message: 'Ingresa tu apellido' }]}
 			>
-				<Input />
+				<Input prefix={<UserOutlined />} placeholder="Apellido" />
 			</Form.Item>
 
 			<Form.Item
 				name="firstName"
-				label="Nombre"
-				rules={[{ required: true, message: 'Ingresa tu nombre' }]}
+				className="mb-3"
+				rules={[{ ...TEXT_INPUT_RULES, message: 'Ingresa tu nombre' }]}
 			>
-				<Input />
+				<Input prefix={<UserOutlined />} placeholder="Nombre" />
 			</Form.Item>
 
-			<Form.Item
-				name="phone"
-				label="WhatsApp"
-				rules={[{ required: true, message: 'Ingresa tu número de WhatsApp' }]}
-			>
-				<Input />
+			<Form.Item name="phone" className="mb-3" rules={[WS_INPUT_RULES]}>
+				<Input prefix={<WhatsAppOutlined />} placeholder="WhatsApp" />
 			</Form.Item>
 
-			<div className="-mt-4 mb-4 flex flex-col items-center gap-2">
-				<Text type="secondary">
+			<div className="mb-3 flex flex-col items-center gap-2">
+				<p className="leading-5 text-gray-500">
 					Debemos confirmar tu WhatsApp por medio de un código de verificación
-				</Text>
+				</p>
 
-				<SubmitButton form={userForm}>Enviar código</SubmitButton>
+				<SubmitButton form={userForm} isDisabled={!!codeOTP} isLoading={isSending}>
+					{codeOTP ? 'Código enviado' : 'Enviar código'}
+				</SubmitButton>
 			</div>
 		</Form>
 	);
