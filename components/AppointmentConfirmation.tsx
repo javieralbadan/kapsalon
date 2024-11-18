@@ -1,6 +1,7 @@
 'use client';
 import { AppointmentCreationType } from '@/types/appointments';
 import { Button, Card, Result } from 'antd';
+import Link from 'next/link';
 import { useState } from 'react';
 import { CodeOTPForm } from './CodeOTPForm';
 import { UserInfoForm } from './UserInfoForm';
@@ -19,11 +20,11 @@ export const AppointmentConfirmation = ({ appointment, goBack }: Props) => {
 	const [customerInfo, setCustomerInfo] = useState<ValuesType>({});
 	const [isSending, setIsSending] = useState<boolean>(false);
 
-	const isConfirmDisabled: boolean =
-		!appointment.barber.id ||
-		!appointment.service.id ||
-		!appointment.day.id ||
-		!appointment.time.id;
+	const isAppointmentReady: boolean =
+		!!appointment.barber.id &&
+		!!appointment.service.id &&
+		!!appointment.day.id &&
+		!!appointment.time.id;
 
 	const confirmAppointment = (codeOTP: ValuesType) => {
 		setIsSending(true);
@@ -36,7 +37,7 @@ export const AppointmentConfirmation = ({ appointment, goBack }: Props) => {
 
 	return (
 		<>
-			{isConfirmDisabled ? (
+			{!isAppointmentReady ? (
 				<Result
 					status="info"
 					title="Cita no establecida"
@@ -59,16 +60,18 @@ export const AppointmentConfirmation = ({ appointment, goBack }: Props) => {
 					</div>
 
 					<p className="my-3 leading-5 text-gray-500">
-						Si todo pinta bien, porfa añade tu info. Si no, puedes
+						Si todo pinta bien, porfa añade tu info. <br />
+						Si no, puedes
 						<span
-							className={`ml-1 underline decoration-blue-400 text-${
-								!codeOTP ? 'blue' : 'gray'
-							}-400`}
-							onClick={() => !codeOTP && goBack}
+							className={`ml-1 ${
+								!codeOTP
+									? 'cursor-pointer text-blue-400 underline decoration-blue-400'
+									: 'cursor-not-allowed text-gray-400 line-through'
+							}`}
+							onClick={() => !codeOTP && goBack()}
 						>
 							volver y editar
 						</span>
-						.
 					</p>
 
 					<UserInfoForm
@@ -81,6 +84,12 @@ export const AppointmentConfirmation = ({ appointment, goBack }: Props) => {
 						confirmAppointment={confirmAppointment}
 						isSending={isSending}
 					/>
+
+					<Link href="/">
+						<Button type="link" danger className="mt-2">
+							Cancelar proceso
+						</Button>
+					</Link>
 				</Card>
 			)}
 		</>

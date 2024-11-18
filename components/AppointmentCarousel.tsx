@@ -102,11 +102,12 @@ export const AppointmentCarousel = ({
 		<>
 			<Carousel
 				ref={carouselRef}
+				infinite={false}
 				dots={false}
 				draggable={false}
-				infinite={false}
+				swipe={false}
 				style={carouselStyle}
-				afterChange={(current) => setCurrentStep(current)}
+				beforeChange={(curr, next) => setCurrentStep(next)}
 			>
 				<div>
 					<section className={STYLES.CONTENT}>

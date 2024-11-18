@@ -1,7 +1,7 @@
 'use client';
+import { PHONE_FORMATTER, USER_INFO_RULES, USER_PHONE_RULES } from '@/utils/formValidationRules';
 import { UserOutlined, WhatsAppOutlined } from '@ant-design/icons';
-import { Form, Input } from 'antd';
-import { Rule } from 'antd/es/form';
+import { Form, Input, InputNumber } from 'antd';
 import { useState } from 'react';
 import { SubmitButton } from './ui/SubmitButton';
 
@@ -14,19 +14,6 @@ interface Props {
 	setCodeOTP: (val: string) => void;
 	setCustomerInfo: (values: ValuesType) => void;
 }
-
-const TEXT_INPUT_RULES: Rule = {
-	required: true,
-	type: 'string',
-	min: 4,
-	max: 20,
-	whitespace: true,
-};
-const WS_INPUT_RULES: Rule = {
-	required: true,
-	len: 10,
-	message: 'Ingresa los 10 dígitos de tu WhatsApp',
-};
 
 const generateOTP = (): string => {
 	return Math.floor(100000 + Math.random() * 900000).toString();
@@ -52,7 +39,8 @@ export const UserInfoForm = ({ codeOTP, setCodeOTP, setCustomerInfo }: Props) =>
 			<Form.Item
 				name="lastName"
 				className="mb-3"
-				rules={[{ ...TEXT_INPUT_RULES, message: 'Ingresa tu apellido' }]}
+				rules={USER_INFO_RULES('apellido')}
+				validateTrigger={['onChange', 'onBlur']}
 			>
 				<Input prefix={<UserOutlined />} placeholder="Apellido" />
 			</Form.Item>
@@ -60,13 +48,27 @@ export const UserInfoForm = ({ codeOTP, setCodeOTP, setCustomerInfo }: Props) =>
 			<Form.Item
 				name="firstName"
 				className="mb-3"
-				rules={[{ ...TEXT_INPUT_RULES, message: 'Ingresa tu nombre' }]}
+				rules={USER_INFO_RULES('nombre')}
+				validateTrigger={['onChange', 'onBlur']}
 			>
 				<Input prefix={<UserOutlined />} placeholder="Nombre" />
 			</Form.Item>
 
-			<Form.Item name="phone" className="mb-3" rules={[WS_INPUT_RULES]}>
-				<Input prefix={<WhatsAppOutlined />} placeholder="WhatsApp" />
+			<Form.Item
+				name="phone"
+				className="mb-3"
+				rules={USER_PHONE_RULES}
+				validateTrigger={['onChange', 'onBlur']}
+			>
+				<InputNumber
+					controls={false}
+					formatter={PHONE_FORMATTER}
+					maxLength={12}
+					parser={(value) => value!.replace(/\D/g, '')}
+					prefix={<WhatsAppOutlined />}
+					placeholder="WhatsApp"
+					style={{ width: '100%' }}
+				/>
 			</Form.Item>
 
 			<div className="mb-3 flex flex-col items-center gap-2">
