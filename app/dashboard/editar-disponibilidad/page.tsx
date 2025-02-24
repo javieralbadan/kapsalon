@@ -16,7 +16,7 @@ const EditAvailability = () => {
 	const [isError, setError] = useState(false);
 	const [isLoading, setLoading] = useState(true);
 	const [availabilitiesList, setAvailabilitiesList] = useState<StaffAvailabilityRow[] | []>([]);
-	const [newSlots, setSlots] = useState<StaffAvailabilityRow | undefined>(undefined);
+	const [newSlots, setSlots] = useState<StaffAvailabilityRow | null>(null);
 	const [messageApi, contextHolder] = message.useMessage();
 
 	useEffect(() => {

@@ -48,8 +48,8 @@ export const EditAvailabilityCarousel = ({
 
 	const getAvailableSlots = (indexDay: number): AvailabilitySlot[] => {
 		return availabilitiesList
-			.filter((d) => d.day_of_week === indexDay)
-			.map((d) => ({
+			.filter((d: StaffAvailabilityRow) => d.day_of_week === indexDay)
+			.map((d: StaffAvailabilityRow) => ({
 				id: d.id,
 				startTime: d.start_time,
 				endTime: d.end_time,

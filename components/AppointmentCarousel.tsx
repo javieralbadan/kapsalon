@@ -76,7 +76,8 @@ export const AppointmentCarousel = ({
 
 	const updateTimeSlots = (dateSelected: string) => {
 		const dayOfTheWeek = new Date(dateSelected).getDay();
-		const availableDay = availabilitiesList.find((item) => item.day_of_week === dayOfTheWeek);
+		const availableDay: StaffAvailabilityRow | null =
+			availabilitiesList.find((item) => item.day_of_week === dayOfTheWeek) || null;
 		if (!availableDay) {
 			return;
 		}

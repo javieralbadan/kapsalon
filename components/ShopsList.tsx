@@ -11,16 +11,17 @@ export default function ShopsList({ data: shops, error }: ShopsResponseType) {
 			<div className="min-w-[340px]">
 				<h1>Shops List</h1>
 				<div className="mb-4 text-lg text-neutral-500">
-					{shops?.map((shop) => {
-						return (
-							<ul key={shop.id}>
-								<li>{shop.id}</li>
-								<li>{shop.name}</li>
-								<li>{shop.address}</li>
-								<li>{shop.created_at}</li>
-							</ul>
-						);
-					})}
+					{shops &&
+						shops?.map((shop) => {
+							return (
+								<ul key={shop.id}>
+									<li>{shop.id}</li>
+									<li>{shop.name}</li>
+									<li>{shop.address}</li>
+									<li>{shop.created_at}</li>
+								</ul>
+							);
+						})}
 				</div>
 			</div>
 		</main>
