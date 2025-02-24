@@ -1,0 +1,17 @@
+services:
+  nextjs:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: dev
+    container_name: nextjs
+    restart: always
+    ports:
+      - '4000:4000'
+    volumes:
+      - ./:/app
+    environment:
+      - NODE_ENV=development
+      - WATCHPACK_POLLING=true
+      - NEXT_PUBLIC_SUPABASE_URL=https://kcnpwpsgtxaokmgaqalc.supabase.co
+      - NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtjbnB3cHNndHhhb2ttZ2FxYWxjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTM2NTU1MjgsImV4cCI6MjAyOTIzMTUyOH0.eIefOeERB2XVe_UPIdN_X8kTUmdmSOQKol-qFtCY_9M
