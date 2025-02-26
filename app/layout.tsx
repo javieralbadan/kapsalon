@@ -1,3 +1,4 @@
+import '@ant-design/v5-patch-for-react-19';
 import { Layout } from 'antd';
 import { Content, Footer } from 'antd/es/layout/layout';
 import type { Metadata } from 'next';

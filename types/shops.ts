@@ -1,5 +1,5 @@
+import type { Database } from '@/types/supabase';
 import { PostgrestError } from '@supabase/supabase-js';
-import type { Database } from 'types/supabase';
 
 export type ShopRow = Database['public']['Tables']['shops']['Row'];
 export type ShopInsert = Database['public']['Tables']['shops']['Insert'];

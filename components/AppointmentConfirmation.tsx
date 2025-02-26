@@ -49,7 +49,7 @@ export const AppointmentConfirmation = ({ appointment, goBack }: Props) => {
 					}
 				/>
 			) : (
-				<Card bordered={true} className="m-auto max-w-[400px]">
+				<Card className="m-auto max-w-[400px]">
 					<h2>Confirma tu cita</h2>
 					<div className="flex flex-col items-center justify-center gap-0">
 						<p>💇 Servicio: {appointment.service.name}</p>

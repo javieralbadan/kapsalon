@@ -1,6 +1,6 @@
+import { StaffAvailabilitiesResponseType, StaffAvailabilityInsert } from '@/types/staffAvailability';
+import { supabaseClient } from '@/utils/supabase/client';
 import { PostgrestError } from '@supabase/supabase-js';
-import { StaffAvailabilitiesResponseType, StaffAvailabilityInsert } from 'types/staffAvailability';
-import { supabaseClient } from 'utils/supabase/client';
 
 const AVAILABILITY = 'staff_availability';
 

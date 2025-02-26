@@ -1,3 +1,5 @@
+# Kapsalon App
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
@@ -67,15 +69,14 @@ npm i supabase@beta --save-dev
 
 When installing with yarn 4, you need to disable experimental fetch with the following nodejs config.
 
-```
+```bash
 NODE_OPTIONS=--no-experimental-fetch yarn add supabase
 ```
 
 > **Note**
 > For Bun versions below v1.0.17, you must add `supabase` as a [trusted dependency](https://bun.sh/guides/install/trusted) before running `bun add -D supabase`.
 
-<details>
-  <summary><b>macOS</b></summary>
+#### macOS
 
 Available via [Homebrew](https://brew.sh). To install:
 
@@ -96,10 +97,7 @@ To upgrade:
 brew upgrade supabase
 ```
 
-</details>
-
-<details>
-  <summary><b>Linux</b></summary>
+#### Linux
 
 Available via [Homebrew](https://brew.sh) and Linux packages.
 
@@ -137,10 +135,7 @@ sudo rpm -i <...>.rpm
 sudo pacman -U <...>.pkg.tar.zst
 ```
 
-</details>
-
-<details>
-  <summary><b>Community Maintained Packages</b></summary>
+#### Community Maintained Packages
 
 Available via [pkgx](https://pkgx.sh/). Package script [here](https://github.com/pkgxdev/pantry/blob/main/projects/supabase.com/cli/package.yml).
 To install in your working directory:
@@ -150,8 +145,6 @@ pkgx install supabase
 ```
 
 Available via [Nixpkgs](https://nixos.org/). Package script [here](https://github.com/NixOS/nixpkgs/blob/master/pkgs/development/tools/supabase-cli/default.nix).
-
-</details>
 
 ### Run the CLI
 

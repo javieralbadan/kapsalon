@@ -1,7 +1,7 @@
 'use client';
+import { createAvailabilityInDB, getAvailabilitiesFromDB } from '@/api/staffAvailability';
 import { EditAvailabilityCarousel } from '@/components/EditAvailabilityCarousel';
 import { Loading } from '@/components/ui/Loading';
-import { createAvailabilityInDB, getAvailabilitiesFromDB } from '@/db/staffAvailability';
 import { StaffAvailabilityInsert, StaffAvailabilityRow } from '@/types/staffAvailability';
 import { Button, Empty, message } from 'antd';
 import { useEffect, useState } from 'react';

@@ -1,6 +1,6 @@
+import { ShopInsert, ShopResponseType, ShopRow, ShopsResponseType } from '@/types/shops';
+import { supabaseClient } from '@/utils/supabase/client';
 import { PostgrestError } from '@supabase/supabase-js';
-import { ShopInsert, ShopResponseType, ShopRow, ShopsResponseType } from 'types/shops';
-import { supabaseClient } from 'utils/supabase/client';
 
 const SHOPS = 'shops';
 

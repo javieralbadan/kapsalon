@@ -1,11 +1,11 @@
-import { PostgrestError } from '@supabase/supabase-js';
 import {
-	StaffMemberInsert,
-	StaffMemberResponseType,
-	StaffMemberRow,
-	StaffMembersResponseType,
-} from 'types/staffMembers';
-import { supabaseClient } from 'utils/supabase/client';
+    StaffMemberInsert,
+    StaffMemberResponseType,
+    StaffMemberRow,
+    StaffMembersResponseType,
+} from '@/types/staffMembers';
+import { supabaseClient } from '@/utils/supabase/client';
+import { PostgrestError } from '@supabase/supabase-js';
 
 const STAFF = 'staff';
 

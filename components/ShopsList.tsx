@@ -1,5 +1,5 @@
 'use client';
-import { ShopsResponseType } from 'types/shops';
+import { ShopsResponseType } from '@/types/shops';
 
 export default function ShopsList({ data: shops, error }: ShopsResponseType) {
 	if (error) {
