@@ -1,8 +1,8 @@
 import {
-  ServiceInsert,
-  ServiceResponseType,
-  ServiceRow,
-  ServicesResponseType,
+	ServiceInsert,
+	ServiceResponseType,
+	ServiceRow,
+	ServicesResponseType,
 } from '@/types/services';
 import { supabaseClient } from '@/utils/supabase/client';
 import { PostgrestError } from '@supabase/supabase-js';

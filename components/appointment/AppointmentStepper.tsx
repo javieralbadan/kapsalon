@@ -1,12 +1,12 @@
 import { GroupList } from '@/components/ui/GroupList';
 import { IS_MOBILE } from '@/constants/ui';
 import {
-  AppointmentCreationType,
-  AppointmentStepperProps,
-  BarbersContentProps,
-  ServicesContentProps,
-  SetOptionParams,
-  SlotContentProps,
+	AppointmentCreationType,
+	AppointmentStepperProps,
+	BarbersContentProps,
+	ServicesContentProps,
+	SetOptionParams,
+	SlotContentProps,
 } from '@/types/appointments';
 import type { GroupListItem } from '@/types/ui';
 import { getUpcomingDays, mapTimeSlotList } from '@/utils/mappers/staffAvailability';

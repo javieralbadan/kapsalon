@@ -16,6 +16,7 @@
     "@ant-design/icons": "^5.5.1",
     "@ant-design/v5-patch-for-react-19": "^1.0.3",
     "@formkit/auto-animate": "^0.8.1",
+    "@react-hook/media-query": "^1.1.1",
     "@supabase/ssr": "^0.1.0",
     "@supabase/supabase-js": "^2.47.10",
     "@workos-inc/node": "^7.26.0",
@@ -26,6 +27,7 @@
     "papaparse": "^5.4.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-error-boundary": "^5.0.0",
     "sass": "^1.69.0"
   },
   "devDependencies": {
@@ -34,8 +36,8 @@
     "@types/papaparse": "^5.3.7",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@typescript-eslint/eslint-plugin": "^6.20.0",
-    "@typescript-eslint/parser": "^6.20.0",
+    "@typescript-eslint/eslint-plugin": "^8.25.0",
+    "@typescript-eslint/parser": "^8.25.0",
     "autoprefixer": "^10.4.20",
     "eslint": "^9",
     "eslint-config-next": "15.1.7",
@@ -53,6 +55,6 @@
     "supabase": "^2.1.1",
     "tailwindcss": "^3.4.10",
     "tailwindcss-animate": "^1.0.7",
-    "typescript": "^5"
+    "typescript": "5.3.3"
   }
 }

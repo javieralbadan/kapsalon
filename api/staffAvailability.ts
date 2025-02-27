@@ -1,4 +1,7 @@
-import { StaffAvailabilitiesResponseType, StaffAvailabilityInsert } from '@/types/staffAvailability';
+import {
+	StaffAvailabilitiesResponseType,
+	StaffAvailabilityInsert,
+} from '@/types/staffAvailability';
 import { supabaseClient } from '@/utils/supabase/client';
 import { PostgrestError } from '@supabase/supabase-js';
 
