@@ -1,8 +1,7 @@
-'use client';
 import { OTP_RULES } from '@/utils/formValidationRules';
 import { Form, Input } from 'antd';
 import { useState } from 'react';
-import { SubmitButton } from './ui/SubmitButton';
+import { SubmitButton } from '../ui/SubmitButton';
 
 interface ValuesType {
 	[key: string]: string;
@@ -14,7 +13,7 @@ interface Props {
 	isSending: boolean;
 }
 
-export const CodeOTPForm = ({ codeOTP, confirmAppointment, isSending }: Props) => {
+const CodeOTPForm = ({ codeOTP, confirmAppointment, isSending }: Props) => {
 	const [otpForm] = Form.useForm();
 	const [currentOTP, setCurrentOTP] = useState<string>('');
 
@@ -54,3 +53,5 @@ export const CodeOTPForm = ({ codeOTP, confirmAppointment, isSending }: Props) =
 		</Form>
 	);
 };
+
+export default CodeOTPForm;

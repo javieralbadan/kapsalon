@@ -28,7 +28,7 @@ export const GroupList = ({ dataList, onSelectOption, vertical = true }: Props) 
 						<Button
 							key={listItem.id}
 							className="flex h-full flex-col items-center gap-0"
-							type={isSelected ? 'primary' : 'dashed'}
+							variant={isSelected ? 'solid' : 'outlined'}
 							size="large"
 							onClick={() => handleSelectOption(listItem)}
 						>

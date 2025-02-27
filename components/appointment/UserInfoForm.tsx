@@ -1,9 +1,8 @@
-'use client';
 import { PHONE_FORMATTER, USER_INFO_RULES, USER_PHONE_RULES } from '@/utils/formValidationRules';
 import { UserOutlined, WhatsAppOutlined } from '@ant-design/icons';
 import { Form, Input, InputNumber } from 'antd';
 import { useState } from 'react';
-import { SubmitButton } from './ui/SubmitButton';
+import { SubmitButton } from '../ui/SubmitButton';
 
 interface ValuesType {
 	[key: string]: string;
@@ -15,11 +14,9 @@ interface Props {
 	setCustomerInfo: (values: ValuesType) => void;
 }
 
-const generateOTP = (): string => {
-	return Math.floor(100000 + Math.random() * 900000).toString();
-};
+const generateOTP = () => Math.floor(100000 + Math.random() * 900000).toString();
 
-export const UserInfoForm = ({ codeOTP, setCodeOTP, setCustomerInfo }: Props) => {
+const UserInfoForm = ({ codeOTP, setCodeOTP, setCustomerInfo }: Props) => {
 	const [userForm] = Form.useForm();
 	const [isSending, setIsSending] = useState<boolean>(false);
 
@@ -83,3 +80,5 @@ export const UserInfoForm = ({ codeOTP, setCodeOTP, setCustomerInfo }: Props) =>
 		</Form>
 	);
 };
+
+export default UserInfoForm;

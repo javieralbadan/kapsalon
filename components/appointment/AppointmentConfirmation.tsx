@@ -1,10 +1,9 @@
-'use client';
 import { AppointmentCreationType } from '@/types/appointments';
-import { Button, Card, Result } from 'antd';
+import { Button, Card, Divider, Result } from 'antd';
 import Link from 'next/link';
 import { useState } from 'react';
-import { CodeOTPForm } from './CodeOTPForm';
-import { UserInfoForm } from './UserInfoForm';
+import CodeOTPForm from './CodeOTPForm';
+import UserInfoForm from './UserInfoForm';
 
 interface Props {
 	appointment: AppointmentCreationType;
@@ -15,7 +14,7 @@ interface ValuesType {
 	[key: string]: string;
 }
 
-export const AppointmentConfirmation = ({ appointment, goBack }: Props) => {
+const AppointmentConfirmation = ({ appointment, goBack }: Props) => {
 	const [codeOTP, setCodeOTP] = useState<string>('');
 	const [customerInfo, setCustomerInfo] = useState<ValuesType>({});
 	const [isSending, setIsSending] = useState<boolean>(false);
@@ -85,8 +84,10 @@ export const AppointmentConfirmation = ({ appointment, goBack }: Props) => {
 						isSending={isSending}
 					/>
 
+					<Divider />
+
 					<Link href="/">
-						<Button type="link" danger className="mt-2">
+						<Button type="link" color="danger" variant="dashed">
 							Cancelar proceso
 						</Button>
 					</Link>
@@ -95,3 +96,5 @@ export const AppointmentConfirmation = ({ appointment, goBack }: Props) => {
 		</>
 	);
 };
+
+export default AppointmentConfirmation;
