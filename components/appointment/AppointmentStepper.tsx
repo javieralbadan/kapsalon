@@ -1,5 +1,5 @@
-import { GroupList } from '@/components/ui/GroupList';
-import { IS_MOBILE } from '@/constants/ui';
+import { GroupList } from '@/components/appointment/GroupList';
+import { useisMobile } from '@/hooks/useIsMobile';
 import {
 	AppointmentCreationType,
 	AppointmentStepperProps,
@@ -23,52 +23,48 @@ const STYLES = {
 	TITLE: 'mb-4 text-lg font-semibold',
 };
 
-const AppointmentStepper = ({ barbers, services, shops, slots }: AppointmentStepperProps) => {
+const AppointmentStepper = ({
+	barbers,
+	services,
+	shops,
+	availablities,
+}: AppointmentStepperProps) => {
+	const isMobile = useisMobile();
 	const [currentStep, setCurrentStep] = useState<number>(0);
 	const [dayTimeMap, setDayTimeMap] = useState<Map<string, GroupListItem[]>>(new Map());
 	const [appointment, setAppointment] = useState<AppointmentCreationType>({
-		barber: { id: '' },
-		service: { id: '' },
-		day: { id: '' },
-		time: { id: '' },
+		barber: { id: '', name: '' },
+		service: { id: '', name: '' },
+		dayTime: { id: '', name: '' },
 	});
 
 	useEffect(() => {
-		if (slots.length === 0) return;
+		if (availablities.length === 0) return;
 
-		const daysList = getUpcomingDays(slots);
-		const newDayTimeMap = new Map<string, GroupListItem[]>();
+		const daysList = getUpcomingDays(availablities);
+		const dayTimeRange = new Map<string, GroupListItem[]>();
 
 		daysList.forEach((day) => {
-			const dateString = day.id as string;
-			const dayOfWeek = new Date(dateString).getDay();
+			const dateISOString = day.id as string;
+			const dayOfWeek = new Date(dateISOString).getDay();
 
-			const availableDay = slots.find((item) => item.day_of_week === dayOfWeek);
+			const availableDay = availablities.find((item) => item.day_of_week === dayOfWeek);
 			if (!availableDay) return;
 
-			const mappedSlots = mapTimeSlotList({
-				date: dateString,
+			const timeSlots = mapTimeSlotList({
+				dateISOString,
 				startTime: availableDay.start_time,
 				endTime: availableDay.end_time,
 			});
 
-			newDayTimeMap.set(dateString, mappedSlots);
+			dayTimeRange.set(dateISOString, timeSlots);
 		});
 
-		setDayTimeMap(newDayTimeMap);
-	}, [slots]);
+		setDayTimeMap(dayTimeRange);
+	}, [availablities]);
 
-	const setOption = ({ key, listItem, timeItem }: SetOptionParams) => {
-		if (key === 'dayTime' && timeItem) {
-			setAppointment({
-				...appointment,
-				day: listItem,
-				time: timeItem,
-			});
-		} else {
-			setAppointment({ ...appointment, [key]: listItem });
-		}
-
+	const setOption = ({ key, listItem }: SetOptionParams) => {
+		setAppointment({ ...appointment, [key]: listItem });
 		nextStep();
 	};
 
@@ -78,15 +74,35 @@ const AppointmentStepper = ({ barbers, services, shops, slots }: AppointmentStep
 	const steps = [
 		{
 			title: 'Barbero',
-			content: <BarbersContent list={barbers} shops={shops} setOption={setOption} />,
+			content: (
+				<BarbersContent
+					list={barbers}
+					selectedItemId={appointment.barber.id}
+					shops={shops}
+					setOption={setOption}
+				/>
+			),
 		},
 		{
 			title: 'Servicio',
-			content: <ServicesContent list={services} setOption={setOption} />,
+			content: (
+				<ServicesContent
+					list={services}
+					selectedItemId={appointment.service.id}
+					setOption={setOption}
+				/>
+			),
 		},
 		{
 			title: 'Día y Hora',
-			content: <SlotsContent list={dayTimeMap} slots={slots} setOption={setOption} />,
+			content: (
+				<SlotsContent
+					list={dayTimeMap}
+					slots={availablities}
+					selectedItemId={appointment.dayTime.id}
+					setOption={setOption}
+				/>
+			),
 		},
 		{
 			title: 'Confirmación',
@@ -100,7 +116,7 @@ const AppointmentStepper = ({ barbers, services, shops, slots }: AppointmentStep
 				<Steps
 					current={currentStep}
 					items={steps.map(({ title }) => ({ title }))}
-					type={IS_MOBILE ? 'inline' : 'default'}
+					type={isMobile ? 'inline' : 'default'}
 				/>
 			</div>
 
@@ -117,28 +133,30 @@ const AppointmentStepper = ({ barbers, services, shops, slots }: AppointmentStep
 	);
 };
 
-const BarbersContent = ({ list, shops, setOption }: BarbersContentProps) => (
+const BarbersContent = ({ list, selectedItemId, shops, setOption }: BarbersContentProps) => (
 	<>
 		<h2 className={STYLES.TITLE}>Selecciona un barbero:</h2>
 		<GroupList
 			dataList={list}
 			onSelectOption={(listItem) => setOption({ key: 'barber', listItem })}
+			selectedItemId={selectedItemId}
 		/>
 		{list.length === 1 && <p className="mt-4">Próximamente más barberos de {shops[0].name}</p>}
 	</>
 );
 
-const ServicesContent = ({ list, setOption }: ServicesContentProps) => (
+const ServicesContent = ({ list, selectedItemId, setOption }: ServicesContentProps) => (
 	<>
 		<h2 className={STYLES.TITLE}>Selecciona un servicio:</h2>
 		<GroupList
 			dataList={list}
 			onSelectOption={(listItem) => setOption({ key: 'service', listItem })}
+			selectedItemId={selectedItemId}
 		/>
 	</>
 );
 
-const SlotsContent = ({ list, slots, setOption }: SlotContentProps) => (
+const SlotsContent = ({ list, slots, selectedItemId, setOption }: SlotContentProps) => (
 	<>
 		<h2 className={STYLES.TITLE}>Selecciona día y hora:</h2>
 		{list.size > 0 ? (
@@ -148,13 +166,14 @@ const SlotsContent = ({ list, slots, setOption }: SlotContentProps) => (
 				if (!dayItem) return null;
 
 				return (
-					<DaySlot
-						key={dateString}
-						dateString={dateString}
-						dayItem={dayItem}
-						timeSlots={timeSlots}
-						setOption={setOption}
-					/>
+					<div key={dateString} className="mb-4 w-full border-b pb-4 last:border-b-0">
+						<h3 className="mb-2 font-medium">{dayItem.name}</h3>
+						<DaySlot
+							timeSlots={timeSlots}
+							selectedItemId={selectedItemId}
+							onSelectOption={(listItem) => setOption({ key: 'dayTime', listItem })}
+						/>
+					</div>
 				);
 			})
 		) : (

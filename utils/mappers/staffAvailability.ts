@@ -1,15 +1,9 @@
 import { StaffAvailabilityRow } from '@/types/staffAvailability';
 import { GroupListItem } from '@/types/ui';
-import {
-	addDays,
-	formatDate,
-	LONG_DATE_OPTIONS,
-	SHORT_DATE_OPTIONS,
-	SHORT_TIME_OPTIONS,
-} from '@/utils/formatters';
+import { addDays, formatOnlyDate, formatTime } from '@/utils/formatters';
 
 interface Props {
-	date: string;
+	dateISOString: string;
 	startTime: string;
 	endTime: string;
 }
@@ -19,7 +13,6 @@ const MINUTES_TO_INCREASE = 30;
 const TODAY: Date = new Date();
 const TOMORROW: Date = addDays(TODAY, 1);
 const ENABLE_TODAY = TODAY.getHours() < 12;
-const YYYY_MM_DD_FORMAT = 'en-CA';
 
 export const getUpcomingDays = (availabilities: StaffAvailabilityRow[]): GroupListItem[] => {
 	const availableDays: GroupListItem[] = [];
@@ -42,12 +35,8 @@ export const getUpcomingDays = (availabilities: StaffAvailabilityRow[]): GroupLi
 
 			if (!isAlreadyAdded) {
 				availableDays.push({
-					id: formatDate({
-						date: currentDay,
-						options: SHORT_DATE_OPTIONS,
-						locale: YYYY_MM_DD_FORMAT,
-					}),
-					name: formatDate({ date: currentDay }),
+					id: currentDay.toISOString(),
+					name: formatOnlyDate({ dateISOString: currentDay.toISOString() }),
 				});
 			}
 
@@ -60,19 +49,27 @@ export const getUpcomingDays = (availabilities: StaffAvailabilityRow[]): GroupLi
 	return availableDays;
 };
 
-export const mapTimeSlotList = ({ date, startTime, endTime }: Props): GroupListItem[] => {
+export const mapTimeSlotList = ({ dateISOString, startTime, endTime }: Props): GroupListItem[] => {
+	const date = dateISOString.split('T')[0]; // Obtiene "2025-02-28" de "2025-02-28T14:30:00.000Z"
+	// Crear objetos Date (inicio y fin) con fecha ISO String pero con las horas especificadas
 	let startDateTime: Date = new Date(`${date}T${startTime}`);
 	const endDateTime: Date = new Date(`${date}T${endTime}`);
 	const timeSlots: GroupListItem[] = [];
 
 	while (startDateTime < endDateTime) {
+		// Crear un ISO string preciso para este intervalo específico
+		const slotDate = new Date(
+			startDateTime.getFullYear(),
+			startDateTime.getMonth(),
+			startDateTime.getDate(),
+			startDateTime.getHours(),
+			startDateTime.getMinutes(),
+		);
+
 		timeSlots.push({
-			id: formatDate({
-				date: startDateTime,
-				options: LONG_DATE_OPTIONS,
-				locale: YYYY_MM_DD_FORMAT,
-			}),
-			name: formatDate({ date: startDateTime, options: SHORT_TIME_OPTIONS }),
+			id: slotDate.toISOString(), // ISO string preciso que incluye año, mes, día, hora, minutos
+			// FIXME: Format applied is wrong, giving incorrect time
+			name: formatTime(slotDate.toISOString()),
 		});
 
 		const nextTimeSlot = startDateTime.getMinutes() + MINUTES_TO_INCREASE;

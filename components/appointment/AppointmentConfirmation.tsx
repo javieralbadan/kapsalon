@@ -1,4 +1,5 @@
 import { AppointmentCreationType } from '@/types/appointments';
+import { formatDateTime } from '@/utils/formatters';
 import { Button, Card, Divider, Result } from 'antd';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -20,10 +21,7 @@ const AppointmentConfirmation = ({ appointment, goBack }: Props) => {
 	const [isSending, setIsSending] = useState<boolean>(false);
 
 	const isAppointmentReady: boolean =
-		!!appointment.barber.id &&
-		!!appointment.service.id &&
-		!!appointment.day.id &&
-		!!appointment.time.id;
+		!!appointment.barber.id && !!appointment.service.id && !!appointment.dayTime;
 
 	const confirmAppointment = (codeOTP: ValuesType) => {
 		setIsSending(true);
@@ -54,7 +52,10 @@ const AppointmentConfirmation = ({ appointment, goBack }: Props) => {
 						<p>💇 Servicio: {appointment.service.name}</p>
 						<p>🍺 Barbero: {appointment.barber.name}</p>
 						<p>
-							📅 {appointment.day.name}, {appointment.time.name}
+							📅
+							{formatDateTime({
+								dateISOString: appointment.dayTime.id as string,
+							})}
 						</p>
 					</div>
 

@@ -1,5 +1,6 @@
 export interface GroupListItem {
 	id: string | number;
-	name?: string;
+	name: string;
 	description?: string;
+	isSelected?: boolean;
 }

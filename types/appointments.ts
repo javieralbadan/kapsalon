@@ -11,8 +11,7 @@ enum AppointmentStatus {
 export interface AppointmentCreationType {
 	barber: GroupListItem;
 	service: GroupListItem;
-	day: GroupListItem;
-	time: GroupListItem;
+	dayTime: GroupListItem;
 }
 
 export interface AppointmentType {
@@ -24,28 +23,30 @@ export interface AppointmentStepperProps {
 	barbers: GroupListItem[] | [];
 	services: GroupListItem[] | [];
 	shops: GroupListItem[] | [];
-	slots: StaffAvailabilityRow[] | [];
+	availablities: StaffAvailabilityRow[] | [];
 }
 
 export interface SetOptionParams {
 	key: 'barber' | 'service' | 'dayTime';
 	listItem: GroupListItem;
-	timeItem?: GroupListItem;
 }
 
 export interface BarbersContentProps {
 	list: GroupListItem[] | [];
+	selectedItemId: string | number | null;
 	shops: GroupListItem[] | [];
 	setOption: (params: SetOptionParams) => void;
 }
 
 export interface ServicesContentProps {
 	list: GroupListItem[] | [];
+	selectedItemId: string | number | null;
 	setOption: (params: SetOptionParams) => void;
 }
 
 export interface SlotContentProps {
 	list: Map<string, GroupListItem[]>;
 	slots: StaffAvailabilityRow[] | [];
+	selectedItemId: string | number | null;
 	setOption: (params: SetOptionParams) => void;
 }

@@ -3,8 +3,8 @@ const DEFAULT = {
 	CURRENCY: 'COP',
 };
 
-interface DateProps {
-	date: number | Date;
+interface FormatDateProps {
+	dateISOString: string;
 	options?: Intl.DateTimeFormatOptions;
 	locale?: string;
 }
@@ -43,15 +43,25 @@ export const ONLY_HOUR_OPTIONS: Intl.DateTimeFormatOptions = {
 	hour12: true,
 };
 
-export const formatDate = ({
-	date,
+export const DEFAULT_DATE_TIME_OPTIONS: Intl.DateTimeFormatOptions = {
+	weekday: 'long',
+	day: 'numeric',
+	month: 'long',
+	hour: 'numeric',
+	minute: 'numeric',
+	hour12: true,
+};
+
+export const formatOnlyDate = ({
+	dateISOString,
 	options = DEFAULT_DATE_OPTIONS,
 	locale = DEFAULT.LANGUAGE,
-}: DateProps) => {
-	if (!date) {
+}: FormatDateProps) => {
+	if (!dateISOString) {
 		return '';
 	}
 
+	const date = new Date(dateISOString);
 	return new Intl.DateTimeFormat(locale, options).format(date);
 };
 
@@ -75,6 +85,19 @@ export const formatTime = (time24h: string, locale = DEFAULT.LANGUAGE): string =
 
 	const formattedTime = new Intl.DateTimeFormat(locale, options).format(date);
 	return formattedTime.replaceAll('.', '').replace(/\s*([ap])\s*m\s*$/i, '$1m');
+};
+
+export const formatDateTime = ({
+	dateISOString,
+	options = DEFAULT_DATE_TIME_OPTIONS,
+	locale = DEFAULT.LANGUAGE,
+}: FormatDateProps) => {
+	if (!dateISOString) {
+		return '';
+	}
+
+	const date = new Date(dateISOString);
+	return new Intl.DateTimeFormat(locale, options).format(date);
 };
 
 const DEFAULT_CURRENCY_OPTIONS: Intl.NumberFormatOptions = {

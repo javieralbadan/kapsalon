@@ -1,34 +1,25 @@
-import { SetOptionParams } from '@/types/appointments';
 import { GroupListItem } from '@/types/ui';
-import { Button } from 'antd';
+import GroupListButton from './GroupListButton';
 
 interface Props {
-	dateString: string;
-	dayItem: GroupListItem;
 	timeSlots: GroupListItem[];
-	setOption: (params: SetOptionParams) => void;
+	selectedItemId: string | number | null;
+	onSelectOption: (listItem: GroupListItem) => void;
 }
 
-const DaySlot = ({ dateString, dayItem, timeSlots, setOption }: Props) => (
-	<div key={dateString} className="mb-4 w-full border-b pb-4 last:border-b-0">
-		<h3 className="mb-2 font-medium">{dayItem.name}</h3>
-
-		<div className="flex flex-wrap justify-center gap-2">
-			{timeSlots.map((timeSlot) => (
-				<Button
-					key={timeSlot.id}
-					onClick={() =>
-						setOption({
-							key: 'dayTime',
-							listItem: dayItem,
-							timeItem: timeSlot,
-						})
-					}
-				>
-					{timeSlot.name}
-				</Button>
-			))}
-		</div>
+const DaySlot = ({ timeSlots, selectedItemId, onSelectOption }: Props) => (
+	<div className="grid grid-cols-3 gap-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8">
+		{timeSlots.map(({ id, name }) => {
+			return (
+				<GroupListButton
+					key={id}
+					id={id}
+					name={name.replace(/\.\s?/g, '').replace(/\s/g, ' ')}
+					isSelected={selectedItemId === id}
+					onSelectOption={() => onSelectOption({ id, name })}
+				/>
+			);
+		})}
 	</div>
 );
 
