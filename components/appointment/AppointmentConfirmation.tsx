@@ -48,16 +48,7 @@ const AppointmentConfirmation = ({ appointment, goBack }: Props) => {
 			) : (
 				<Card className="m-auto max-w-[400px]">
 					<h2>Confirma tu cita</h2>
-					<div className="flex flex-col items-center justify-center gap-0">
-						<p>💇 Servicio: {appointment.service.name}</p>
-						<p>🍺 Barbero: {appointment.barber.name}</p>
-						<p>
-							📅
-							{formatDateTime({
-								dateISOString: appointment.dayTime.id as string,
-							})}
-						</p>
-					</div>
+					<SummaryInfo {...appointment} />
 
 					<p className="my-3 leading-5 text-gray-500">
 						Si todo pinta bien, porfa añade tu info. <br />
@@ -99,3 +90,16 @@ const AppointmentConfirmation = ({ appointment, goBack }: Props) => {
 };
 
 export default AppointmentConfirmation;
+
+const SummaryInfo = ({ service, barber, dayTime }: AppointmentCreationType) => {
+	return (
+		<div className="flex flex-col items-center justify-center gap-0">
+			<p>
+				💇 Servicio: {service.name} ← {service.description}
+			</p>
+			<p>🍺 Barbero: {barber.name}</p>
+			{/* TODO: Fix time here (one hour early!) */}
+			<p>📅 {formatDateTime({ dateISOString: dayTime.id as string })}</p>
+		</div>
+	);
+};

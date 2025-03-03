@@ -14,7 +14,7 @@ const DaySlot = ({ timeSlots, selectedItemId, onSelectOption }: Props) => (
 				<GroupListButton
 					key={id}
 					id={id}
-					name={name.replace(/\.\s?/g, '').replace(/\s/g, ' ')}
+					name={name}
 					isSelected={selectedItemId === id}
 					onSelectOption={() => onSelectOption({ id, name })}
 				/>

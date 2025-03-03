@@ -32,6 +32,9 @@ export const DaySlots = ({ availableSlots, removeAvailability }: Props) => {
 
 					const topPos = topBorder * SLOT_HEIGHT + startOnHalf;
 					const height = (bottomBorder - topBorder) * SLOT_HEIGHT + endOnHalf;
+					const timeLabel = `${formatTime({ time24h: startTime })} - ${formatTime({
+						time24h: endTime,
+					})}`;
 
 					return (
 						<div
@@ -48,9 +51,7 @@ export const DaySlots = ({ availableSlots, removeAvailability }: Props) => {
 								className="absolute right-1 top-1"
 								onClick={() => removeAvailability(id)}
 							/>
-							<span className="text-base font-bold text-white drop-shadow-md">
-								{formatTime(startTime)} - {formatTime(endTime)}
-							</span>
+							<span className="text-base font-bold text-white drop-shadow-md">{timeLabel}</span>
 						</div>
 					);
 				})}
@@ -72,7 +73,7 @@ const GridHours = () => {
 						{hour === 6 ||
 							(hour > 12 && (
 								<div className="-mt-1 text-xs text-gray-400">
-									({hour === 6 ? '6am' : formatTime(`${hour}`)})
+									({hour === 6 ? '6am' : formatTime({ time24h: `${hour}` })})
 								</div>
 							))}
 					</div>

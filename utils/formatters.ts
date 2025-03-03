@@ -9,6 +9,12 @@ interface FormatDateProps {
 	locale?: string;
 }
 
+interface FormatTimeProps {
+	time24h: string;
+	options?: Intl.DateTimeFormatOptions;
+	locale?: string;
+}
+
 interface CurrencyProps {
 	value: number;
 	options?: Intl.NumberFormatOptions;
@@ -72,19 +78,18 @@ export const addDays = (originalDate: Date, numberDays = 1): Date => {
 	return new Date(newDateObject);
 };
 
-export const formatTime = (time24h: string, locale = DEFAULT.LANGUAGE): string => {
+export const formatTime = ({
+	time24h,
+	options = SHORT_TIME_OPTIONS,
+	locale = DEFAULT.LANGUAGE,
+}: FormatTimeProps): string => {
 	const [hours, minutes] = time24h.split(':');
 	const date = new Date();
 	date.setHours(parseInt(hours));
-
-	let options = ONLY_HOUR_OPTIONS;
-	if (minutes) {
-		date.setMinutes(parseInt(minutes));
-		options = SHORT_TIME_OPTIONS;
-	}
+	date.setMinutes(parseInt(minutes));
 
 	const formattedTime = new Intl.DateTimeFormat(locale, options).format(date);
-	return formattedTime.replaceAll('.', '').replace(/\s*([ap])\s*m\s*$/i, '$1m');
+	return formattedTime.replace(/\.\s?/g, '').replace(/\s/g, ' ');
 };
 
 export const formatDateTime = ({

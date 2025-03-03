@@ -68,8 +68,7 @@ export const mapTimeSlotList = ({ dateISOString, startTime, endTime }: Props): G
 
 		timeSlots.push({
 			id: slotDate.toISOString(), // ISO string preciso que incluye año, mes, día, hora, minutos
-			// FIXME: Format applied is wrong, giving incorrect time
-			name: formatTime(slotDate.toISOString()),
+			name: formatTime({ time24h: slotDate.toISOString().split('T')[1] }),
 		});
 
 		const nextTimeSlot = startDateTime.getMinutes() + MINUTES_TO_INCREASE;
