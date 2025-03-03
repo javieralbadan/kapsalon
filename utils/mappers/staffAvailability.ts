@@ -1,20 +1,37 @@
+import { SCHEDULE_APPOINTMENT } from '@/constants/dates';
 import { StaffAvailabilityRow } from '@/types/staffAvailability';
 import { GroupListItem } from '@/types/ui';
-import { addDays, formatOnlyDate, formatTime } from '@/utils/formatters';
+import {
+	addDays,
+	createDateWithLocalTime,
+	createLocalDateString,
+	formatOnlyDate,
+	formatTime,
+} from '@/utils/formatters';
 
-interface Props {
-	dateISOString: string;
+interface TimeSlotProps {
+	dateString: string;
 	startTime: string;
 	endTime: string;
 }
 
-const DAYS_TO_SHOW = 10;
-const MINUTES_TO_INCREASE = 30;
+interface DayTimeRangeProps {
+	availablities: StaffAvailabilityRow[] | [];
+	extensionCount: number;
+	dayTimeMap: Map<string, GroupListItem[]>;
+}
+
 const TODAY: Date = new Date();
 const TOMORROW: Date = addDays(TODAY, 1);
 const ENABLE_TODAY = TODAY.getHours() < 12;
 
-export const getUpcomingDays = (availabilities: StaffAvailabilityRow[]): GroupListItem[] => {
+export const getUpcomingDays = (
+	availabilities: StaffAvailabilityRow[],
+	extensionCount: number = 0,
+): GroupListItem[] => {
+	const validExtensionCount = Math.min(extensionCount, SCHEDULE_APPOINTMENT.MAX_DAYS_EXTENSIONS);
+	const daysToShow = SCHEDULE_APPOINTMENT.DEFAULT_DAYS_TO_SHOW * (validExtensionCount + 1);
+
 	const availableDays: GroupListItem[] = [];
 
 	const availableDaysOfWeek = availabilities
@@ -25,18 +42,25 @@ export const getUpcomingDays = (availabilities: StaffAvailabilityRow[]): GroupLi
 	let currentDay: Date = ENABLE_TODAY ? TODAY : TOMORROW;
 	let daysAdded: number = 0;
 
-	while (daysAdded < DAYS_TO_SHOW) {
+	while (daysAdded < daysToShow) {
 		const dayOfWeek: number = currentDay.getDay();
 
 		if (availableDaysOfWeek.includes(dayOfWeek)) {
-			const isAlreadyAdded = availableDays.some(
-				({ id }) => currentDay.getTime() === new Date(id).getTime(),
-			);
+			const isAlreadyAdded = availableDays.some(({ id }) => {
+				const idDate = new Date(id as string);
+				return (
+					// Compara las fechas ignorando la hora
+					idDate.getFullYear() === currentDay.getFullYear() &&
+					idDate.getMonth() === currentDay.getMonth() &&
+					idDate.getDate() === currentDay.getDate()
+				);
+			});
 
+			const dateString = createLocalDateString(currentDay);
 			if (!isAlreadyAdded) {
 				availableDays.push({
-					id: currentDay.toISOString(),
-					name: formatOnlyDate({ dateISOString: currentDay.toISOString() }),
+					id: dateString,
+					name: formatOnlyDate({ dateString }),
 				});
 			}
 
@@ -49,31 +73,61 @@ export const getUpcomingDays = (availabilities: StaffAvailabilityRow[]): GroupLi
 	return availableDays;
 };
 
-export const mapTimeSlotList = ({ dateISOString, startTime, endTime }: Props): GroupListItem[] => {
-	const date = dateISOString.split('T')[0]; // Obtiene "2025-02-28" de "2025-02-28T14:30:00.000Z"
-	// Crear objetos Date (inicio y fin) con fecha ISO String pero con las horas especificadas
-	let startDateTime: Date = new Date(`${date}T${startTime}`);
-	const endDateTime: Date = new Date(`${date}T${endTime}`);
+export const mapTimeSlotList = ({
+	dateString,
+	startTime,
+	endTime,
+}: TimeSlotProps): GroupListItem[] => {
+	// Obtiene "2025-02-28" de "2025-02-28T14:30:00.000Z"
+	const date = dateString.split('T')[0];
+
+	// Crear objetos Date para inicio y fin usando hora local
+	let startDateTime = createDateWithLocalTime(date, startTime);
+	const endDateTime = createDateWithLocalTime(date, endTime);
 	const timeSlots: GroupListItem[] = [];
 
 	while (startDateTime < endDateTime) {
-		// Crear un ISO string preciso para este intervalo específico
-		const slotDate = new Date(
-			startDateTime.getFullYear(),
-			startDateTime.getMonth(),
-			startDateTime.getDate(),
-			startDateTime.getHours(),
-			startDateTime.getMinutes(),
-		);
+		// Formato para el nombre del intervalo - Extrae "HH:MM"
+		const timeString = startDateTime.toTimeString().split(' ')[0].substring(0, 5);
 
 		timeSlots.push({
-			id: slotDate.toISOString(), // ISO string preciso que incluye año, mes, día, hora, minutos
-			name: formatTime({ time24h: slotDate.toISOString().split('T')[1] }),
+			id: startDateTime.toISOString(),
+			name: formatTime({ time24h: timeString }),
 		});
 
-		const nextTimeSlot = startDateTime.getMinutes() + MINUTES_TO_INCREASE;
+		const nextTimeSlot = startDateTime.getMinutes() + SCHEDULE_APPOINTMENT.MINUTES_TO_INCREASE;
 		startDateTime = new Date(startDateTime.setMinutes(nextTimeSlot));
 	}
 
 	return timeSlots;
+};
+
+export const getDayTimeRange = ({
+	availablities,
+	extensionCount,
+	dayTimeMap,
+}: DayTimeRangeProps) => {
+	const daysList = getUpcomingDays(availablities, extensionCount);
+	const dayTimeRange = new Map<string, GroupListItem[]>(dayTimeMap);
+
+	daysList.forEach((day) => {
+		const dateString = day.id as string;
+
+		if (!dayTimeRange.has(dateString)) {
+			const dayOfWeek = new Date(dateString).getDay();
+			const availableDay = availablities.find((item) => item.day_of_week === dayOfWeek);
+
+			if (availableDay) {
+				const timeSlots = mapTimeSlotList({
+					dateString,
+					startTime: availableDay.start_time,
+					endTime: availableDay.end_time,
+				});
+
+				dayTimeRange.set(dateString, timeSlots);
+			}
+		}
+	});
+
+	return dayTimeRange;
 };

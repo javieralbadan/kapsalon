@@ -4,7 +4,7 @@ const DEFAULT = {
 };
 
 interface FormatDateProps {
-	dateISOString: string;
+	dateString: string;
 	options?: Intl.DateTimeFormatOptions;
 	locale?: string;
 }
@@ -58,16 +58,39 @@ export const DEFAULT_DATE_TIME_OPTIONS: Intl.DateTimeFormatOptions = {
 	hour12: true,
 };
 
+// Función para crear fechas con hora local específica
+export const createDateWithLocalTime = (date: string, time: string): Date => {
+	// Combina fecha y hora manteniendo la zona horaria local
+	const [year, month, day] = date
+		.split('T')[0]
+		.split('-')
+		.map((num) => parseInt(num));
+	const [hours, minutes] = time.split(':').map((num) => parseInt(num));
+
+	return new Date(year, month - 1, day, hours, minutes);
+};
+
+export const createLocalDateString = (date: Date): string => {
+	// Formato YYYY-MM-DD para preservar la fecha local
+	const year = date.getFullYear();
+	const month = String(date.getMonth() + 1).padStart(2, '0');
+	const day = String(date.getDate()).padStart(2, '0');
+
+	// Para tener el mismo formato que toISOString pero sin conversión a UTC
+	// Se usa T00:00:00.000Z para representar el inicio del día
+	return `${year}-${month}-${day}T00:00:00.000Z`;
+};
+
 export const formatOnlyDate = ({
-	dateISOString,
+	dateString,
 	options = DEFAULT_DATE_OPTIONS,
 	locale = DEFAULT.LANGUAGE,
 }: FormatDateProps) => {
-	if (!dateISOString) {
+	if (!dateString) {
 		return '';
 	}
 
-	const date = new Date(dateISOString);
+	const date = new Date(dateString);
 	return new Intl.DateTimeFormat(locale, options).format(date);
 };
 
@@ -93,15 +116,15 @@ export const formatTime = ({
 };
 
 export const formatDateTime = ({
-	dateISOString,
+	dateString,
 	options = DEFAULT_DATE_TIME_OPTIONS,
 	locale = DEFAULT.LANGUAGE,
 }: FormatDateProps) => {
-	if (!dateISOString) {
+	if (!dateString) {
 		return '';
 	}
 
-	const date = new Date(dateISOString);
+	const date = new Date(dateString);
 	return new Intl.DateTimeFormat(locale, options).format(date);
 };
 

@@ -95,11 +95,10 @@ const SummaryInfo = ({ service, barber, dayTime }: AppointmentCreationType) => {
 	return (
 		<div className="flex flex-col items-center justify-center gap-0">
 			<p>
-				💇 Servicio: {service.name} ← {service.description}
+				💇 Servicio: {service.name} → {service.description}
 			</p>
 			<p>🍺 Barbero: {barber.name}</p>
-			{/* TODO: Fix time here (one hour early!) */}
-			<p>📅 {formatDateTime({ dateISOString: dayTime.id as string })}</p>
+			<p>📅 {formatDateTime({ dateString: dayTime.id as string })}</p>
 		</div>
 	);
 };

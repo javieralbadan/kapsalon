@@ -8,12 +8,10 @@ import {
 	SetOptionParams,
 	SlotContentProps,
 } from '@/types/appointments';
-import type { GroupListItem } from '@/types/ui';
-import { getUpcomingDays, mapTimeSlotList } from '@/utils/mappers/staffAvailability';
 import { Button, Steps } from 'antd';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import AppointmentConfirmation from './AppointmentConfirmation';
-import DaySlot from './DaySlot';
+import DaySlots from './DaySlots';
 
 const STYLES = {
 	CONTAINER:
@@ -31,37 +29,11 @@ const AppointmentStepper = ({
 }: AppointmentStepperProps) => {
 	const isMobile = useisMobile();
 	const [currentStep, setCurrentStep] = useState<number>(0);
-	const [dayTimeMap, setDayTimeMap] = useState<Map<string, GroupListItem[]>>(new Map());
 	const [appointment, setAppointment] = useState<AppointmentCreationType>({
 		barber: { id: '', name: '' },
 		service: { id: '', name: '' },
 		dayTime: { id: '', name: '' },
 	});
-
-	useEffect(() => {
-		if (availablities.length === 0) return;
-
-		const daysList = getUpcomingDays(availablities);
-		const dayTimeRange = new Map<string, GroupListItem[]>();
-
-		daysList.forEach((day) => {
-			const dateISOString = day.id as string;
-			const dayOfWeek = new Date(dateISOString).getDay();
-
-			const availableDay = availablities.find((item) => item.day_of_week === dayOfWeek);
-			if (!availableDay) return;
-
-			const timeSlots = mapTimeSlotList({
-				dateISOString,
-				startTime: availableDay.start_time,
-				endTime: availableDay.end_time,
-			});
-
-			dayTimeRange.set(dateISOString, timeSlots);
-		});
-
-		setDayTimeMap(dayTimeRange);
-	}, [availablities]);
 
 	const setOption = ({ key, listItem }: SetOptionParams) => {
 		setAppointment({ ...appointment, [key]: listItem });
@@ -97,8 +69,7 @@ const AppointmentStepper = ({
 			title: 'Día y Hora',
 			content: (
 				<SlotsContent
-					list={dayTimeMap}
-					slots={availablities}
+					availablities={availablities}
 					selectedItemId={appointment.dayTime.id}
 					setOption={setOption}
 				/>
@@ -109,7 +80,6 @@ const AppointmentStepper = ({
 			content: <AppointmentConfirmation appointment={appointment} goBack={prevStep} />,
 		},
 	];
-
 	return (
 		<div className={STYLES.CONTAINER}>
 			<div className="mb-4">
@@ -156,30 +126,17 @@ const ServicesContent = ({ list, selectedItemId, setOption }: ServicesContentPro
 	</>
 );
 
-const SlotsContent = ({ list, slots, selectedItemId, setOption }: SlotContentProps) => (
-	<>
-		<h2 className={STYLES.TITLE}>Selecciona día y hora:</h2>
-		{list.size > 0 ? (
-			Array.from(list.entries()).map(([dateString, timeSlots]) => {
-				const daysList = getUpcomingDays(slots);
-				const dayItem = daysList.find((day) => day.id === dateString);
-				if (!dayItem) return null;
-
-				return (
-					<div key={dateString} className="mb-4 w-full border-b pb-4 last:border-b-0">
-						<h3 className="mb-2 font-medium">{dayItem.name}</h3>
-						<DaySlot
-							timeSlots={timeSlots}
-							selectedItemId={selectedItemId}
-							onSelectOption={(listItem) => setOption({ key: 'dayTime', listItem })}
-						/>
-					</div>
-				);
-			})
-		) : (
-			<p>No hay horarios disponibles</p>
-		)}
-	</>
-);
+const SlotsContent = ({ availablities, selectedItemId, setOption }: SlotContentProps) => {
+	return (
+		<>
+			<h2 className={STYLES.TITLE}>Selecciona día y hora:</h2>
+			<DaySlots
+				availablities={availablities}
+				selectedItemId={selectedItemId}
+				setOption={setOption}
+			/>
+		</>
+	);
+};
 
 export default AppointmentStepper;

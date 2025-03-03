@@ -22,3 +22,10 @@ export const YEARS = [
 	{ key: currentYearString, value: currentYearString },
 	{ key: nextYearString, value: nextYearString },
 ];
+
+// TODO: Move to another constant file
+export const SCHEDULE_APPOINTMENT = {
+	DEFAULT_DAYS_TO_SHOW: 3,
+	MAX_DAYS_EXTENSIONS: 2,
+	MINUTES_TO_INCREASE: 30,
+};

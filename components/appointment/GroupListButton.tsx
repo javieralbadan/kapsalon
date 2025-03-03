@@ -10,7 +10,7 @@ interface Props extends GroupListItem {
 const GroupListButton = ({ id, name, description, isSelected, onSelectOption }: Props) => {
 	return (
 		<Button
-			className="flex h-full flex-col items-center gap-0"
+			className="flex h-full flex-col items-center gap-0 py-1"
 			variant="outlined"
 			color={isSelected ? 'primary' : 'default'}
 			size="large"

@@ -34,21 +34,21 @@ const UserInfoForm = ({ codeOTP, setCodeOTP, setCustomerInfo }: Props) => {
 	return (
 		<Form form={userForm} disabled={!!codeOTP} layout="horizontal" onFinish={sendVerificationCode}>
 			<Form.Item
-				name="lastName"
-				className="mb-3"
-				rules={USER_INFO_RULES('apellido')}
-				validateTrigger={['onChange', 'onBlur']}
-			>
-				<Input prefix={<UserOutlined />} placeholder="Apellido" />
-			</Form.Item>
-
-			<Form.Item
 				name="firstName"
 				className="mb-3"
 				rules={USER_INFO_RULES('nombre')}
 				validateTrigger={['onChange', 'onBlur']}
 			>
 				<Input prefix={<UserOutlined />} placeholder="Nombre" />
+			</Form.Item>
+
+			<Form.Item
+				name="lastName"
+				className="mb-3"
+				rules={USER_INFO_RULES('apellido')}
+				validateTrigger={['onChange', 'onBlur']}
+			>
+				<Input prefix={<UserOutlined />} placeholder="Apellido" />
 			</Form.Item>
 
 			<Form.Item

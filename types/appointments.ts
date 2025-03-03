@@ -45,8 +45,7 @@ export interface ServicesContentProps {
 }
 
 export interface SlotContentProps {
-	list: Map<string, GroupListItem[]>;
-	slots: StaffAvailabilityRow[] | [];
+	availablities: StaffAvailabilityRow[] | [];
 	selectedItemId: string | number | null;
 	setOption: (params: SetOptionParams) => void;
 }
