@@ -1,8 +1,8 @@
+import AppFooter, { FOOTER_STYLES } from '@/components/layout/AppFooter';
 import '@ant-design/v5-patch-for-react-19';
 import { Layout } from 'antd';
 import { Content, Footer } from 'antd/es/layout/layout';
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import React from 'react';
 import { Providers } from './providers';
 import '/styles/globals.scss';
@@ -34,24 +34,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
 						<Content style={{ flex: 1 }}>{children}</Content>
 
-						<Footer
-							style={{
-								zIndex: 1,
-								width: '100%',
-								display: 'flex',
-								alignItems: 'center',
-								justifyContent: 'space-between',
-								backgroundColor: '#060606',
-								color: 'white',
-								padding: '0.5rem 1rem',
-							}}
-						>
-							<div className="m-auto flex w-full max-w-[1400px] justify-between">
-								<p>
-									Hecho con ❤️ por <Link href="/">KapsalonApp</Link>
-								</p>
-								<p>Bogotá · 🇨🇴</p>
-							</div>
+						<Footer style={FOOTER_STYLES}>
+							<AppFooter />
 						</Footer>
 					</Layout>
 				</Providers>

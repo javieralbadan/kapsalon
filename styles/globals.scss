@@ -71,6 +71,12 @@ a {
   color: var(--color-blue);
 }
 
+.legal-container {
+  max-width: 900px;
+  margin: 1rem auto;
+  padding: 1rem 1rem 2rem;
+}
+
 /* Arrows */
 .ant-carousel .slick-prev, .ant-carousel .slick-next {
 	border: 1px solid var(--color-blue);
