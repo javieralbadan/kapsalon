@@ -1,74 +1,54 @@
 [
 	{
 		"question": "¿Qué es Kapsalon?",
-		"answer": "Es una plataforma web que conecta a propietarios de establecimientos fitness y de bienestar integral con profesionales freelance y clientes corporativos para el alquiler de espacios. En términos tecnológicos somos un MarketPlace."
-	},
-	{
-		"question": "¿Qué es un MarketPlace?",
-		"answer": "Define un sitio web que cumple un rol de intermediador para monitorear la comercialización de ciertos productos o servicios. Un MarketPlace facilita herramientas para optimizar las transacciones entre compradores y vendedores, manteniendo la marca e identidad corporativa propia del vendedor."
+		"answer": "Es una plataforma web que conecta a propietarios de barberías y barberos independientes, con clientes para el agendamiento de citas que conlleven la prestación de servicios de estética y belleza."
 	},
 	{
 		"question": "¿Cuál es el objetivo de Kapsalon?",
-		"answer": "Kapsalon sirve para encontrar cerca de tu casa o trabajo múltiples escenarios deportivos, fitness y de bienestar integral para alquiler según tus necesidades e intereses pagando solo lo que usas."
+		"answer": "Kapsalon sirve para agilizar los tiempos de agendamiento, modificación y cancelación de citas de barbería."
 	},
 	{
 		"question": "¿En qué ciudades y lugares se encuentran?",
-		"answer": "Actualmente estamos en la ciudad de Bogotá. Iremos expandiendo nuestra marca a las principales ciudades del país."
+		"answer": "Actualmente estamos en la ciudad de Bogotá."
 	},
 	{
 		"question": "¿Kapsalon es un aplicativo móvil?",
-		"answer": "No. Somos una plataforma web (website) a la cual accedes por medio de un navegador o explorador. Sin embargo, toda la experiencia Kapsalon está diseñada y adaptada bajo un enfoque que enfatiza su uso desde los dispositivos móviles."
+		"answer": "No. Somos una plataforma web (sitio web) a la cual accedes por medio de un navegador o explorador. Sin embargo, toda la experiencia Kapsalon está diseñada y adaptada bajo un enfoque que facilita su uso desde dispositivos móviles."
 	},
 	{
 		"question": "¿Debo registrarme?",
-		"answer": "Para conocer las instalaciones de nuestros aliados no es necesario. Para realizar reservas si es necesario. Debes crear un usuario para poder disfrutar al máximo la plataforma."
+		"answer": "Para realizar el agendamiento de citas no es necesario. Debes únicamente validar tu número de whatsapp para poder asociar éste con la cita que agendes. Dado que la interacción principalmente se dará vía whatsapp de forma automatizada, no se tiene acceso a tus datos de usuario en la plataforma."
 	},
 	{
 		"question": "¿Hay que pagar una membresía?",
-		"answer": "No. Los pagos que debes hacer son <strong>tarifas de pago por lo que usas</strong> cada día."
+		"answer": "No. Agendas tu cita completamente gratis y pagas el servicio directamente con el proveedor del servicio (barbero). Kapsalon no gestion pagos por el momento."
 	},
 	{
-		"question": "¿Existen cláusulas  de permanencia?",
-		"answer": "No. Solo pagas por lo que usas al hacer la reserva."
+		"question": "¿Cómo hago para agendar una cita?",
+		"answer": "Estando en la página inicial de la plataforma, navegas con el botón de 'Agendar'. Seleccionas al barbero. Seleccionas el servicio que necesitas. Seleccionas el horario en el día que te convenga. Finalmente, en la confirmación de la cita se preguntarán tus datos de contacto. Validas tu número de whatsapp mediante un código que se envia al número ingresado y con ello se confirma la cita. Recibirás tu confirmación de la cita vía whatsapp. Asiste de forma puntual a la barbería el día y hora acordados."
 	},
 	{
-		"question": "¿Cómo hago para reservar?",
-		"answer": "Estando en la página inicial de la plataforma, allí navegas hasta que encuentres el establecimiento que más se adapte a tus necesidades por ubicación, precio y características, información que encuentras en los detalles de cada ambiente. Haces clic en 'Continuar Reserva', allí se preguntarán los detalles de la reserva, tales como fecha y cantidad de horas. Procedes al pago, donde encontrarás múltiples opciones de pago y para luego recibir la confirmación de la reserva. Finalmente, ¡Vive y disfruta la experiencia!"
-	},
-	{
-		"question": "Apenas haga la reserva, ¿Que sigue?",
-		"answer": "Recibirás en tu Email un tu código de reserva, con el cual deberás presentarte en el establecimiento para ser autorizado del ingreso."
-	},
-	{
-		"question": "¿Qué debo hacer para ingresar al establecimiento que reservé?",
-		"answer": "Debes llevar tu documento de identidad y código de confirmación de reserva en tu celular. el cual se te ha enviado con anterioridad al correo."
+		"question": "¿Qué sucede al llegar a la barbería?",
+		"answer": "Procura llegar con 5 a 10 minutos de anticipación. Ten en cuenta que los horarios de apertura y cierre del establecimiento, las condiciones de prestación del servici, retrasos, cancelaciones imprevistas y demás situaciones que sucedan, quedan completamente a discreción del barbero y/o barbería. Kapsalon no se responsabiliza por la interacción entre barbería/barbero/usuario."
 	},
 	{
 		"question": "¿Puedo reservar varios servicios en un dia?",
-		"answer": "Al hacer la reserva deberás revisar las normas y condiciones del ambiente. Algunos establecimientos permiten el ingreso más de una vez en el mismo día."
+		"answer": "Si. En estos momento Kapsalon no puede validar si tienes citas simultáneas que se cruzan entre sí. El agendamiento y cumplimiento de la cita queda a total discreción del usuario."
 	},
 	{
 		"question": "¿Qué pasa si no alcanzo a llegar a tiempo?",
-		"answer": "Si llegas tarde perderás tiempo de tu reserva, ya que el establecimiento necesitará el espacio para su normal funcionamiento en las horas siguientes."
+		"answer": "Si llegas tarde es posible que pierdas tu cita, ya que la barbería y/o barbero puede decidir como utilizar el tiempo."
 	},
 	{
-		"question": "¿Qué medios de pago tienen?",
-		"answer": "Puedes hacer el pago por medio de nuestra pasarela de pagos, la cual te da opciones como: <div class='ui list'><div class='item'>· Tarjetas de crédito</div><div class='item'>· Tarjetas débito (PSE)</div> <div class='item'>· Pagos en efectivo vía efecty, baloto, éxito, carulla o consignación bancaria</div></div>"
+		"question": "¿Qué pasa si quiero reagendar o cancelar mi cita?",
+		"answer": "Una vez recibas tu confirmación de la cita por whatsapp. Puedes contestar a ese mismo número para gestionar tu cita. Se te brindará la opción de reagendar y cancelar la cita vía whatsapp."
 	},
 	{
-		"question": "¿Cómo hago para ubicar los establecimientos cercanos?",
-		"answer": "Debes ingresar y filtrar por zonas en la ciudad. Para facilitar esta interacción, la plataforma te pide permiso para acceder a tu ubicación y mostrarte opciones cercanas a ti. Debes tener en cuenta que al acceder a la plataforma y continuar la navegación, se aceptan los Términos y condiciones, dentro de las que se encuentran la detección de tu ubicación con estos fines de mejoramiento de experiencia."
+		"question": "¿Con cuánto tiempo de anticipación puedo reagendar o cancelar mi cita?",
+		"answer": "El reagendamiento o cancelación se debe hacer con antelación de <strong>1 hora</strong> como mínimo."
 	},
 	{
-		"question": "¿Qué pasa si quiero cancelar mi reserva?",
-		"answer": "Debes ingresar por 'Mis compras', ubicar la reserva en cuestión y si te encuentras dentro del plazo establecido en la plataforma (12 horas antes), mediante el botón 'Cancelar reserva' anulas el proceso realizado."
-	},
-	{
-		"question": "¿Con cuánto tiempo de anticipación puedo cancelar mi reserva?",
-		"answer": "La cancelación se debe hacer con antelación de <strong>24 horas</strong> como mínimo."
-	},
-	{
-		"question": "¿Me cobran si cancelo mi reserva?",
-		"answer": "Si. Se cobrará una multa equivalente al 50% del equivalente al precio de la reserva."
+		"question": "¿Me cobran si reagendo o cancelo mi cita?",
+		"answer": "No. Dado que Kapsalon no gestiona pagos no se te cobrará por el reagendamiento o cancelación de la cita."
 	}
 ]

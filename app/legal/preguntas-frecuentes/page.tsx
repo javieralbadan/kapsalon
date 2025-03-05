@@ -18,8 +18,8 @@ const FAQSPage = () => {
 			<LegalBreadcrumb currentPage="Preguntas Frecuentes" />
 
 			<Title level={2}>PREGUNTAS FRECUENTES</Title>
-			<div style={{ padding: '2rem 4rem', maxWidth: '800px', margin: '0 auto' }}>
-				<Collapse items={items} defaultActiveKey={['0']} />;
+			<div style={{ padding: '2rem 4rem 4rem', maxWidth: '800px', margin: '0 auto' }}>
+				<Collapse items={items} defaultActiveKey={['0']} />
 			</div>
 		</section>
 	);

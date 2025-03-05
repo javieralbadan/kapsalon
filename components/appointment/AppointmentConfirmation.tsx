@@ -75,6 +75,16 @@ const AppointmentConfirmation = ({ appointment, goBack }: Props) => {
 						confirmAppointment={confirmAppointment}
 						isSending={isSending}
 					/>
+					<p className="my-3 text-xs text-gray-500">
+						Al confirmar tu cita aceptas las{' '}
+						<Link className="underline" href="/legal/condiciones-del-servicio" target="_blank">
+							Condiciones del Servicio
+						</Link>{' '}
+						y la{' '}
+						<Link className="underline" href="/legal/politica-de-privacidad" target="_blank">
+							Política de Privacidad
+						</Link>
+					</p>
 
 					<Divider />
 
