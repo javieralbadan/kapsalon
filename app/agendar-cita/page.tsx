@@ -11,38 +11,38 @@ import { mapStaffList } from '@/utils/mappers/staffMembers';
 import { Suspense } from 'react';
 
 const ScheduleAppointment = () => {
-	const { data: shopsResponse, isLoading: isLoadingShops } = useShops();
-	const { data: staffResponse, isLoading: isLoadingStaff } = useStaffMembers();
-	const { data: servicesResponse, isLoading: isLoadingServices } = useServices();
-	const { data: availsResponse, isLoading: isLoadingAvails } = useStaffAvailabilities();
+  const { data: shopsResponse, isLoading: isLoadingShops } = useShops();
+  const { data: staffResponse, isLoading: isLoadingStaff } = useStaffMembers();
+  const { data: servicesResponse, isLoading: isLoadingServices } = useServices();
+  const { data: availsResponse, isLoading: isLoadingAvails } = useStaffAvailabilities();
 
-	const shops = shopsResponse?.data || [];
-	const barbers = staffResponse?.data ? mapStaffList(staffResponse.data) : [];
-	const services = servicesResponse?.data ? mapServiceList(servicesResponse.data) : [];
-	const availabilities = availsResponse?.data || [];
+  const shops = shopsResponse?.data || [];
+  const barbers = staffResponse?.data ? mapStaffList(staffResponse.data) : [];
+  const services = servicesResponse?.data ? mapServiceList(servicesResponse.data) : [];
+  const availabilities = availsResponse?.data || [];
 
-	const isLoading = isLoadingShops || isLoadingStaff || isLoadingServices || isLoadingAvails;
+  const isLoading = isLoadingShops || isLoadingStaff || isLoadingServices || isLoadingAvails;
 
-	return (
-		<div className="p-4 text-center">
-			<h1>Agendar cita</h1>
-			<ClientErrorBoundary>
-				<Suspense fallback={<Loading />}>
-					{/*  */}
-					{isLoading ? (
-						<Loading />
-					) : (
-						<AppointmentStepper
-							shops={shops}
-							barbers={barbers}
-							services={services}
-							availablities={availabilities}
-						/>
-					)}
-				</Suspense>
-			</ClientErrorBoundary>
-		</div>
-	);
+  return (
+    <div className="p-4 text-center">
+      <h1>Agendar cita</h1>
+      <ClientErrorBoundary>
+        <Suspense fallback={<Loading />}>
+          {/*  */}
+          {isLoading ? (
+            <Loading />
+          ) : (
+            <AppointmentStepper
+              shops={shops}
+              barbers={barbers}
+              services={services}
+              availablities={availabilities}
+            />
+          )}
+        </Suspense>
+      </ClientErrorBoundary>
+    </div>
+  );
 };
 
 export default ScheduleAppointment;

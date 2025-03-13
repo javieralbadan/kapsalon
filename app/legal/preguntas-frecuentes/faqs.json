@@ -17,23 +17,23 @@
 	},
 	{
 		"question": "¿Debo registrarme?",
-		"answer": "Para realizar el agendamiento de citas no es necesario. Debes únicamente validar tu número de whatsapp para poder asociar éste con la cita que agendes. Dado que la interacción principalmente se dará vía whatsapp de forma automatizada, no se tiene acceso a tus datos de usuario en la plataforma."
+		"answer": "Para realizar el agendamiento de citas no es necesario. Debes únicamente validar tu número de whatsapp para poder asociar éste con la cita que agendes. Dado que la interacción se realizará principalmente vía WhatsApp de forma automatizada, no tendremos acceso a tus datos de usuario en la plataforma."
 	},
 	{
 		"question": "¿Hay que pagar una membresía?",
-		"answer": "No. Agendas tu cita completamente gratis y pagas el servicio directamente con el proveedor del servicio (barbero). Kapsalon no gestion pagos por el momento."
+		"answer": "No. Agendas tu cita completamente gratis y pagas el servicio directamente con el proveedor del servicio (barbero). Kapsalon no gestiona pagos por el momento."
 	},
 	{
 		"question": "¿Cómo hago para agendar una cita?",
-		"answer": "Estando en la página inicial de la plataforma, navegas con el botón de 'Agendar'. Seleccionas al barbero. Seleccionas el servicio que necesitas. Seleccionas el horario en el día que te convenga. Finalmente, en la confirmación de la cita se preguntarán tus datos de contacto. Validas tu número de whatsapp mediante un código que se envia al número ingresado y con ello se confirma la cita. Recibirás tu confirmación de la cita vía whatsapp. Asiste de forma puntual a la barbería el día y hora acordados."
+		"answer": "Estando en la página inicial de la plataforma, navegas con el botón de 'Agendar'. Seleccionas al barbero. Seleccionas el servicio que necesitas. Seleccionas el horario en el día que te convenga. Finalmente, en la confirmación de la cita se preguntarán tus datos de contacto. Validas tu número de whatsapp mediante un código que se envía al número ingresado y con ello se confirma la cita. Recibirás tu confirmación de la cita vía whatsapp. Asiste de forma puntual a la barbería el día y hora acordados."
 	},
 	{
 		"question": "¿Qué sucede al llegar a la barbería?",
-		"answer": "Procura llegar con 5 a 10 minutos de anticipación. Ten en cuenta que los horarios de apertura y cierre del establecimiento, las condiciones de prestación del servici, retrasos, cancelaciones imprevistas y demás situaciones que sucedan, quedan completamente a discreción del barbero y/o barbería. Kapsalon no se responsabiliza por la interacción entre barbería/barbero/usuario."
+		"answer": "Procura llegar con 5 a 10 minutos de anticipación. Ten en cuenta que los horarios de apertura y cierre del establecimiento, las condiciones de prestación del servicio, retrasos, cancelaciones imprevistas y demás situaciones que sucedan, quedan completamente a discreción del barbero y/o barbería. Kapsalon no se responsabiliza por la interacción entre barbería/barbero/usuario."
 	},
 	{
 		"question": "¿Puedo reservar varios servicios en un dia?",
-		"answer": "Si. En estos momento Kapsalon no puede validar si tienes citas simultáneas que se cruzan entre sí. El agendamiento y cumplimiento de la cita queda a total discreción del usuario."
+		"answer": "Si. En estos momentos Kapsalon no puede validar si tienes citas simultáneas que se cruzan entre sí. El agendamiento y cumplimiento de la cita queda a total discreción del usuario."
 	},
 	{
 		"question": "¿Qué pasa si no alcanzo a llegar a tiempo?",
@@ -41,11 +41,11 @@
 	},
 	{
 		"question": "¿Qué pasa si quiero reagendar o cancelar mi cita?",
-		"answer": "Una vez recibas tu confirmación de la cita por whatsapp. Puedes contestar a ese mismo número para gestionar tu cita. Se te brindará la opción de reagendar y cancelar la cita vía whatsapp."
+		"answer": "Una vez recibas tu confirmación de la cita por whatsapp. Puedes responder a ese mismo número para gestionar tu cita. Se te brindará la opción de reagendar o cancelar la cita vía WhatsApp."
 	},
 	{
 		"question": "¿Con cuánto tiempo de anticipación puedo reagendar o cancelar mi cita?",
-		"answer": "El reagendamiento o cancelación se debe hacer con antelación de <strong>1 hora</strong> como mínimo."
+		"answer": "El reagendamiento o cancelación se debe hacer con <strong>1 hora</strong> de antelación como mínimo."
 	},
 	{
 		"question": "¿Me cobran si reagendo o cancelo mi cita?",

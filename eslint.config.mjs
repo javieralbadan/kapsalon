@@ -1,5 +1,6 @@
 import { FlatCompat } from '@eslint/eslintrc';
 import tsParser from '@typescript-eslint/parser';
+import pluginPrettier from 'eslint-plugin-prettier';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -30,8 +31,11 @@ const rules = {
 		'error',
 		{
 			code: 100,
+			tabWidth: 2,
 			ignoreTrailingComments: true,
 			ignoreStrings: true,
+			ignoreUrls: true,
+			ignoreTemplateLiterals: true,
 		},
 	],
 	quotes: ['error', 'single'],
@@ -50,15 +54,17 @@ const eslintConfig = [
 		'prettier',
 	),
 	{
-		// Section to specify the parser and options
 		languageOptions: {
-			parser: tsParser, // Use the imported TypeScript parser
+			parser: tsParser,
 			parserOptions: {
 				project: './tsconfig.json',
 				tsconfigRootDir: __dirname,
 			},
 		},
 		rules,
+		plugins: {
+			prettier: pluginPrettier,
+		},
 	},
 ];
 

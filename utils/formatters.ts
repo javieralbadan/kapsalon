@@ -1,144 +1,144 @@
 const DEFAULT = {
-	LANGUAGE: 'es-CO',
-	CURRENCY: 'COP',
+  LANGUAGE: 'es-CO',
+  CURRENCY: 'COP',
 };
 
 interface FormatDateProps {
-	dateString: string;
-	options?: Intl.DateTimeFormatOptions;
-	locale?: string;
+  dateString: string;
+  options?: Intl.DateTimeFormatOptions;
+  locale?: string;
 }
 
 interface FormatTimeProps {
-	time24h: string;
-	options?: Intl.DateTimeFormatOptions;
-	locale?: string;
+  time24h: string;
+  options?: Intl.DateTimeFormatOptions;
+  locale?: string;
 }
 
 interface CurrencyProps {
-	value: number;
-	options?: Intl.NumberFormatOptions;
+  value: number;
+  options?: Intl.NumberFormatOptions;
 }
 
 const DEFAULT_DATE_OPTIONS: Intl.DateTimeFormatOptions = {
-	weekday: 'long',
-	day: 'numeric',
-	month: 'short',
-	// timeZone: 'America/Bogota',
+  weekday: 'long',
+  day: 'numeric',
+  month: 'short',
+  // timeZone: 'America/Bogota',
 };
 
 export const SHORT_DATE_OPTIONS: Intl.DateTimeFormatOptions = {
-	year: 'numeric',
-	month: '2-digit',
-	day: '2-digit',
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
 };
 
 export const LONG_DATE_OPTIONS: Intl.DateTimeFormatOptions = {
-	timeStyle: 'full',
-	dateStyle: 'full',
+  timeStyle: 'full',
+  dateStyle: 'full',
 };
 
 export const SHORT_TIME_OPTIONS: Intl.DateTimeFormatOptions = {
-	hour: 'numeric',
-	minute: '2-digit',
-	hour12: true,
+  hour: 'numeric',
+  minute: '2-digit',
+  hour12: true,
 };
 
 export const ONLY_HOUR_OPTIONS: Intl.DateTimeFormatOptions = {
-	hour: 'numeric',
-	hour12: true,
+  hour: 'numeric',
+  hour12: true,
 };
 
 export const DEFAULT_DATE_TIME_OPTIONS: Intl.DateTimeFormatOptions = {
-	weekday: 'long',
-	day: 'numeric',
-	month: 'long',
-	hour: 'numeric',
-	minute: 'numeric',
-	hour12: true,
+  weekday: 'long',
+  day: 'numeric',
+  month: 'long',
+  hour: 'numeric',
+  minute: 'numeric',
+  hour12: true,
 };
 
 // Función para crear fechas con hora local específica
 export const createDateWithLocalTime = (date: string, time: string): Date => {
-	// Combina fecha y hora manteniendo la zona horaria local
-	const [year, month, day] = date
-		.split('T')[0]
-		.split('-')
-		.map((num) => parseInt(num));
-	const [hours, minutes] = time.split(':').map((num) => parseInt(num));
+  // Combina fecha y hora manteniendo la zona horaria local
+  const [year, month, day] = date
+    .split('T')[0]
+    .split('-')
+    .map((num) => parseInt(num));
+  const [hours, minutes] = time.split(':').map((num) => parseInt(num));
 
-	return new Date(year, month - 1, day, hours, minutes);
+  return new Date(year, month - 1, day, hours, minutes);
 };
 
 export const createLocalDateString = (date: Date): string => {
-	// Formato YYYY-MM-DD para preservar la fecha local
-	const year = date.getFullYear();
-	const month = String(date.getMonth() + 1).padStart(2, '0');
-	const day = String(date.getDate()).padStart(2, '0');
+  // Formato YYYY-MM-DD para preservar la fecha local
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
 
-	// Para tener el mismo formato que toISOString pero sin conversión a UTC
-	// Se usa T00:00:00.000Z para representar el inicio del día
-	return `${year}-${month}-${day}T00:00:00.000Z`;
+  // Para tener el mismo formato que toISOString pero sin conversión a UTC
+  // Se usa T00:00:00.000Z para representar el inicio del día
+  return `${year}-${month}-${day}T00:00:00.000Z`;
 };
 
 export const formatOnlyDate = ({
-	dateString,
-	options = DEFAULT_DATE_OPTIONS,
-	locale = DEFAULT.LANGUAGE,
+  dateString,
+  options = DEFAULT_DATE_OPTIONS,
+  locale = DEFAULT.LANGUAGE,
 }: FormatDateProps) => {
-	if (!dateString) {
-		return '';
-	}
+  if (!dateString) {
+    return '';
+  }
 
-	const date = new Date(dateString);
-	return new Intl.DateTimeFormat(locale, options).format(date);
+  const date = new Date(dateString);
+  return new Intl.DateTimeFormat(locale, options).format(date);
 };
 
 export const addDays = (originalDate: Date, numberDays = 1): Date => {
-	const cloneDate = new Date(originalDate);
-	const newDateObject = cloneDate.setDate(cloneDate.getDate() + numberDays);
+  const cloneDate = new Date(originalDate);
+  const newDateObject = cloneDate.setDate(cloneDate.getDate() + numberDays);
 
-	return new Date(newDateObject);
+  return new Date(newDateObject);
 };
 
 export const formatTime = ({
-	time24h,
-	options = SHORT_TIME_OPTIONS,
-	locale = DEFAULT.LANGUAGE,
+  time24h,
+  options = SHORT_TIME_OPTIONS,
+  locale = DEFAULT.LANGUAGE,
 }: FormatTimeProps): string => {
-	const [hours, minutes] = time24h.split(':');
-	const date = new Date();
-	date.setHours(parseInt(hours));
-	date.setMinutes(parseInt(minutes));
+  const [hours, minutes] = time24h.split(':');
+  const date = new Date();
+  date.setHours(parseInt(hours));
+  date.setMinutes(parseInt(minutes));
 
-	const formattedTime = new Intl.DateTimeFormat(locale, options).format(date);
-	return formattedTime.replace(/\.\s?/g, '').replace(/\s/g, ' ');
+  const formattedTime = new Intl.DateTimeFormat(locale, options).format(date);
+  return formattedTime.replace(/\.\s?/g, '').replace(/\s/g, ' ');
 };
 
 export const formatDateTime = ({
-	dateString,
-	options = DEFAULT_DATE_TIME_OPTIONS,
-	locale = DEFAULT.LANGUAGE,
+  dateString,
+  options = DEFAULT_DATE_TIME_OPTIONS,
+  locale = DEFAULT.LANGUAGE,
 }: FormatDateProps) => {
-	if (!dateString) {
-		return '';
-	}
+  if (!dateString) {
+    return '';
+  }
 
-	const date = new Date(dateString);
-	return new Intl.DateTimeFormat(locale, options).format(date);
+  const date = new Date(dateString);
+  return new Intl.DateTimeFormat(locale, options).format(date);
 };
 
 const DEFAULT_CURRENCY_OPTIONS: Intl.NumberFormatOptions = {
-	style: 'currency',
-	currency: DEFAULT.CURRENCY,
-	maximumSignificantDigits: 3,
+  style: 'currency',
+  currency: DEFAULT.CURRENCY,
+  maximumSignificantDigits: 3,
 };
 
 export const formatCurrency = ({ value, options = DEFAULT_CURRENCY_OPTIONS }: CurrencyProps) => {
-	if (!value) {
-		return '';
-	}
+  if (!value) {
+    return '';
+  }
 
-	const formatter = new Intl.NumberFormat(DEFAULT.LANGUAGE, options);
-	return formatter.format(value);
+  const formatter = new Intl.NumberFormat(DEFAULT.LANGUAGE, options);
+  return formatter.format(value);
 };
