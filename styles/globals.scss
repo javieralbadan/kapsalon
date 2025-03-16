@@ -4,24 +4,24 @@
 @tailwind variants;
 
 :root {
-	--color-black: #060606;
-	--color-black-soft: #292941;
-	--color-dark: #1a1a36;
-	--color-dark-soft:  #333;
-	--color-gray: #808080;
-	--color-gray-soft: #b4b4b4;
-	--color-white: #fafaf7;
-	--color-light: #cacae7;
-	--color-yellow: #facc15;
-	--color-blue: #1d4ed8;
-	--color-red: #e11d48;
-	--color-white: #f0f0f0;
-	--color-text: var(--color-white);
-	--color-text-soft: var(--color-light);
-	--color-background: var(--color-black);
-	--color-background-soft: var(--color-black-soft);
-	--color-heading: var(--color-white);
-	--color-heading-inverted: var(--color-black-soft);
+  --color-black: #060606;
+  --color-black-soft: #292941;
+  --color-dark: #1a1a36;
+  --color-dark-soft: #333;
+  --color-gray: #808080;
+  --color-gray-soft: #b4b4b4;
+  --color-white: #fafaf7;
+  --color-light: #cacae7;
+  --color-yellow: #facc15;
+  --color-blue: #1d4ed8;
+  --color-red: #e11d48;
+  --color-white: #f0f0f0;
+  --color-text: var(--color-white);
+  --color-text-soft: var(--color-light);
+  --color-background: var(--color-black);
+  --color-background-soft: var(--color-black-soft);
+  --color-heading: var(--color-white);
+  --color-heading-inverted: var(--color-black-soft);
 }
 
 body {
@@ -57,9 +57,9 @@ h3 {
 *,
 *::before,
 *::after {
-	box-sizing: border-box;
-	margin: 0;
-	font-weight: normal;
+  box-sizing: border-box;
+  margin: 0;
+  font-weight: normal;
 }
 
 a {
@@ -77,33 +77,40 @@ a {
   padding: 1rem 1rem 2rem;
 }
 
+.ant-form-item-explain-error {
+  line-height: 1rem;
+  margin-bottom: 1rem;
+}
+
 /* Arrows */
-.ant-carousel .slick-prev, .ant-carousel .slick-next {
-	border: 1px solid var(--color-blue);
-	background: var(--color-gray);
-	border-radius: 50%;
-	padding: 0.7rem;
-	font-size: 2rem;
-	color: var(--color-white);
+.ant-carousel .slick-prev,
+.ant-carousel .slick-next {
+  border: 1px solid var(--color-blue);
+  background: var(--color-gray);
+  border-radius: 50%;
+  padding: 0.7rem;
+  font-size: 2rem;
+  color: var(--color-white);
 }
 
 .ant-carousel .slick-prev::after {
-	top: 30%;
-	left: 30%;
+  top: 30%;
+  left: 30%;
 }
 .ant-carousel .slick-next::after {
-	top: 30%;
-	left: 15%;
+  top: 30%;
+  left: 15%;
 }
 
-.ant-carousel .slick-prev:hover, .ant-carousel .slick-next:hover {
-	background: var(--color-blue);
+.ant-carousel .slick-prev:hover,
+.ant-carousel .slick-next:hover {
+  background: var(--color-blue);
 }
 
 /* Dots */
 .ant-carousel .slick-dots li button {
-	background: var(--color-black-soft);
+  background: var(--color-black-soft);
 }
 .ant-carousel .slick-dots li.slick-active button {
-	background: var(--color-red);
+  background: var(--color-red);
 }

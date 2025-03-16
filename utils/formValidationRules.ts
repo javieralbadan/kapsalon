@@ -17,12 +17,12 @@ export const USER_PHONE_RULES: Rule[] = [
   {
     validator: (_, value: string) => {
       if (!value) {
-        return Promise.reject('Ingresa tu número de WhatsApp');
+        return Promise.reject(new Error('Ingresa tu número de WhatsApp'));
       }
 
       const numberValue: string = value ? value.toString().replace(/\D/g, '') : '';
       if (numberValue.length !== 10) {
-        return Promise.reject('Ingresa los 10 dígitos de tu WhatsApp');
+        return Promise.reject(new Error('Ingresa los 10 dígitos de tu WhatsApp'));
       }
 
       return Promise.resolve();
@@ -39,14 +39,15 @@ export const PHONE_FORMATTER = (value: string | undefined): string => {
   return `${phoneNumber.slice(0, 3)} ${phoneNumber.slice(3, 6)} ${phoneNumber.slice(6)}`;
 };
 
+const OTP_LENGTH = 4; // TODO: Move to a constant file
 export const OTP_RULES = (codeOTP: string): Rule[] => [
   { required: true, message: 'Por favor, ingrese el código OTP' },
-  { len: 6, message: 'El código OTP debe tener 6 dígitos' },
+  { len: OTP_LENGTH, message: `El código OTP debe tener ${OTP_LENGTH} dígitos` },
   { pattern: /^\d+$/, message: 'El código OTP solo debe contener números' },
   {
     validator: (_, value: string) => {
-      if (value && value.length === 6 && value !== codeOTP) {
-        return Promise.reject('El código ingresado es incorrecto');
+      if (value && value.length === OTP_LENGTH && value !== codeOTP) {
+        return Promise.reject(new Error('El código ingresado es incorrecto'));
       }
       return Promise.resolve();
     },

@@ -24,6 +24,7 @@
     "dayjs": "^1.11.13",
     "next": "15.1.7",
     "next-auth": "^4.24.5",
+    "node-fetch": "^3.3.2",
     "papaparse": "^5.4.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
