@@ -1,5 +1,4 @@
 import {
-  FormValuesType,
   MessageBodyRequest,
   UseSendVerificationCodeProps,
   UseSendVerificationCodeReturn,
@@ -15,27 +14,21 @@ const formatPhoneNumber = (phone: string): string => {
 };
 
 export const useSendVerificationCode = ({
-  setCustomerInfo,
   setCodeOTP,
-  form,
+  userForm,
 }: UseSendVerificationCodeProps): UseSendVerificationCodeReturn => {
   const [isSending, setIsSending] = useState<boolean>(false);
 
-  const sendVerificationCode = async (values: FormValuesType) => {
+  const sendVerificationCode = async (phoneNumber: string) => {
     setIsSending(true);
 
+    const to = formatPhoneNumber(phoneNumber);
     const randomCode: string = generateOTP();
-    const phoneNumber = formatPhoneNumber(values.phone);
-    const updatedValues = {
-      ...values,
-      phone: phoneNumber,
-    };
-    setCustomerInfo(updatedValues);
 
     try {
       const bodyRequest: MessageBodyRequest = {
         templateName: 'verify_whatsapp',
-        to: phoneNumber,
+        to,
         components: [
           {
             type: 'body',
@@ -73,7 +66,7 @@ export const useSendVerificationCode = ({
     } catch (error) {
       console.error(error instanceof Error ? error.message : 'Error desconocido');
       setCodeOTP('');
-      form.setFields([
+      userForm.setFields([
         {
           name: 'phone',
           errors: ['No se pudo enviar el código. Por favor, contacta directamente a la barbería.'],

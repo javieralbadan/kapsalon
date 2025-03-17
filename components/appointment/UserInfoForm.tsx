@@ -1,6 +1,11 @@
 import { useSendVerificationCode } from '@/hooks/useSendVerificationCode';
-import { FormValuesType } from '@/types/messages';
-import { PHONE_FORMATTER, USER_INFO_RULES, USER_PHONE_RULES } from '@/utils/formValidationRules';
+import { FormUserInfoType } from '@/types/messages';
+import {
+  phoneFormatter,
+  prepareNameForDatabase,
+  USER_INFO_RULES,
+  USER_PHONE_RULES,
+} from '@/utils/formValidationRules';
 import { UserOutlined, WhatsAppOutlined } from '@ant-design/icons';
 import { Form, Input, InputNumber } from 'antd';
 import { SubmitButton } from '../ui/SubmitButton';
@@ -8,19 +13,27 @@ import { SubmitButton } from '../ui/SubmitButton';
 interface Props {
   codeOTP: string;
   setCodeOTP: (val: string) => void;
-  setCustomerInfo: (values: FormValuesType) => void;
+  setCustomerInfo: (values: FormUserInfoType) => void;
 }
 
 const UserInfoForm = ({ codeOTP, setCodeOTP, setCustomerInfo }: Props) => {
   const [userForm] = Form.useForm();
-  const { isSending, sendVerificationCode } = useSendVerificationCode({
-    setCustomerInfo,
-    setCodeOTP,
-    form: userForm,
-  });
+  const { isSending, sendVerificationCode } = useSendVerificationCode({ setCodeOTP, userForm });
+
+  const handleFinish = (values: FormUserInfoType) => {
+    const formattedValues = {
+      ...values,
+      firstName: prepareNameForDatabase(values.firstName),
+      lastName: prepareNameForDatabase(values.lastName),
+    };
+    console.log('🚀 ~ handleFinish ~ formattedValues:', formattedValues);
+
+    setCustomerInfo(formattedValues);
+    sendVerificationCode(values.phone);
+  };
 
   return (
-    <Form form={userForm} disabled={!!codeOTP} layout="horizontal" onFinish={sendVerificationCode}>
+    <Form form={userForm} disabled={!!codeOTP} layout="horizontal" onFinish={handleFinish}>
       <Form.Item
         name="firstName"
         className="mb-3"
@@ -47,7 +60,7 @@ const UserInfoForm = ({ codeOTP, setCodeOTP, setCustomerInfo }: Props) => {
       >
         <InputNumber
           controls={false}
-          formatter={PHONE_FORMATTER}
+          formatter={phoneFormatter}
           maxLength={12}
           parser={(value) => value!.replace(/\D/g, '')}
           prefix={<WhatsAppOutlined />}

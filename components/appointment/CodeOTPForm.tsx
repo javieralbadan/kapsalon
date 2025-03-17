@@ -1,4 +1,3 @@
-import { FormValuesType } from '@/types/messages';
 import { OTP_RULES } from '@/utils/formValidationRules';
 import { Form, Input } from 'antd';
 import { CSSProperties, useState } from 'react';
@@ -6,7 +5,7 @@ import { SubmitButton } from '../ui/SubmitButton';
 
 interface Props {
   codeOTP: string;
-  confirmAppointment: (values: FormValuesType) => void;
+  confirmAppointment: () => void;
   isSending: boolean;
 }
 

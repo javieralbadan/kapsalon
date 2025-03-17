@@ -18,17 +18,23 @@ export interface MessageBodyRequest {
   components: ComponentsType[];
 }
 
-export interface FormValuesType {
-  [key: string]: string;
+// Create appointment - user info
+export interface CodeOTPType {
+  verificationCode: string;
+}
+
+export interface FormUserInfoType {
+  firstName: string;
+  lastName: string;
+  phone: string;
 }
 
 export interface UseSendVerificationCodeProps {
-  setCustomerInfo: (values: FormValuesType) => void;
   setCodeOTP: (val: string) => void;
-  form: FormInstance;
+  userForm: FormInstance;
 }
 
 export interface UseSendVerificationCodeReturn {
   isSending: boolean;
-  sendVerificationCode: (values: FormValuesType) => void;
+  sendVerificationCode: (phoneNumber: string) => void;
 }

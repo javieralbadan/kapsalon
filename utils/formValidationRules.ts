@@ -13,6 +13,37 @@ export const USER_INFO_RULES = (fieldName: string): Rule[] => [
   },
 ];
 
+export const formatName = (name: string): string => {
+  if (!name) return '';
+
+  const words = name.trim().toLowerCase().split(/\s+/);
+  const formattedWords = words.map((word) => {
+    if (word.length === 0) return '';
+
+    const specialCases = ['de', 'la', 'del', 'los', 'las', 'y', 'e'];
+    if (specialCases.includes(word) && words.indexOf(word) !== 0) {
+      return word;
+    }
+
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  });
+
+  return formattedWords.join(' ');
+};
+
+export const sanitizeName = (input: string): string => {
+  if (!input) return '';
+
+  return input.replace(/[^a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s'-]/g, '');
+};
+
+export const prepareNameForDatabase = (name: string): string => {
+  if (!name) return '';
+
+  const sanitized = sanitizeName(name);
+  return formatName(sanitized);
+};
+
 export const USER_PHONE_RULES: Rule[] = [
   {
     validator: (_, value: string) => {
@@ -30,7 +61,7 @@ export const USER_PHONE_RULES: Rule[] = [
   },
 ];
 
-export const PHONE_FORMATTER = (value: string | undefined): string => {
+export const phoneFormatter = (value: string | undefined): string => {
   if (!value) return '';
   const phoneNumber = value.toString().replace(/\D/g, '');
   const phoneNumberLength = phoneNumber.length;

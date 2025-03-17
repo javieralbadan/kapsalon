@@ -1,4 +1,5 @@
 import { AppointmentCreationType } from '@/types/appointments';
+import { FormUserInfoType } from '@/types/messages';
 import { formatDateTime } from '@/utils/formatters';
 import { Button, Card, Divider, Result } from 'antd';
 import Link from 'next/link';
@@ -11,22 +12,17 @@ interface Props {
   goBack: () => void;
 }
 
-interface ValuesType {
-  [key: string]: string;
-}
-
 const AppointmentConfirmation = ({ appointment, goBack }: Props) => {
   const [codeOTP, setCodeOTP] = useState<string>('');
-  const [customerInfo, setCustomerInfo] = useState<ValuesType>({});
+  const [customerInfo, setCustomerInfo] = useState<FormUserInfoType | null>(null);
   const [isSending, setIsSending] = useState<boolean>(false);
 
   const isAppointmentReady: boolean =
     !!appointment.barber.id && !!appointment.service.id && !!appointment.dayTime;
 
-  const confirmAppointment = (codeOTP: ValuesType) => {
+  const confirmAppointment = () => {
     setIsSending(true);
     console.log('confirmAppointment:', { appointment, customerInfo });
-    console.log('Form:', codeOTP);
     console.log('confirmAppointment · Create user & appointment in DB');
     // TODO: Create appointment in DB
     setTimeout(() => setIsSending(false), 2000);
