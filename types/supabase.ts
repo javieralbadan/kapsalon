@@ -7,40 +7,37 @@ export type Database = {
         Row: {
           created_at: string;
           customer_id: string;
-          date_time: string | null;
+          date_time: string;
           id: string;
           price_override: number | null;
           rating: number | null;
           service_id: string;
           staff_member_id: string;
           status: Database['public']['Enums']['appointment_status'];
-          time: string;
           updated_at: string;
         };
         Insert: {
           created_at?: string;
           customer_id: string;
-          date_time?: string | null;
+          date_time: string;
           id?: string;
           price_override?: number | null;
           rating?: number | null;
           service_id: string;
           staff_member_id: string;
           status?: Database['public']['Enums']['appointment_status'];
-          time?: string;
           updated_at?: string;
         };
         Update: {
           created_at?: string;
           customer_id?: string;
-          date_time?: string | null;
+          date_time?: string;
           id?: string;
           price_override?: number | null;
           rating?: number | null;
           service_id?: string;
           staff_member_id?: string;
           status?: Database['public']['Enums']['appointment_status'];
-          time?: string;
           updated_at?: string;
         };
         Relationships: [
@@ -70,30 +67,33 @@ export type Database = {
       customers: {
         Row: {
           created_at: string;
-          email: string;
+          email: string | null;
           first_name: string;
           id: string;
           last_name: string;
           last_session: string | null;
           phone_number: number;
+          phone_verified: boolean;
         };
         Insert: {
           created_at?: string;
-          email: string;
+          email?: string | null;
           first_name: string;
           id?: string;
           last_name: string;
           last_session?: string | null;
           phone_number: number;
+          phone_verified?: boolean;
         };
         Update: {
           created_at?: string;
-          email?: string;
+          email?: string | null;
           first_name?: string;
           id?: string;
           last_name?: string;
           last_session?: string | null;
           phone_number?: number;
+          phone_verified?: boolean;
         };
         Relationships: [];
       };
@@ -125,7 +125,15 @@ export type Database = {
           price?: number;
           staff_member_id?: string;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: 'services_staff_member_id_fkey';
+            columns: ['staff_member_id'];
+            isOneToOne: false;
+            referencedRelation: 'staff';
+            referencedColumns: ['id'];
+          },
+        ];
       };
       shops: {
         Row: {
@@ -324,4 +332,17 @@ export type Enums<
   ? Database[PublicEnumNameOrOptions['schema']]['Enums'][EnumName]
   : PublicEnumNameOrOptions extends keyof PublicSchema['Enums']
   ? PublicSchema['Enums'][PublicEnumNameOrOptions]
+  : never;
+
+export type CompositeTypes<
+  PublicCompositeTypeNameOrOptions extends { schema: keyof Database },
+  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+    schema: keyof Database;
+  }
+    ? keyof Database[PublicCompositeTypeNameOrOptions['schema']]['CompositeTypes']
+    : never = never,
+> = PublicCompositeTypeNameOrOptions extends { schema: keyof Database }
+  ? Database[PublicCompositeTypeNameOrOptions['schema']]['CompositeTypes'][CompositeTypeName]
+  : PublicCompositeTypeNameOrOptions extends keyof PublicSchema['CompositeTypes']
+  ? PublicSchema['CompositeTypes'][PublicCompositeTypeNameOrOptions]
   : never;

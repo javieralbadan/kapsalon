@@ -1,5 +1,20 @@
+import type { Database } from '@/types/supabase';
 import { GroupListItem } from '@/types/ui';
+import { PostgrestError } from '@supabase/supabase-js';
 import { StaffAvailabilityRow } from './staffAvailability';
+
+export type AppointmentRow = Database['public']['Tables']['appointments']['Row'];
+export type AppointmentInsert = Database['public']['Tables']['appointments']['Insert'];
+
+export interface AppointmentResponseType {
+  data: AppointmentRow | null;
+  error: PostgrestError | null;
+}
+
+export interface AppointmentsResponseType {
+  data: AppointmentRow[] | null;
+  error: PostgrestError | null;
+}
 
 enum AppointmentStatus {
   Pending = 'pending',

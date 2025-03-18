@@ -26,8 +26,6 @@ const UserInfoForm = ({ codeOTP, setCodeOTP, setCustomerInfo }: Props) => {
       firstName: prepareNameForDatabase(values.firstName),
       lastName: prepareNameForDatabase(values.lastName),
     };
-    console.log('🚀 ~ handleFinish ~ formattedValues:', formattedValues);
-
     setCustomerInfo(formattedValues);
     sendVerificationCode(values.phone);
   };
