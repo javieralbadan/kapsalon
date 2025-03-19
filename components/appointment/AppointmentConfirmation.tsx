@@ -1,9 +1,12 @@
+import { useAppointmentCreation } from '@/hooks/useCreateAppointment';
 import { AppointmentCreationType } from '@/types/appointments';
+import { CustomerRow } from '@/types/customers';
 import { FormUserInfoType } from '@/types/messages';
 import { formatDateTime } from '@/utils/formatters';
-import { Button, Card, Divider, Result } from 'antd';
+import { Button, Card, Divider, Modal, Result } from 'antd';
 import Link from 'next/link';
 import { useState } from 'react';
+import AppointmentSuccess from './AppointmentSuccess';
 import CodeOTPForm from './CodeOTPForm';
 import UserInfoForm from './UserInfoForm';
 
@@ -15,17 +18,38 @@ interface Props {
 const AppointmentConfirmation = ({ appointment, goBack }: Props) => {
   const [codeOTP, setCodeOTP] = useState<string>('');
   const [customerInfo, setCustomerInfo] = useState<FormUserInfoType | null>(null);
-  const [isSending, setIsSending] = useState<boolean>(false);
+  const [showSuccessModal, setShowSuccessModal] = useState<boolean>(false);
+  const [successData, setSuccessData] = useState<{
+    customer: CustomerRow;
+    appointmentId: string;
+  } | null>(null);
 
   const isAppointmentReady: boolean =
     !!appointment.barber.id && !!appointment.service.id && !!appointment.dayTime;
 
-  const confirmAppointment = () => {
-    setIsSending(true);
-    console.log('confirmAppointment:', { appointment, customerInfo });
-    console.log('confirmAppointment · Create user & appointment in DB');
-    // TODO: Create appointment in DB
-    setTimeout(() => setIsSending(false), 2000);
+  const handleSuccess = (customerData: CustomerRow, appointmentId: string) => {
+    setSuccessData({
+      customer: customerData,
+      appointmentId,
+    });
+    setShowSuccessModal(true);
+  };
+
+  const closeSuccessModal = () => {
+    setShowSuccessModal(false);
+  };
+
+  const { createCustomerAndAppointment, isLoading } = useAppointmentCreation({
+    onSuccess: handleSuccess,
+    showSuccessNotification: false,
+  });
+
+  const handleConfirmAppointment = () => {
+    if (customerInfo) {
+      createCustomerAndAppointment(customerInfo, appointment).catch((error) =>
+        console.error('Error creating appointment:', error),
+      );
+    }
   };
 
   return (
@@ -68,8 +92,8 @@ const AppointmentConfirmation = ({ appointment, goBack }: Props) => {
           />
           <CodeOTPForm
             codeOTP={codeOTP}
-            confirmAppointment={confirmAppointment}
-            isSending={isSending}
+            confirmAppointment={handleConfirmAppointment}
+            isSending={isLoading}
           />
           <p className="my-3 text-xs text-gray-500">
             Al confirmar tu cita aceptas las{' '}
@@ -91,6 +115,27 @@ const AppointmentConfirmation = ({ appointment, goBack }: Props) => {
           </Link>
         </Card>
       )}
+
+      <Modal
+        open={showSuccessModal && !!successData}
+        footer={null}
+        closable={false}
+        width={550}
+        destroyOnClose
+      >
+        {successData && (
+          <AppointmentSuccess
+            customerData={successData.customer}
+            appointmentDetails={{
+              id: successData.appointmentId,
+              serviceName: appointment.service.name,
+              barberName: appointment.barber.name,
+              dateTime: appointment.dayTime.id as string,
+            }}
+            onClose={closeSuccessModal}
+          />
+        )}
+      </Modal>
     </>
   );
 };

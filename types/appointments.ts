@@ -16,7 +16,7 @@ export interface AppointmentsResponseType {
   error: PostgrestError | null;
 }
 
-enum AppointmentStatus {
+export enum AppointmentStatus {
   Pending = 'pending',
   Confirmed = 'confirmed',
   Completed = 'completed',
@@ -27,11 +27,6 @@ export interface AppointmentCreationType {
   barber: GroupListItem;
   service: GroupListItem;
   dayTime: GroupListItem;
-}
-
-export interface AppointmentType {
-  // ... otros campos
-  status: AppointmentStatus;
 }
 
 export interface AppointmentStepperProps {
