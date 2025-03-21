@@ -1,18 +1,16 @@
 'use client';
 import LegalBreadcrumb from '@/components/layout/LegalBreadcrumb';
+import { FormUserInfoType } from '@/types/messages';
 import { Button, Form, Input, Typography } from 'antd';
-
-interface ValuesType {
-  [key: string]: string;
-}
 
 const { Title, Paragraph } = Typography;
 
 const DeleteDataPage = () => {
   const [deleteUserDataForm] = Form.useForm();
 
-  const onFinish = (values: ValuesType) => {
+  const onFinish = (values: FormUserInfoType) => {
     console.log('Datos recibidos:', values);
+    // TODO: Create a register in DB
   };
 
   return (

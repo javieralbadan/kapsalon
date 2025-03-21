@@ -1,10 +1,12 @@
 import type { Database } from '@/types/supabase';
 import { GroupListItem } from '@/types/ui';
 import { PostgrestError } from '@supabase/supabase-js';
+import { ApiResponse } from './api';
 import { StaffAvailabilityRow } from './staffAvailability';
 
 export type AppointmentRow = Database['public']['Tables']['appointments']['Row'];
 export type AppointmentInsert = Database['public']['Tables']['appointments']['Insert'];
+export type AppointmentUpdate = Database['public']['Tables']['appointments']['Update'];
 
 export interface AppointmentResponseType {
   data: AppointmentRow | null;
@@ -15,6 +17,9 @@ export interface AppointmentsResponseType {
   data: AppointmentRow[] | null;
   error: PostgrestError | null;
 }
+
+export type AppointmentApiResponse = ApiResponse<AppointmentRow>;
+export type AppointmentsApiResponse = ApiResponse<AppointmentRow[]>;
 
 export enum AppointmentStatus {
   Pending = 'pending',
@@ -32,7 +37,7 @@ export interface AppointmentCreationType {
 export interface AppointmentStepperProps {
   barbers: GroupListItem[] | [];
   services: GroupListItem[] | [];
-  shops: GroupListItem[] | [];
+  shop: GroupListItem | null;
   availablities: StaffAvailabilityRow[] | [];
 }
 
@@ -44,7 +49,7 @@ export interface SetOptionParams {
 export interface BarbersContentProps {
   list: GroupListItem[] | [];
   selectedItemId: string | number | null;
-  shops: GroupListItem[] | [];
+  shop: GroupListItem | null;
   setOption: (params: SetOptionParams) => void;
 }
 

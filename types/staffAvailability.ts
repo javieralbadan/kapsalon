@@ -1,5 +1,6 @@
 import type { Database } from '@/types/supabase';
 import { PostgrestError } from '@supabase/supabase-js';
+import { ApiResponse } from './api';
 
 export type StaffAvailabilityRow = Database['public']['Tables']['staff_availability']['Row'];
 export type StaffAvailabilityInsert = Database['public']['Tables']['staff_availability']['Insert'];
@@ -19,3 +20,6 @@ export interface AvailabilitySlot {
   startTime: 'string';
   endTime: 'string';
 }
+
+export type StaffAvailabilityApiResponse = ApiResponse<StaffAvailabilityRow>;
+export type StaffAvailabilitiesApiResponse = ApiResponse<StaffAvailabilityRow[]>;

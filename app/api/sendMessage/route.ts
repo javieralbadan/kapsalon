@@ -1,3 +1,4 @@
+import { API_CODES } from '@/constants/api';
 import { MessageBodyRequest } from '@/types/messages';
 import { NextResponse } from 'next/server';
 
@@ -10,7 +11,7 @@ export async function POST(req: Request) {
     const { templateName, to, components } = (await req.json()) as MessageBodyRequest;
 
     if (!to || !components) {
-      return NextResponse.json({ error: 'Faltan parámetros' }, { status: 400 });
+      return NextResponse.json({ error: 'Faltan parámetros' }, { status: API_CODES.BAD_REQUEST });
     }
 
     const bodyRequest = {
@@ -45,7 +46,7 @@ export async function POST(req: Request) {
         error: (error as Error)?.message || 'Error interno',
         details: (error as { error_data?: unknown })?.error_data || null,
       },
-      { status: error instanceof Error ? 500 : 400 },
+      { status: API_CODES[error instanceof Error ? 'INTERNAL_SERVER_ERROR' : 'BAD_REQUEST'] },
     );
   }
 }

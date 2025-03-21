@@ -22,10 +22,10 @@ const STYLES = {
 };
 
 const AppointmentStepper = ({
-  barbers,
-  services,
-  shops,
-  availablities,
+  barbers = [],
+  services = [],
+  shop,
+  availablities = [],
 }: AppointmentStepperProps) => {
   const isMobile = useisMobile();
   const [currentStep, setCurrentStep] = useState<number>(0);
@@ -50,7 +50,7 @@ const AppointmentStepper = ({
         <BarbersContent
           list={barbers}
           selectedItemId={appointment.barber.id}
-          shops={shops}
+          shop={shop}
           setOption={setOption}
         />
       ),
@@ -103,7 +103,7 @@ const AppointmentStepper = ({
   );
 };
 
-const BarbersContent = ({ list, selectedItemId, shops, setOption }: BarbersContentProps) => (
+const BarbersContent = ({ list, selectedItemId, shop, setOption }: BarbersContentProps) => (
   <>
     <h2 className={STYLES.TITLE}>Selecciona un barbero:</h2>
     <GroupList
@@ -111,7 +111,7 @@ const BarbersContent = ({ list, selectedItemId, shops, setOption }: BarbersConte
       onSelectOption={(listItem) => setOption({ key: 'barber', listItem })}
       selectedItemId={selectedItemId}
     />
-    {list.length === 1 && <p className="mt-4">Próximamente más barberos de {shops[0].name}</p>}
+    {shop && list.length === 1 && <p className="mt-4">Próximamente más barberos de {shop?.name}</p>}
   </>
 );
 
