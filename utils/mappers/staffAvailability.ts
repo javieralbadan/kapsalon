@@ -7,6 +7,7 @@ import {
   createLocalDateString,
   formatOnlyDate,
   formatTime,
+  getIDFromDateTime,
 } from '@/utils/formatters';
 
 interface TimeSlotProps {
@@ -91,7 +92,7 @@ export const mapTimeSlotList = ({
     const timeString = startDateTime.toTimeString().split(' ')[0].substring(0, 5);
 
     timeSlots.push({
-      id: startDateTime.toISOString(),
+      id: getIDFromDateTime(startDateTime),
       name: formatTime({ time24h: timeString }),
     });
 

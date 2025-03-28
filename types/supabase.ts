@@ -72,7 +72,7 @@ export type Database = {
           id: string;
           last_name: string;
           last_session: string | null;
-          phone_number: number;
+          phone_number: string;
           phone_verified: boolean;
         };
         Insert: {
@@ -82,7 +82,7 @@ export type Database = {
           id?: string;
           last_name: string;
           last_session?: string | null;
-          phone_number: number;
+          phone_number: string;
           phone_verified?: boolean;
         };
         Update: {
@@ -92,7 +92,7 @@ export type Database = {
           id?: string;
           last_name?: string;
           last_session?: string | null;
-          phone_number?: number;
+          phone_number?: string;
           phone_verified?: boolean;
         };
         Relationships: [];
@@ -167,7 +167,7 @@ export type Database = {
           first_name: string;
           id: string;
           last_name: string;
-          phone_number: number;
+          phone_number: string;
           profile_image: string | null;
           shop_id: string | null;
         };
@@ -178,7 +178,7 @@ export type Database = {
           first_name: string;
           id?: string;
           last_name: string;
-          phone_number: number;
+          phone_number: string;
           profile_image?: string | null;
           shop_id?: string | null;
         };
@@ -189,7 +189,7 @@ export type Database = {
           first_name?: string;
           id?: string;
           last_name?: string;
-          phone_number?: number;
+          phone_number?: string;
           profile_image?: string | null;
           shop_id?: string | null;
         };

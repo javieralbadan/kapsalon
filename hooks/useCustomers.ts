@@ -1,6 +1,12 @@
-import { CustomerInsert, CustomerRow } from '@/types/customers';
+import { CustomerInsert, CustomerRow, CustomerUI } from '@/types/customers';
+import { mapCustomerUI } from '@/utils/mappers/customer';
 import useSWR from 'swr';
 import { CACHE_TIMES } from '../constants/cache';
+
+interface FetchCustomerParams {
+  endpoint?: 'phone' | null;
+  id: string;
+}
 
 export function useGetAllCustomers(options = {}) {
   const getAll = async () => {
@@ -18,24 +24,28 @@ export function useGetAllCustomers(options = {}) {
   return useSWR('customers', getAll, config);
 }
 
-export function useCustomer(id: string, options = {}) {
-  const getById = async (id: string) => {
-    const response = await fetch(`/api/customers/${id}`);
-    if (!response.ok) throw new Error('Error fetching customer');
-    const responseData = (await response.json()) as { data: CustomerRow };
-    return responseData.data;
-  };
+// This function is being exported to fetches a customer by ID or phone number also from other hooks
+export const fetchCustomer = async ({
+  endpoint,
+  id,
+}: FetchCustomerParams): Promise<CustomerRow> => {
+  const response = await fetch(`/api/customers/${endpoint ? `${endpoint}/` : ''}${id}`);
+  if (!response.ok) throw new Error('Error fetching customer');
+  const responseData = (await response.json()) as { data: CustomerRow };
+  return responseData.data;
+};
 
+export function useGetCustomer(id: string, options = {}) {
   const config = {
     dedupingInterval: CACHE_TIMES.ONE_DAY,
     ...options,
   };
 
-  return useSWR(id ? `customer-${id}` : null, () => getById(id), config);
+  return useSWR(id ? `customer-${id}` : null, () => fetchCustomer({ id }), config);
 }
 
 export function useCreateCustomer() {
-  return async (newCustomer: CustomerInsert) => {
+  return async (newCustomer: CustomerInsert): Promise<CustomerUI | null> => {
     const response = await fetch('/api/customers', {
       method: 'POST',
       headers: {
@@ -44,8 +54,9 @@ export function useCreateCustomer() {
       body: JSON.stringify(newCustomer),
     });
 
-    if (!response.ok) throw new Error('Error creating appointment');
+    if (!response.ok) throw new Error('Error creating customer');
 
-    return response.json() as Promise<CustomerRow>;
+    const responseData = (await response.json()) as { data: CustomerRow };
+    return mapCustomerUI(responseData.data);
   };
 }

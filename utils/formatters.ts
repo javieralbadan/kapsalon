@@ -112,7 +112,8 @@ export const formatTime = ({
   date.setMinutes(parseInt(minutes));
 
   const formattedTime = new Intl.DateTimeFormat(locale, options).format(date);
-  return formattedTime.replace(/\.\s?/g, '').replace(/\s/g, ' ');
+  const finalTime = formattedTime.replace(/\.\s?/g, '').replace(/\s/g, ' ');
+  return finalTime;
 };
 
 export const formatDateTime = ({
@@ -126,6 +127,16 @@ export const formatDateTime = ({
 
   const date = new Date(dateString);
   return new Intl.DateTimeFormat(locale, options).format(date);
+};
+
+export const getIDFromDateTime = (dateString: Date): string => {
+  const year = dateString.getFullYear();
+  const month = String(dateString.getMonth() + 1).padStart(2, '0');
+  const day = String(dateString.getDate()).padStart(2, '0');
+  const hours = String(dateString.getHours()).padStart(2, '0');
+  const minutes = String(dateString.getMinutes()).padStart(2, '0');
+
+  return `${year}-${month}-${day}T${hours}:${minutes}`;
 };
 
 const DEFAULT_CURRENCY_OPTIONS: Intl.NumberFormatOptions = {

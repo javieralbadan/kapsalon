@@ -1,17 +1,23 @@
 import {
   AppointmentCreationType,
   AppointmentInsert,
+  AppointmentRow,
   AppointmentStatus,
+  AppointmentUI,
 } from '@/types/appointments';
-import { CustomerInsert } from '@/types/customers';
-import { FormUserInfoType } from '@/types/messages';
 
-export const mapCustomerToInsert = (customerInfo: FormUserInfoType): CustomerInsert => {
+export const mapAppointmentUI = (appointmentAPI: AppointmentRow): AppointmentUI | null => {
+  if (Object.keys(appointmentAPI).length === 0) return null;
+
   return {
-    first_name: customerInfo.firstName,
-    last_name: customerInfo.lastName,
-    phone_number: parseInt(customerInfo.phone),
-    phone_verified: true,
+    id: appointmentAPI.id,
+    customerId: appointmentAPI.customer_id,
+    dateTime: appointmentAPI.date_time,
+    serviceId: appointmentAPI.service_id,
+    staffMemberId: appointmentAPI.staff_member_id,
+    status: appointmentAPI.status,
+    ...(appointmentAPI.price_override && { priceOverride: appointmentAPI.price_override }),
+    ...(appointmentAPI.rating && { rating: appointmentAPI.rating }),
   };
 };
 

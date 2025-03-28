@@ -1,6 +1,7 @@
 import { GroupList } from '@/components/appointment/GroupList';
 import { useisMobile } from '@/hooks/useIsMobile';
 import {
+  APPOINTMENT_INIT_VALUE,
   AppointmentCreationType,
   AppointmentStepperProps,
   BarbersContentProps,
@@ -8,7 +9,7 @@ import {
   SetOptionParams,
   SlotContentProps,
 } from '@/types/appointments';
-import { Button, Steps } from 'antd';
+import { Button, Result, Steps } from 'antd';
 import { useState } from 'react';
 import AppointmentConfirmation from './AppointmentConfirmation';
 import DaySlots from './DaySlots';
@@ -29,11 +30,9 @@ const AppointmentStepper = ({
 }: AppointmentStepperProps) => {
   const isMobile = useisMobile();
   const [currentStep, setCurrentStep] = useState<number>(0);
-  const [appointment, setAppointment] = useState<AppointmentCreationType>({
-    barber: { id: '', name: '' },
-    service: { id: '', name: '' },
-    dayTime: { id: '', name: '' },
-  });
+  const [appointment, setAppointment] = useState<AppointmentCreationType>(APPOINTMENT_INIT_VALUE);
+  const isAppointmentReady: boolean =
+    !!appointment.barber.id && !!appointment.service.id && !!appointment.dayTime;
 
   const setOption = ({ key, listItem }: SetOptionParams) => {
     setAppointment({ ...appointment, [key]: listItem });
@@ -77,7 +76,11 @@ const AppointmentStepper = ({
     },
     {
       title: 'Confirmación',
-      content: <AppointmentConfirmation appointment={appointment} goBack={prevStep} />,
+      content: isAppointmentReady ? (
+        <AppointmentConfirmation appointment={appointment} goBack={prevStep} />
+      ) : (
+        <NotCompletedInfo goBack={prevStep} />
+      ),
     },
   ];
   return (
@@ -136,6 +139,21 @@ const SlotsContent = ({ availablities, selectedItemId, setOption }: SlotContentP
         setOption={setOption}
       />
     </>
+  );
+};
+
+const NotCompletedInfo = ({ goBack }: { goBack: () => void }) => {
+  return (
+    <Result
+      status="info"
+      title="Cita no establecida"
+      subTitle="Debes seleccionar todo lo necesario para confirmar tu cita"
+      extra={
+        <Button type="primary" onClick={goBack}>
+          Ir atrás
+        </Button>
+      }
+    />
   );
 };
 

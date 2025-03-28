@@ -5,16 +5,32 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
+  { params }: { params: Promise<{ slug?: string[] }> },
 ): Promise<NextResponse<CustomerApiResponse>> {
-  try {
-    const { id } = await params;
-    const supabase = await createClient();
+  const { slug = [] } = await params;
+  const [slug1, customerId] = slug;
 
-    const { data, error } = await supabase.from('customers').select('*').eq('id', id).single();
+  try {
+    const supabase = await createClient();
+    let rowAttribute;
+    let rowValue;
+
+    if (slug1 === 'phone' && customerId) {
+      rowAttribute = 'phone_number';
+      rowValue = customerId;
+    } else {
+      rowAttribute = 'id';
+      rowValue = slug1;
+    }
+
+    const { data, error } = await supabase
+      .from('customers')
+      .select('*')
+      .eq(rowAttribute, rowValue)
+      .single();
 
     if (error) {
-      console.error(`🔎 Error fetching customer ${id}:`, error);
+      console.error(`🔎 Error fetching customer by ${rowAttribute}:`, error);
       return NextResponse.json(
         {
           data: null,

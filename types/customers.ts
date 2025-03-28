@@ -5,6 +5,16 @@ import { ApiResponse } from './api';
 export type CustomerRow = Database['public']['Tables']['customers']['Row'];
 export type CustomerInsert = Database['public']['Tables']['customers']['Insert'];
 export type CustomerUpdate = Database['public']['Tables']['customers']['Update'];
+export type CustomerUI = {
+  createdAt?: string;
+  email?: string | null;
+  firstName: string;
+  id: string;
+  lastName: string;
+  lastSession?: string | null;
+  phoneNumber: string;
+  phoneVerified: boolean;
+};
 
 export interface CustomerResponseType {
   data: CustomerRow | null;

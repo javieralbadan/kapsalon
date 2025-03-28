@@ -12,20 +12,25 @@ export async function GET(
 
   try {
     const supabase = await createClient();
-    let rowAttribute = 'id';
+    let rowAttribute;
+    let rowValue;
 
     if (slug1 === 'shop' && shopId) {
       rowAttribute = 'shop_id';
+      rowValue = shopId;
+    } else {
+      rowAttribute = 'id';
+      rowValue = slug1;
     }
 
     const { data, error } = await supabase
       .from('staff')
       .select('*')
-      .eq(rowAttribute, slug1)
+      .eq(rowAttribute, rowValue)
       .single();
 
     if (error) {
-      console.error('🔎 Error fetching staff member:', error);
+      console.error(`🔎 Error fetching staff member by ${rowAttribute}:`, error);
       return NextResponse.json(
         {
           data: null,

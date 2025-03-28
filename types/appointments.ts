@@ -7,6 +7,16 @@ import { StaffAvailabilityRow } from './staffAvailability';
 export type AppointmentRow = Database['public']['Tables']['appointments']['Row'];
 export type AppointmentInsert = Database['public']['Tables']['appointments']['Insert'];
 export type AppointmentUpdate = Database['public']['Tables']['appointments']['Update'];
+export type AppointmentUI = {
+  customerId: string;
+  dateTime: string;
+  id: string;
+  priceOverride?: number | null;
+  rating?: number | null;
+  serviceId: string;
+  staffMemberId: string;
+  status: Database['public']['Enums']['appointment_status'];
+};
 
 export interface AppointmentResponseType {
   data: AppointmentRow | null;
@@ -32,7 +42,17 @@ export interface AppointmentCreationType {
   barber: GroupListItem;
   service: GroupListItem;
   dayTime: GroupListItem;
+  codeOTP: string;
+  goBack: () => void;
 }
+
+export const APPOINTMENT_INIT_VALUE = {
+  barber: { id: '', name: '' },
+  service: { id: '', name: '' },
+  dayTime: { id: '', name: '' },
+  codeOTP: '',
+  goBack: () => {},
+};
 
 export interface AppointmentStepperProps {
   barbers: GroupListItem[] | [];
