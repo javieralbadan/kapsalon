@@ -51,10 +51,10 @@ export async function GET(
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ): Promise<NextResponse<AppointmentApiResponse>> {
   try {
-    const { id } = params;
+    const { id } = await params;
     const appointmentData = (await request.json()) as AppointmentUpdate;
     const supabase = await createClient();
 
@@ -103,10 +103,10 @@ export async function PATCH(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ): Promise<NextResponse<AppointmentApiResponse>> {
   try {
-    const { id } = params;
+    const { id } = await params;
     const supabase = await createClient();
 
     const { error } = await supabase.from('appointments').delete().eq('id', id);

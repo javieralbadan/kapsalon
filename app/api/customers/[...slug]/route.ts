@@ -67,10 +67,10 @@ export async function GET(
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ): Promise<NextResponse<CustomerApiResponse>> {
   try {
-    const { id } = params;
+    const { id } = await params;
     const customerData = (await request.json()) as CustomerUpdate;
     const supabase = await createClient();
 
