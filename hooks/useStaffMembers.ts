@@ -6,7 +6,12 @@ import { CACHE_TIMES } from '../constants/cache';
 export function useGetAllStaff(options = {}) {
   const getAll = async () => {
     const response = await fetch('/api/staff-members');
-    if (!response.ok) throw new Error('Error fetching staff members');
+
+    if (!response.ok) {
+      const errorResponse = (await response.json()) as { error: string };
+      throw new Error(errorResponse.error || 'Error al obtener los barberos');
+    }
+
     const responseData = (await response.json()) as { data: StaffMemberRow[] };
     return responseData.data;
   };
@@ -30,7 +35,12 @@ export function useGetAllStaff(options = {}) {
 export function useGetStaffMember(id: string, options = {}) {
   const getById = async (id: string) => {
     const response = await fetch(`/api/staff-members/${id}`);
-    if (!response.ok) console.log('Error fetching staff members');
+
+    if (!response.ok) {
+      const errorResponse = (await response.json()) as { error: string };
+      throw new Error(errorResponse.error || 'Error al obtener los datos del barbero');
+    }
+
     const responseData = (await response.json()) as { data: StaffMemberRow };
     return responseData.data;
   };
@@ -50,7 +60,12 @@ export function useGetStaffMemberByShop(shopId: string, options = {}) {
 
   const getByShopId = async (shopId: string) => {
     const response = await fetch(`/api/staff-members/shop/${shopId}`);
-    if (!response.ok) console.log('Error fetching staff member');
+
+    if (!response.ok) {
+      const errorResponse = (await response.json()) as { error: string };
+      throw new Error(errorResponse.error || 'Error al obtener los datos del barbero');
+    }
+
     const responseData = (await response.json()) as { data: StaffMemberRow };
     memberId = responseData.data.id;
     return responseData.data;
@@ -81,7 +96,10 @@ export function useCreateStaffMember() {
       body: JSON.stringify(newStaffMember),
     });
 
-    if (!response.ok) console.log('Error creating staff member');
+    if (!response.ok) {
+      const errorResponse = (await response.json()) as { error: string };
+      throw new Error(errorResponse.error || 'Error al crear el barbero');
+    }
 
     return response.json() as Promise<StaffMemberRow>;
   };

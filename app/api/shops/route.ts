@@ -35,7 +35,7 @@ export async function GET(): Promise<NextResponse<ShopsApiResponse>> {
     return NextResponse.json(
       {
         data: null,
-        error: 'Internal Server Error',
+        error: (e as Error)?.message || 'Error interno',
       },
       {
         status: API_CODES.INTERNAL_SERVER_ERROR,
@@ -78,7 +78,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<ShopApiRe
     return NextResponse.json(
       {
         data: null,
-        error: 'Internal Server Error',
+        error: (e as Error)?.message || 'Error interno',
       },
       {
         status: API_CODES.INTERNAL_SERVER_ERROR,

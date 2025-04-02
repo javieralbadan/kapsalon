@@ -22,6 +22,7 @@ const AppointmentConfirmation = ({ appointment, goBack }: Props) => {
 
   const { createCustomerAndAppointment, isLoading } = useAppointmentCreation({
     onSuccess: () => setShowSuccessModal(true),
+    onError: () => goBack(),
   });
 
   const handleConfirmAppointment = () => {
@@ -111,7 +112,7 @@ const SummaryInfo = ({ service, barber, dayTime, codeOTP, goBack }: AppointmentC
 const LegalLinks = () => {
   return (
     <p className="my-3 text-xs text-gray-500">
-      Al confirmar tu cita aceptas las{' '}
+      Pagas directamente al barbero. Al confirmar tu cita aceptas las{' '}
       <Link className="underline" href="/legal/condiciones-del-servicio" target="_blank">
         Condiciones del Servicio
       </Link>{' '}

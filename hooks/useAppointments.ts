@@ -6,7 +6,12 @@ import { CACHE_TIMES } from '../constants/cache';
 export function useGetAllAppointments() {
   const getAll = async () => {
     const response = await fetch('/api/appointments');
-    if (!response.ok) throw new Error('Error fetching appointments');
+
+    if (!response.ok) {
+      const errorResponse = (await response.json()) as { error: string };
+      throw new Error(errorResponse.error || 'Error al obtener las citas');
+    }
+
     const responseData = (await response.json()) as { data: AppointmentRow[] };
     return responseData.data;
   };
@@ -19,7 +24,12 @@ export function useGetAllAppointments() {
 export function useGetAppointment(id: string) {
   const getById = async (id: string) => {
     const response = await fetch(`/api/appointments/${id}`);
-    if (!response.ok) throw new Error('Error fetching appointment');
+
+    if (!response.ok) {
+      const errorResponse = (await response.json()) as { error: string };
+      throw new Error(errorResponse.error || 'Error al obtener la cita');
+    }
+
     const responseData = (await response.json()) as { data: AppointmentRow };
     return responseData.data;
   };
@@ -39,7 +49,10 @@ export function useCreateAppointment() {
       body: JSON.stringify(newAppointment),
     });
 
-    if (!response.ok) throw new Error('Error creating appointment');
+    if (!response.ok) {
+      const errorResponse = (await response.json()) as { error: string };
+      throw new Error(errorResponse.error || 'Error al crear la cita');
+    }
 
     const responseData = (await response.json()) as { data: AppointmentRow };
     return mapAppointmentUI(responseData.data);

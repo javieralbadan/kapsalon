@@ -10,7 +10,7 @@ import { fetchCustomer, useCreateCustomer } from './useCustomers';
 
 interface Props {
   onSuccess: () => void;
-  onError?: (error: Error) => void;
+  onError: () => void;
 }
 
 export const useAppointmentCreation = ({ onSuccess, onError }: Props) => {
@@ -61,9 +61,8 @@ export const useAppointmentCreation = ({ onSuccess, onError }: Props) => {
 
       return true;
     } catch (error) {
-      console.log('🚀 ~ error:', error);
-      message.error(`Hemos tenido un problema. ${error as string}`);
-      if (onError) onError(error as Error);
+      message.error(`${error as string}`, 8);
+      onError();
       return false;
     } finally {
       setIsLoading(false);

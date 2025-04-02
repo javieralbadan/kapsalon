@@ -6,7 +6,12 @@ import { CACHE_TIMES } from '../constants/cache';
 export function useGetAllServices(options = {}) {
   const getAll = async () => {
     const response = await fetch('/api/services');
-    if (!response.ok) throw new Error('Error fetching services');
+
+    if (!response.ok) {
+      const errorResponse = (await response.json()) as { error: string };
+      throw new Error(errorResponse.error || 'Error al obtener los servicios');
+    }
+
     const responseData = (await response.json()) as { data: ServiceRow[] };
     return responseData.data;
   };
@@ -30,7 +35,12 @@ export function useGetAllServices(options = {}) {
 export function useGetService(id: string, options = {}) {
   const getById = async (id: string) => {
     const response = await fetch(`/api/services/${id}`);
-    if (!response.ok) throw new Error('Error fetching service');
+
+    if (!response.ok) {
+      const errorResponse = (await response.json()) as { error: string };
+      throw new Error(errorResponse.error || 'Error al obtener el servicio');
+    }
+
     const responseData = (await response.json()) as { data: ServiceRow };
     return responseData.data;
   };

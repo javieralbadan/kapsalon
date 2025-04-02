@@ -1,5 +1,10 @@
 import { PostgrestError } from '@supabase/supabase-js';
 
+export const DB_CODES = {
+  NOT_FOUND: 'PGRST116',
+  UNIQUE_VIOLATION: '23505',
+};
+
 export const API_CODES = {
   OK: 200,
   CREATED: 201,
@@ -8,7 +13,10 @@ export const API_CODES = {
   INTERNAL_SERVER_ERROR: 500,
 };
 
+export const BAD_REQUEST_STATUS = {
+  status: API_CODES.BAD_REQUEST,
+};
+
 export const getDBErrorCode = ({ code }: PostgrestError) => {
-  const DB_NOT_FOUND_CODE = 'PGRST116';
-  return API_CODES[code === DB_NOT_FOUND_CODE ? 'NOT_FOUND' : 'BAD_REQUEST'];
+  return API_CODES[code === DB_CODES.NOT_FOUND ? 'NOT_FOUND' : 'BAD_REQUEST'];
 };

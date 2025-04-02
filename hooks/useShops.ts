@@ -5,7 +5,12 @@ import { CACHE_TIMES } from '../constants/cache';
 export function useGetAllShops(options = {}) {
   const getAll = async () => {
     const response = await fetch('/api/shops');
-    if (!response.ok) throw new Error('Error fetching shops');
+
+    if (!response.ok) {
+      const errorResponse = (await response.json()) as { error: string };
+      throw new Error(errorResponse.error || 'Error al obtener las barberías');
+    }
+
     const responseData = (await response.json()) as { data: ShopRow[] };
     return responseData.data;
   };
@@ -21,7 +26,12 @@ export function useGetAllShops(options = {}) {
 export function useGetShop(id: string, options = {}) {
   const getById = async (id: string) => {
     const response = await fetch(`/api/shops/${id}`);
-    if (!response.ok) throw new Error('Error fetching shop');
+
+    if (!response.ok) {
+      const errorResponse = (await response.json()) as { error: string };
+      throw new Error(errorResponse.error || 'Error al obtener la barbería');
+    }
+
     const responseData = (await response.json()) as { data: ShopRow };
     return responseData.data;
   };

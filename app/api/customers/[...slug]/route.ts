@@ -56,7 +56,7 @@ export async function GET(
     return NextResponse.json(
       {
         data: null,
-        error: 'Internal Server Error',
+        error: (e as Error)?.message || 'Error interno',
       },
       {
         status: API_CODES.INTERNAL_SERVER_ERROR,
@@ -108,7 +108,7 @@ export async function PATCH(
     return NextResponse.json(
       {
         data: null,
-        error: 'Internal Server Error',
+        error: (e as Error)?.message || 'Error interno',
       },
       {
         status: API_CODES.INTERNAL_SERVER_ERROR,

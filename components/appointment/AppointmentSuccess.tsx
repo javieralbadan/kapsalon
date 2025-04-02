@@ -33,7 +33,7 @@ const AppointmentSuccess = ({ appointmentDetails }: Props) => {
         <Text strong>Barbero:</Text> {appointmentDetails.barberName}
       </Paragraph>
       <Paragraph>
-        <Text strong>Fecha y hora:</Text> {formattedDate}
+        <Text strong>Fecha:</Text> {formattedDate}
       </Paragraph>
 
       <div className="mt-6 flex justify-center">

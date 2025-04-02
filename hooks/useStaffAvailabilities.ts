@@ -5,7 +5,12 @@ import { CACHE_TIMES } from '../constants/cache';
 export function useGetAllAvails(options = {}) {
   const getAll = async () => {
     const response = await fetch('/api/staff-availabilities');
-    if (!response.ok) throw new Error('Error fetching staff availabilities');
+
+    if (!response.ok) {
+      const errorResponse = (await response.json()) as { error: string };
+      throw new Error(errorResponse.error || 'Error al obtener las disponibilidades');
+    }
+
     const responseData = (await response.json()) as { data: StaffAvailabilityRow[] };
     return responseData.data;
   };
@@ -36,7 +41,10 @@ export function useCreateAvailability() {
       body: JSON.stringify(newRange),
     });
 
-    if (!response.ok) throw new Error('Error creating staff availability');
+    if (!response.ok) {
+      const errorResponse = (await response.json()) as { error: string };
+      throw new Error(errorResponse.error || 'Error al crear la disponibilidad');
+    }
 
     return response.json() as Promise<StaffAvailabilityRow>;
   };

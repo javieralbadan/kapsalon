@@ -40,13 +40,13 @@ export async function POST(req: Request) {
     }
 
     return NextResponse.json({ success: true, response: result });
-  } catch (error) {
+  } catch (e) {
     return NextResponse.json(
       {
-        error: (error as Error)?.message || 'Error interno',
-        details: (error as { error_data?: unknown })?.error_data || null,
+        error: (e as Error)?.message || 'Error interno',
+        details: (e as { error_data?: unknown })?.error_data || null,
       },
-      { status: API_CODES[error instanceof Error ? 'INTERNAL_SERVER_ERROR' : 'BAD_REQUEST'] },
+      { status: API_CODES[e instanceof Error ? 'INTERNAL_SERVER_ERROR' : 'BAD_REQUEST'] },
     );
   }
 }

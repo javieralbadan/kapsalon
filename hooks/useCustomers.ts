@@ -11,7 +11,12 @@ interface FetchCustomerParams {
 export function useGetAllCustomers(options = {}) {
   const getAll = async () => {
     const response = await fetch('/api/customers');
-    if (!response.ok) throw new Error('Error fetching customers');
+
+    if (!response.ok) {
+      const errorResponse = (await response.json()) as { error: string };
+      throw new Error(errorResponse.error || 'Error al obtener los usuarios');
+    }
+
     const responseData = (await response.json()) as { data: CustomerRow[] };
     return responseData.data;
   };
@@ -30,7 +35,12 @@ export const fetchCustomer = async ({
   id,
 }: FetchCustomerParams): Promise<CustomerRow> => {
   const response = await fetch(`/api/customers/${endpoint ? `${endpoint}/` : ''}${id}`);
-  if (!response.ok) throw new Error('Error fetching customer');
+
+  if (!response.ok) {
+    const errorResponse = (await response.json()) as { error: string };
+    throw new Error(errorResponse.error || 'Error al obtener el usuario');
+  }
+
   const responseData = (await response.json()) as { data: CustomerRow };
   return responseData.data;
 };
@@ -54,7 +64,10 @@ export function useCreateCustomer() {
       body: JSON.stringify(newCustomer),
     });
 
-    if (!response.ok) throw new Error('Error creating customer');
+    if (!response.ok) {
+      const errorResponse = (await response.json()) as { error: string };
+      throw new Error(errorResponse.error || 'Error al crear el usuario');
+    }
 
     const responseData = (await response.json()) as { data: CustomerRow };
     return mapCustomerUI(responseData.data);
