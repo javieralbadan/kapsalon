@@ -4,6 +4,14 @@ import { ApiResponse } from './api';
 
 export type StaffAvailabilityRow = Database['public']['Tables']['staff_availability']['Row'];
 export type StaffAvailabilityInsert = Database['public']['Tables']['staff_availability']['Insert'];
+export type StaffAvailabilityUI = {
+  id: string;
+  dayOfWeek: number;
+  endTime: string;
+  isAvailable: boolean;
+  staffMemberId: string;
+  startTime: string;
+};
 
 export interface StaffAvailabilityResponseType {
   data: StaffAvailabilityRow | null;

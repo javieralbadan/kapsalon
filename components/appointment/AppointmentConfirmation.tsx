@@ -69,11 +69,9 @@ const AppointmentConfirmation = ({ appointment, goBack }: Props) => {
               destroyOnClose
             >
               <AppointmentSuccess
-                appointmentDetails={{
-                  serviceName: appointment.service.name,
-                  barberName: appointment.barber.name,
-                  dateTime: appointment.dayTime.id as string,
-                }}
+                serviceName={appointment.service.name}
+                barberName={appointment.barber.name}
+                dateTime={appointment.dayTime.id as string}
               />
             </Modal>
           </>

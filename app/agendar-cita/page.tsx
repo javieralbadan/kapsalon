@@ -6,7 +6,6 @@ import { useGetAllServices } from '@/hooks/useServices';
 import { useGetShop } from '@/hooks/useShops';
 import { useGetAllAvails } from '@/hooks/useStaffAvailabilities';
 import { useGetAllStaff } from '@/hooks/useStaffMembers';
-import { GroupListItem } from '@/types/ui';
 import { Suspense } from 'react';
 
 const INITIAL_SHOP = '6f543b29-5186-4c30-b7ef-78b74aebf4cb';
@@ -23,11 +22,11 @@ const ScheduleAppointment = () => {
       <h1>Agendar cita</h1>
       <ClientErrorBoundary>
         <Suspense fallback={<Loading />}>
-          {isLoading ? (
+          {isLoading || !shop ? (
             <Loading />
           ) : (
             <AppointmentStepper
-              shop={shop as GroupListItem}
+              shop={shop}
               barbers={staffMembers}
               services={services}
               availablities={availabilities}

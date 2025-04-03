@@ -4,6 +4,12 @@ import { ApiResponse } from './api';
 
 export type StaffMemberRow = Database['public']['Tables']['staff']['Row'];
 export type StaffMemberInsert = Database['public']['Tables']['staff']['Insert'];
+export type StaffMemberUI = {
+  id: string;
+  name: string;
+  email?: string;
+  phoneNumber: string;
+};
 
 export interface StaffMemberResponseType {
   data: StaffMemberRow | null;

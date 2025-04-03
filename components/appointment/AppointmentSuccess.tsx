@@ -6,15 +6,13 @@ import Link from 'next/link';
 const { Paragraph, Text } = Typography;
 
 interface Props {
-  appointmentDetails: {
-    serviceName: string;
-    barberName: string;
-    dateTime: string;
-  };
+  barberName: string;
+  serviceName: string;
+  dateTime: string;
 }
 
-const AppointmentSuccess = ({ appointmentDetails }: Props) => {
-  const formattedDate = formatDateTime({ dateString: appointmentDetails.dateTime });
+const AppointmentSuccess = ({ barberName, serviceName, dateTime }: Props) => {
+  const formattedDate = formatDateTime({ dateString: dateTime });
 
   return (
     <Card className="m-auto max-w-[500px] text-center">
@@ -27,10 +25,10 @@ const AppointmentSuccess = ({ appointmentDetails }: Props) => {
       />
 
       <Paragraph>
-        <Text strong>Servicio:</Text> {appointmentDetails.serviceName}
+        <Text strong>Servicio:</Text> {serviceName}
       </Paragraph>
       <Paragraph>
-        <Text strong>Barbero:</Text> {appointmentDetails.barberName}
+        <Text strong>Barbero:</Text> {barberName}
       </Paragraph>
       <Paragraph>
         <Text strong>Fecha:</Text> {formattedDate}

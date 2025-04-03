@@ -1,4 +1,4 @@
-import { ShopRow } from '@/types/shops';
+import { ShopRow, ShopUI } from '@/types/shops';
 import useSWR from 'swr';
 import { CACHE_TIMES } from '../constants/cache';
 
@@ -24,7 +24,7 @@ export function useGetAllShops(options = {}) {
 }
 
 export function useGetShop(id: string, options = {}) {
-  const getById = async (id: string) => {
+  const getById = async (id: string): Promise<ShopUI | null> => {
     const response = await fetch(`/api/shops/${id}`);
 
     if (!response.ok) {

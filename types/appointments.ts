@@ -2,7 +2,9 @@ import type { Database } from '@/types/supabase';
 import { GroupListItem } from '@/types/ui';
 import { PostgrestError } from '@supabase/supabase-js';
 import { ApiResponse } from './api';
+import { ShopUI } from './shops';
 import { StaffAvailabilityRow } from './staffAvailability';
+import { StaffMemberUI } from './staffMembers';
 
 export type AppointmentRow = Database['public']['Tables']['appointments']['Row'];
 export type AppointmentInsert = Database['public']['Tables']['appointments']['Insert'];
@@ -39,7 +41,8 @@ export enum AppointmentStatus {
 }
 
 export interface AppointmentCreationType {
-  barber: GroupListItem;
+  shop: ShopUI;
+  barber: StaffMemberUI;
   service: GroupListItem;
   dayTime: GroupListItem;
   codeOTP: string;
@@ -47,7 +50,7 @@ export interface AppointmentCreationType {
 }
 
 export const APPOINTMENT_INIT_VALUE = {
-  barber: { id: '', name: '' },
+  barber: { id: '', name: '', email: '', phoneNumber: '' },
   service: { id: '', name: '' },
   dayTime: { id: '', name: '' },
   codeOTP: '',
@@ -55,14 +58,14 @@ export const APPOINTMENT_INIT_VALUE = {
 };
 
 export interface AppointmentStepperProps {
+  shop: ShopUI;
   barbers: GroupListItem[] | [];
   services: GroupListItem[] | [];
-  shop: GroupListItem | null;
   availablities: StaffAvailabilityRow[] | [];
 }
 
 export interface SetOptionParams {
-  key: 'barber' | 'service' | 'dayTime';
+  key: 'shop' | 'barber' | 'service' | 'dayTime';
   listItem: GroupListItem;
 }
 

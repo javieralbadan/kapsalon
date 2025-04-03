@@ -23,16 +23,22 @@ const STYLES = {
 };
 
 const AppointmentStepper = ({
+  shop,
   barbers = [],
   services = [],
-  shop,
   availablities = [],
 }: AppointmentStepperProps) => {
   const isMobile = useisMobile();
   const [currentStep, setCurrentStep] = useState<number>(0);
-  const [appointment, setAppointment] = useState<AppointmentCreationType>(APPOINTMENT_INIT_VALUE);
+  const [appointment, setAppointment] = useState<AppointmentCreationType>({
+    ...APPOINTMENT_INIT_VALUE,
+    shop,
+  });
   const isAppointmentReady: boolean =
-    !!appointment.barber.id && !!appointment.service.id && !!appointment.dayTime;
+    !!appointment.shop &&
+    !!appointment.barber?.id &&
+    !!appointment.service.id &&
+    !!appointment.dayTime;
 
   const setOption = ({ key, listItem }: SetOptionParams) => {
     setAppointment({ ...appointment, [key]: listItem });
@@ -83,6 +89,7 @@ const AppointmentStepper = ({
       ),
     },
   ];
+
   return (
     <div className={STYLES.CONTAINER}>
       <div className="mb-4">
