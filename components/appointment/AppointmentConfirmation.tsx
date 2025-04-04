@@ -1,4 +1,4 @@
-import { useAppointmentCreation } from '@/hooks/useCreateAppointment';
+import { useAppointmentCreation } from '@/hooks/useAppointmentCreation';
 import { AppointmentCreationType } from '@/types/appointments';
 import { FormUserInfoType } from '@/types/messages';
 import { formatDateTime } from '@/utils/formatters';
@@ -27,6 +27,8 @@ const AppointmentConfirmation = ({ appointment, goBack }: Props) => {
 
   const handleConfirmAppointment = () => {
     if (customerInfo) {
+      // createCustomerAndAppointment is an async fn. So, we need to handle the promise
+      // handleConfirmAppointment shouldn't be async to meet the onFinish type (AntDesign Form)
       createCustomerAndAppointment(customerInfo, appointment).catch((error) =>
         console.error('Error creating appointment:', error),
       );

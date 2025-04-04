@@ -5,7 +5,7 @@ interface ComponentsParamsType {
   text: string;
 }
 
-interface ComponentsType {
+export interface ComponentsType {
   type: string;
   parameters: ComponentsParamsType[];
   sub_type?: string;

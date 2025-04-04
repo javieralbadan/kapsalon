@@ -153,3 +153,10 @@ export const formatCurrency = ({ value, options = DEFAULT_CURRENCY_OPTIONS }: Cu
   const formatter = new Intl.NumberFormat(DEFAULT.LANGUAGE, options);
   return formatter.format(value);
 };
+
+export const formatPhoneNumber = (phone: string): string => {
+  const phoneStr = String(phone);
+  const cleanPhone = phoneStr.replace(/\D/g, '');
+
+  return cleanPhone.startsWith('57') ? '+' + cleanPhone : '+57' + cleanPhone;
+};

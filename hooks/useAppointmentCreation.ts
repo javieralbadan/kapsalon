@@ -7,6 +7,7 @@ import { message } from 'antd';
 import { useState } from 'react';
 import { useCreateAppointment } from './useAppointments';
 import { fetchCustomer, useCreateCustomer } from './useCustomers';
+import { useSendConfirmationMessages } from './useSendConfirmationMessages';
 
 interface Props {
   onSuccess: () => void;
@@ -19,6 +20,7 @@ export const useAppointmentCreation = ({ onSuccess, onError }: Props) => {
 
   const createCustomer = useCreateCustomer();
   const createAppointment = useCreateAppointment();
+  const { sendConfirmationMessages } = useSendConfirmationMessages();
 
   const createCustomerAndAppointment = async (
     customerParam: FormUserInfoType,
@@ -55,8 +57,18 @@ export const useAppointmentCreation = ({ onSuccess, onError }: Props) => {
         throw new Error('Error al crear la cita');
       }
 
-      console.log('🚀 ~ useAppointmentCreation ~ new appointment id:', appointmentResponse.id);
-      // TODO: Send WS confirmation to barber and customer
+      console.log(
+        '🚀 ~ useAppointmentCreation ~ new appointment id:',
+        appointmentResponse.id,
+        appointmentData.shop,
+      );
+      await sendConfirmationMessages({
+        appointment: appointmentResponse,
+        customer: finalCustomer,
+        serviceName: appointmentData.service.name,
+        barberPhone: appointmentData.barber.phoneNumber,
+        shopAddress: appointmentData.shop.address,
+      });
       onSuccess();
 
       return true;

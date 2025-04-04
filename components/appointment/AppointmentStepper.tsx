@@ -1,5 +1,5 @@
 import { GroupList } from '@/components/appointment/GroupList';
-import { useisMobile } from '@/hooks/useIsMobile';
+import { useIsMobile } from '@/hooks/useIsMobile';
 import {
   APPOINTMENT_INIT_VALUE,
   AppointmentCreationType,
@@ -28,7 +28,7 @@ const AppointmentStepper = ({
   services = [],
   availablities = [],
 }: AppointmentStepperProps) => {
-  const isMobile = useisMobile();
+  const isMobile = useIsMobile();
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [appointment, setAppointment] = useState<AppointmentCreationType>({
     ...APPOINTMENT_INIT_VALUE,
