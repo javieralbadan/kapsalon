@@ -16,6 +16,7 @@ export async function POST(req: Request) {
 
     const bodyRequest = {
       messaging_product: 'whatsapp',
+      recipient_type: 'individual',
       type: 'template',
       to,
       template: {

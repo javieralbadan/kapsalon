@@ -8,10 +8,13 @@ import {
 import { message } from 'antd';
 import { useSendWhatsAppMessage } from './useSendWhatsAppMessage';
 
+const ERROR_MESSAGE = 'Cita creada pero falló el envío de la confirmación al whatsapp';
+
 interface Props {
   appointment: AppointmentUI;
   customer: CustomerUI;
   serviceName: string;
+  servicePrice: string;
   barberPhone: string;
   shopAddress: string;
 }
@@ -23,6 +26,7 @@ export const useSendConfirmationMessages = () => {
     appointment,
     customer,
     serviceName,
+    servicePrice,
     barberPhone,
     shopAddress,
   }: Props) => {
@@ -32,16 +36,18 @@ export const useSendConfirmationMessages = () => {
       const staffComponents = getStaffConfirmationComponents({
         date: formattedDate,
         service: serviceName,
+        price: servicePrice,
         client: `${customer.firstName} ${customer.lastName}`,
       });
       const clientComponents = getCustomerConfirmationComponents({
         service: serviceName,
+        price: servicePrice,
         date: formattedDate,
         address: shopAddress,
         appointmentId: appointment.id,
       });
 
-      await Promise.all([
+      const [staffMsg, customerMsg] = await Promise.all([
         sendMessage({
           templateName: 'confirm_appointment_staff',
           to: barberPhone,
@@ -53,10 +59,13 @@ export const useSendConfirmationMessages = () => {
           components: clientComponents,
         }),
       ]);
-      message.success('Se ha creado la cita y se han enviado las confirmaciones');
+
+      if (!staffMsg.success || !customerMsg.success) {
+        message.warning(ERROR_MESSAGE);
+      }
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (e) {
-      message.warning('Cita creada pero falló el envío de la confirmación al whatsapp');
+      message.warning(ERROR_MESSAGE);
     }
   };
 

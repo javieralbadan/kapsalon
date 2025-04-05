@@ -66,6 +66,7 @@ export const useAppointmentCreation = ({ onSuccess, onError }: Props) => {
         appointment: appointmentResponse,
         customer: finalCustomer,
         serviceName: appointmentData.service.name,
+        servicePrice: appointmentData.service.description || '',
         barberPhone: appointmentData.barber.phoneNumber,
         shopAddress: appointmentData.shop.address,
       });

@@ -9,7 +9,7 @@ export interface ComponentsType {
   type: string;
   parameters: ComponentsParamsType[];
   sub_type?: string;
-  index?: string;
+  index?: number;
 }
 
 export interface MessageBodyRequest {

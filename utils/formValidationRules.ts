@@ -72,7 +72,7 @@ export const phoneFormatter = (value: string | undefined): string => {
 
 const OTP_LENGTH = 4; // TODO: Move to a constant file
 export const OTP_RULES = (codeOTP: string): Rule[] => [
-  { required: true, message: 'Por favor, ingrese el código OTP' },
+  { required: true, message: 'Ingrese el código envíado a su celular' },
   { len: OTP_LENGTH, message: `El código OTP debe tener ${OTP_LENGTH} dígitos` },
   { pattern: /^\d+$/, message: 'El código OTP solo debe contener números' },
   {
