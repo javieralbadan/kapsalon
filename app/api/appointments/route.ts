@@ -1,5 +1,10 @@
-import { API_CODES, DB_CODES, handleNextErrorResponse } from '@/constants/api';
 import { AppointmentApiResponse, AppointmentInsert } from '@/types/appointments';
+import {
+  API_CODES,
+  DB_CODES,
+  handleNextErrorResponse,
+  handleNextSuccessResponse,
+} from '@/utils/mappers/nextResponse';
 import { createClient } from '@/utils/supabase/server';
 import { NextResponse } from 'next/server';
 
@@ -41,22 +46,16 @@ export async function POST(request: Request): Promise<NextResponse<AppointmentAp
       .select()
       .single();
 
-    if (error) {
-      console.error('🔎 Error creating appointment:', error);
-
-      if (error.code === DB_CODES.UNIQUE_VIOLATION) {
-        return handleNextErrorResponse(CONFLICT_ERROR);
-      }
-
-      return handleNextErrorResponse(error.message, API_CODES.BAD_REQUEST);
+    if (!error) {
+      return handleNextSuccessResponse(data, API_CODES.CREATED);
     }
 
-    return NextResponse.json({ data: data || null, error: null }, { status: API_CODES.CREATED });
-  } catch (e) {
-    console.error('🔎 Unexpected error:', e);
-    return handleNextErrorResponse(
-      (e as Error)?.message || 'Error interno',
-      API_CODES.INTERNAL_SERVER_ERROR,
-    );
+    if (error.code === DB_CODES.UNIQUE_VIOLATION) {
+      return handleNextErrorResponse(CONFLICT_ERROR);
+    }
+
+    return handleNextErrorResponse(error as Error);
+  } catch (error) {
+    return handleNextErrorResponse(error as Error);
   }
 }

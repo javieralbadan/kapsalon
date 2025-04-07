@@ -13,15 +13,18 @@ export const useSendVerificationCode = ({
     const randomCode: string = generateOTP();
 
     try {
-      await sendMessage({
+      const { success, error } = await sendMessage({
         templateName: 'verify_whatsapp',
         to: phoneNumber,
         components: getVerificationComponents(randomCode),
       });
 
+      if (error) throw new Error(error);
+
+      console.log('🚀 ~ sendVerificationCode ~ success:', success);
       setCodeOTP(randomCode);
     } catch (error) {
-      console.error(error instanceof Error ? error.message : 'Error desconocido');
+      console.error(error);
       setCodeOTP('');
       userForm.setFields([
         {

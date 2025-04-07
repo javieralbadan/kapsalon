@@ -27,9 +27,12 @@ export const useSendWhatsAppMessage = () => {
         body: JSON.stringify(bodyRequest),
       });
 
-      if (!response.ok) throw new Error(`Error ${response.status}: ${response.statusText}`);
+      if (!response.ok) {
+        const result: unknown = await response.json();
+        throw new Error((result as { error: string })?.error || 'Error al enviar el mensaje');
+      }
 
-      return { success: true };
+      return { success: true, error: null };
     } catch (error) {
       return {
         success: false,

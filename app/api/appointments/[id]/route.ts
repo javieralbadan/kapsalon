@@ -1,5 +1,5 @@
-import { API_CODES, getDBErrorCode } from '@/constants/api';
 import { AppointmentApiResponse, AppointmentUpdate } from '@/types/appointments';
+import { handleNextErrorResponse, handleNextSuccessResponse } from '@/utils/mappers/nextResponse';
 import { createClient } from '@/utils/supabase/server';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -10,42 +10,15 @@ export async function GET(
   try {
     const { id } = await params;
     const supabase = await createClient();
-
     const { data, error } = await supabase.from('appointments').select('*').eq('id', id).single();
 
     if (error) {
-      console.error(`🔎 Error fetching appointment ${id}:`, error);
-      return NextResponse.json(
-        {
-          data: null,
-          error: error.message,
-        },
-        {
-          status: getDBErrorCode(error),
-        },
-      );
+      return handleNextErrorResponse(error as Error);
     }
 
-    return NextResponse.json(
-      {
-        data: data || null,
-        error: null,
-      },
-      {
-        status: API_CODES.OK,
-      },
-    );
-  } catch (e) {
-    console.error('🔎 Unexpected error:', e);
-    return NextResponse.json(
-      {
-        data: null,
-        error: (e as Error)?.message || 'Error interno',
-      },
-      {
-        status: API_CODES.INTERNAL_SERVER_ERROR,
-      },
-    );
+    return handleNextSuccessResponse(data);
+  } catch (error) {
+    return handleNextErrorResponse(error as Error);
   }
 }
 
@@ -57,7 +30,6 @@ export async function PATCH(
     const { id } = await params;
     const appointmentData = (await request.json()) as AppointmentUpdate;
     const supabase = await createClient();
-
     const { data, error } = await supabase
       .from('appointments')
       .update(appointmentData)
@@ -66,38 +38,12 @@ export async function PATCH(
       .single();
 
     if (error) {
-      console.error(`🔎 Error updating appointment ${id}:`, error);
-      return NextResponse.json(
-        {
-          data: null,
-          error: error.message,
-        },
-        {
-          status: getDBErrorCode(error),
-        },
-      );
+      return handleNextErrorResponse(error as Error);
     }
 
-    return NextResponse.json(
-      {
-        data: data || null,
-        error: null,
-      },
-      {
-        status: API_CODES.OK,
-      },
-    );
-  } catch (e) {
-    console.error('🔎 Unexpected error:', e);
-    return NextResponse.json(
-      {
-        data: null,
-        error: (e as Error)?.message || 'Error interno',
-      },
-      {
-        status: API_CODES.INTERNAL_SERVER_ERROR,
-      },
-    );
+    return handleNextSuccessResponse(data);
+  } catch (error) {
+    return handleNextErrorResponse(error as Error);
   }
 }
 
@@ -108,41 +54,14 @@ export async function DELETE(
   try {
     const { id } = await params;
     const supabase = await createClient();
-
     const { error } = await supabase.from('appointments').delete().eq('id', id);
 
     if (error) {
-      console.error(`🔎 Error deleting appointment ${id}:`, error);
-      return NextResponse.json(
-        {
-          data: null,
-          error: error.message,
-        },
-        {
-          status: getDBErrorCode(error),
-        },
-      );
+      return handleNextErrorResponse(error as Error);
     }
 
-    return NextResponse.json(
-      {
-        data: null,
-        error: null,
-      },
-      {
-        status: API_CODES.OK,
-      },
-    );
-  } catch (e) {
-    console.error('🔎 Unexpected error:', e);
-    return NextResponse.json(
-      {
-        data: null,
-        error: (e as Error)?.message || 'Error interno',
-      },
-      {
-        status: API_CODES.INTERNAL_SERVER_ERROR,
-      },
-    );
+    return handleNextSuccessResponse(null);
+  } catch (error) {
+    return handleNextErrorResponse(error as Error);
   }
 }

@@ -1,5 +1,5 @@
-import { API_CODES, getDBErrorCode } from '@/constants/api';
 import { CustomerApiResponse, CustomerUpdate } from '@/types/customers';
+import { handleNextErrorResponse, handleNextSuccessResponse } from '@/utils/mappers/nextResponse';
 import { createClient } from '@/utils/supabase/server';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -11,7 +11,6 @@ export async function GET(
   const [slug1, customerId] = slug;
 
   try {
-    const supabase = await createClient();
     let rowAttribute;
     let rowValue;
 
@@ -23,6 +22,7 @@ export async function GET(
       rowValue = slug1;
     }
 
+    const supabase = await createClient();
     const { data, error } = await supabase
       .from('customers')
       .select('*')
@@ -30,38 +30,12 @@ export async function GET(
       .single();
 
     if (error) {
-      console.error(`🔎 Error fetching customer by ${rowAttribute}:`, error);
-      return NextResponse.json(
-        {
-          data: null,
-          error: error.message,
-        },
-        {
-          status: getDBErrorCode(error),
-        },
-      );
+      return handleNextErrorResponse(error as Error);
     }
 
-    return NextResponse.json(
-      {
-        data: data || null,
-        error: null,
-      },
-      {
-        status: API_CODES.OK,
-      },
-    );
-  } catch (e) {
-    console.error('🔎 Unexpected error:', e);
-    return NextResponse.json(
-      {
-        data: null,
-        error: (e as Error)?.message || 'Error interno',
-      },
-      {
-        status: API_CODES.INTERNAL_SERVER_ERROR,
-      },
-    );
+    return handleNextSuccessResponse(data);
+  } catch (error) {
+    return handleNextErrorResponse(error as Error);
   }
 }
 
@@ -73,7 +47,6 @@ export async function PATCH(
     const { id } = await params;
     const customerData = (await request.json()) as CustomerUpdate;
     const supabase = await createClient();
-
     const { data, error } = await supabase
       .from('customers')
       .update(customerData)
@@ -82,37 +55,11 @@ export async function PATCH(
       .single();
 
     if (error) {
-      console.error(`🔎 Error updating customer ${id}:`, error);
-      return NextResponse.json(
-        {
-          data: null,
-          error: error.message,
-        },
-        {
-          status: getDBErrorCode(error),
-        },
-      );
+      return handleNextErrorResponse(error as Error);
     }
 
-    return NextResponse.json(
-      {
-        data: data || null,
-        error: null,
-      },
-      {
-        status: API_CODES.OK,
-      },
-    );
-  } catch (e) {
-    console.error('🔎 Unexpected error:', e);
-    return NextResponse.json(
-      {
-        data: null,
-        error: (e as Error)?.message || 'Error interno',
-      },
-      {
-        status: API_CODES.INTERNAL_SERVER_ERROR,
-      },
-    );
+    return handleNextSuccessResponse(data);
+  } catch (error) {
+    return handleNextErrorResponse(error as Error);
   }
 }
