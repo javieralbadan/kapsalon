@@ -13,7 +13,7 @@ export const useSendVerificationCode = ({
     const randomCode: string = generateOTP();
 
     try {
-      const { success, error } = await sendMessage({
+      const { error } = await sendMessage({
         templateName: 'verify_whatsapp',
         to: phoneNumber,
         components: getVerificationComponents(randomCode),
@@ -21,7 +21,6 @@ export const useSendVerificationCode = ({
 
       if (error) throw new Error(error);
 
-      console.log('🚀 ~ sendVerificationCode ~ success:', success);
       setCodeOTP(randomCode);
     } catch (error) {
       console.error(error);

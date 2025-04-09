@@ -1,7 +1,7 @@
-import { ComponentsType } from '@/types/messages';
+import { AuthComponentsType, UtilityComponentsType } from '@/types/messages';
 
 // TEMPLATE: verify_whatsapp
-export const getVerificationComponents = (code: string): ComponentsType[] => [
+export const getVerificationComponents = (code: string): AuthComponentsType => [
   {
     type: 'body',
     parameters: [{ type: 'text', text: code }],
@@ -33,14 +33,14 @@ export const getStaffConfirmationComponents = ({
   service,
   price,
   client,
-}: StaffConfirmationComponentsParams): ComponentsType[] => [
+}: StaffConfirmationComponentsParams): UtilityComponentsType => [
   {
     type: 'body',
     parameters: [
-      { type: 'text', text: date },
-      { type: 'text', text: service },
-      { type: 'text', text: price },
-      { type: 'text', text: client },
+      { type: 'text', parameter_name: 'date', text: date },
+      { type: 'text', parameter_name: 'service', text: service },
+      { type: 'text', parameter_name: 'price', text: price },
+      { type: 'text', parameter_name: 'client', text: client },
     ],
   },
 ];
@@ -71,14 +71,14 @@ export const getCustomerConfirmationComponents = ({
   date,
   address,
   appointmentId,
-}: CustomerConfirmationComponentsParams): ComponentsType[] => [
+}: CustomerConfirmationComponentsParams): UtilityComponentsType => [
   {
     type: 'body',
     parameters: [
-      { type: 'text', text: service },
-      { type: 'text', text: price },
-      { type: 'text', text: date },
-      { type: 'text', text: address },
+      { type: 'text', parameter_name: 'service', text: service },
+      { type: 'text', parameter_name: 'price', text: price },
+      { type: 'text', parameter_name: 'date', text: date },
+      { type: 'text', parameter_name: 'address', text: address },
     ],
   },
   {

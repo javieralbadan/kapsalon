@@ -24,8 +24,6 @@ export async function POST(req: Request) {
         components,
       },
     };
-    console.log('🚀 ~ API SENDMESSAGE - POST ~ bodyRequest:', bodyRequest);
-    console.log('🚀 ~ API SENDMESSAGE - POST ~ components:', JSON.stringify(components));
 
     const response = await fetch(`${WHATSAPP_API_URL}/${PHONE_NUMBER_ID}/messages`, {
       method: 'POST',
@@ -44,7 +42,6 @@ export async function POST(req: Request) {
 
     return handleNextSuccessResponse({ success: true, response: result });
   } catch (error) {
-    console.log('🚀 ~ POST ~ error:', error);
     return handleNextErrorResponse(error as Error);
   }
 }

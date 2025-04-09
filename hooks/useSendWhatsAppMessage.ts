@@ -1,17 +1,11 @@
-import { ComponentsType, MessageBodyRequest } from '@/types/messages';
+import { MessageBodyRequest } from '@/types/messages';
 import { formatPhoneNumber } from '@/utils/formatters';
 import { useState } from 'react';
-
-interface SendMessageProps {
-  templateName: string;
-  to: string;
-  components: ComponentsType[];
-}
 
 export const useSendWhatsAppMessage = () => {
   const [isSending, setIsSending] = useState<boolean>(false);
 
-  const sendMessage = async ({ templateName, to, components }: SendMessageProps) => {
+  const sendMessage = async ({ templateName, to, components }: MessageBodyRequest) => {
     setIsSending(true);
     const formattedPhone = formatPhoneNumber(to);
 
