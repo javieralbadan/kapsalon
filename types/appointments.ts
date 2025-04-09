@@ -3,7 +3,6 @@ import { GroupListItem } from '@/types/ui';
 import { PostgrestError } from '@supabase/supabase-js';
 import { ApiResponse } from './api';
 import { ShopUI } from './shops';
-import { StaffAvailabilityRow } from './staffAvailability';
 import { StaffMemberUI } from './staffMembers';
 
 export type AppointmentRow = Database['public']['Tables']['appointments']['Row'];
@@ -57,33 +56,25 @@ export const APPOINTMENT_INIT_VALUE = {
   goBack: () => {},
 };
 
-export interface AppointmentStepperProps {
-  shop: ShopUI;
-  barbers: GroupListItem[] | [];
-  services: GroupListItem[] | [];
-  availablities: StaffAvailabilityRow[] | [];
-}
-
 export interface SetOptionParams {
   key: 'shop' | 'barber' | 'service' | 'dayTime';
   listItem: GroupListItem;
 }
 
 export interface BarbersContentProps {
-  list: GroupListItem[] | [];
+  shop: ShopUI;
   selectedItemId: string | number | null;
-  shop: GroupListItem | null;
   setOption: (params: SetOptionParams) => void;
 }
 
 export interface ServicesContentProps {
-  list: GroupListItem[] | [];
+  barber: StaffMemberUI;
   selectedItemId: string | number | null;
   setOption: (params: SetOptionParams) => void;
 }
 
 export interface SlotContentProps {
-  availablities: StaffAvailabilityRow[] | [];
+  barber: StaffMemberUI;
   selectedItemId: string | number | null;
   setOption: (params: SetOptionParams) => void;
 }

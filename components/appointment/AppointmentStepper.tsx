@@ -1,16 +1,21 @@
 import { GroupList } from '@/components/appointment/GroupList';
 import { useIsMobile } from '@/hooks/useIsMobile';
+import { useGetServicesByStaff } from '@/hooks/useServices';
+import { useGetAvailsByStaff } from '@/hooks/useStaffAvailabilities';
+import { useGetStaffMembersByShop } from '@/hooks/useStaffMembers';
 import {
   APPOINTMENT_INIT_VALUE,
   AppointmentCreationType,
-  AppointmentStepperProps,
   BarbersContentProps,
   ServicesContentProps,
   SetOptionParams,
   SlotContentProps,
 } from '@/types/appointments';
+import { ShopUI } from '@/types/shops';
+import { mapServicesAsList } from '@/utils/mappers/services';
 import { Button, Result, Steps } from 'antd';
 import { useState } from 'react';
+import { Loading } from '../ui/Loading';
 import AppointmentConfirmation from './AppointmentConfirmation';
 import DaySlots from './DaySlots';
 
@@ -22,12 +27,7 @@ const STYLES = {
   TITLE: 'mb-4 text-lg font-semibold',
 };
 
-const AppointmentStepper = ({
-  shop,
-  barbers = [],
-  services = [],
-  availablities = [],
-}: AppointmentStepperProps) => {
+const AppointmentStepper = ({ shop }: { shop: ShopUI }) => {
   const isMobile = useIsMobile();
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [appointment, setAppointment] = useState<AppointmentCreationType>({
@@ -52,19 +52,14 @@ const AppointmentStepper = ({
     {
       title: 'Barbero',
       content: (
-        <BarbersContent
-          list={barbers}
-          selectedItemId={appointment.barber.id}
-          shop={shop}
-          setOption={setOption}
-        />
+        <BarbersContent shop={shop} selectedItemId={appointment.barber.id} setOption={setOption} />
       ),
     },
     {
       title: 'Servicio',
       content: (
         <ServicesContent
-          list={services}
+          barber={appointment.barber}
           selectedItemId={appointment.service.id}
           setOption={setOption}
         />
@@ -74,7 +69,7 @@ const AppointmentStepper = ({
       title: 'Día y Hora',
       content: (
         <SlotsContent
-          availablities={availablities}
+          barber={appointment.barber}
           selectedItemId={appointment.dayTime.id}
           setOption={setOption}
         />
@@ -113,38 +108,55 @@ const AppointmentStepper = ({
   );
 };
 
-const BarbersContent = ({ list, selectedItemId, shop, setOption }: BarbersContentProps) => (
-  <>
-    <h2 className={STYLES.TITLE}>Selecciona un barbero:</h2>
-    <GroupList
-      dataList={list}
-      onSelectOption={(listItem) => setOption({ key: 'barber', listItem })}
-      selectedItemId={selectedItemId}
-    />
-    {shop && list.length === 1 && <p className="mt-4">Próximamente más barberos de {shop?.name}</p>}
-  </>
-);
+const BarbersContent = ({ selectedItemId, shop, setOption }: BarbersContentProps) => {
+  const { staffMembers, isLoading, error } = useGetStaffMembersByShop(shop.id);
 
-const ServicesContent = ({ list, selectedItemId, setOption }: ServicesContentProps) => (
-  <>
-    <h2 className={STYLES.TITLE}>Selecciona un servicio:</h2>
-    <GroupList
-      dataList={list}
-      onSelectOption={(listItem) => setOption({ key: 'service', listItem })}
-      selectedItemId={selectedItemId}
-    />
-  </>
-);
+  if (isLoading) return <Loading />;
+  if (error) return <div>Error cargando barberos</div>;
 
-const SlotsContent = ({ availablities, selectedItemId, setOption }: SlotContentProps) => {
+  return (
+    <>
+      <h2 className={STYLES.TITLE}>Selecciona un barbero:</h2>
+      <GroupList
+        dataList={staffMembers}
+        onSelectOption={(listItem) => setOption({ key: 'barber', listItem })}
+        selectedItemId={selectedItemId}
+      />
+      {shop && staffMembers.length === 1 && (
+        <p className="mt-4">Próximamente más barberos de {shop?.name}</p>
+      )}
+    </>
+  );
+};
+
+const ServicesContent = ({ barber, selectedItemId, setOption }: ServicesContentProps) => {
+  const { services, isLoading, error } = useGetServicesByStaff(barber.id);
+
+  if (isLoading) return <Loading />;
+  if (error) return <div>Error cargando servicios</div>;
+
+  return (
+    <>
+      <h2 className={STYLES.TITLE}>Selecciona un servicio:</h2>
+      <GroupList
+        dataList={mapServicesAsList(services)}
+        onSelectOption={(listItem) => setOption({ key: 'service', listItem })}
+        selectedItemId={selectedItemId}
+      />
+    </>
+  );
+};
+
+const SlotsContent = ({ barber, selectedItemId, setOption }: SlotContentProps) => {
+  const { data: slots, isLoading, error } = useGetAvailsByStaff(barber.id);
+
+  if (isLoading) return <Loading />;
+  if (error) return <div>Error cargando disponibilidad</div>;
+
   return (
     <>
       <h2 className={STYLES.TITLE}>Selecciona día y hora:</h2>
-      <DaySlots
-        availablities={availablities}
-        selectedItemId={selectedItemId}
-        setOption={setOption}
-      />
+      <DaySlots availablities={slots} selectedItemId={selectedItemId} setOption={setOption} />
     </>
   );
 };

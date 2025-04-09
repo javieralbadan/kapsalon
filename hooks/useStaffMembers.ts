@@ -3,26 +3,33 @@ import { mapStaffList } from '@/utils/mappers/staffMembers';
 import useSWR, { SWRResponse } from 'swr';
 import { CACHE_TIMES } from '../constants/cache';
 
-export function useGetAllStaff(options = {}) {
-  const getAll = async () => {
-    const response = await fetch('/api/staff-members');
+type ResponseData<T extends boolean> = T extends true
+  ? { data: StaffMemberRow[] }
+  : { data: StaffMemberRow };
 
-    if (!response.ok) {
-      const errorResponse = (await response.json()) as { error: string };
-      throw new Error(errorResponse.error || 'Error al obtener los barberos');
-    }
+const BASE_URL = '/api/staff-members';
+const CONFIG = {
+  dedupingInterval: CACHE_TIMES.ONE_WEEK,
+};
 
-    const responseData = (await response.json()) as { data: StaffMemberRow[] };
-    return responseData.data;
-  };
+const fetchStaffMembers = async (endpoint: string): Promise<StaffMemberRow | StaffMemberRow[]> => {
+  // endpoint should start with slash '/shop' || '/<barber-id>'
+  const response = await fetch(`${BASE_URL}${endpoint}`);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const returnsMultiple = !endpoint || endpoint.split('/').length > 1;
 
-  const config = {
-    dedupingInterval: CACHE_TIMES.ONE_WEEK,
-    ...options,
-  };
+  if (!response.ok) {
+    const errorResponse = (await response.json()) as { error: string };
+    throw new Error(errorResponse.error || 'Error al obtener los barberos');
+  }
 
-  const result = useSWR('staff-members', getAll, config);
-  const rawData = result?.data || [];
+  const responseData = (await response.json()) as ResponseData<typeof returnsMultiple>;
+  return responseData.data;
+};
+
+export function useGetAllStaff() {
+  const result = useSWR('staff-members', fetchStaffMembers, CONFIG);
+  const rawData = (result?.data as StaffMemberRow[]) || [];
   const staffMembers = mapStaffList(rawData || []);
 
   return {
@@ -32,58 +39,39 @@ export function useGetAllStaff(options = {}) {
   };
 }
 
-export function useGetStaffMember(id: string, options = {}) {
-  const getById = async (id: string) => {
-    const response = await fetch(`/api/staff-members/${id}`);
-
-    if (!response.ok) {
-      const errorResponse = (await response.json()) as { error: string };
-      throw new Error(errorResponse.error || 'Error al obtener los datos del barbero');
-    }
-
-    const responseData = (await response.json()) as { data: StaffMemberRow };
-    return responseData.data;
-  };
-
-  const config = {
-    dedupingInterval: CACHE_TIMES.ONE_WEEK,
-    ...options,
-  };
-
-  const result: SWRResponse = useSWR(id ? `staff-member-${id}` : null, () => getById(id), config);
-
-  return { ...result, data: result.data as StaffMemberRow };
-}
-
-export function useGetStaffMemberByShop(shopId: string, options = {}) {
-  let memberId;
-
-  const getByShopId = async (shopId: string) => {
-    const response = await fetch(`/api/staff-members/shop/${shopId}`);
-
-    if (!response.ok) {
-      const errorResponse = (await response.json()) as { error: string };
-      throw new Error(errorResponse.error || 'Error al obtener los datos del barbero');
-    }
-
-    const responseData = (await response.json()) as { data: StaffMemberRow };
-    memberId = responseData.data.id;
-    return responseData.data;
-  };
-
-  const config = {
-    dedupingInterval: CACHE_TIMES.ONE_WEEK,
-    ...options,
-  };
-
-  console.log('🚀 ~ useShopStaffMember ~ memberId:', memberId);
+export function useGetStaffMembersByShop(shopId: string) {
   const result: SWRResponse = useSWR(
-    shopId ? `staff-member-${memberId}` : null,
-    () => getByShopId(shopId),
-    config,
+    shopId ? `staff-members-by-shop-${shopId}` : null,
+    () => fetchStaffMembers(`/shop/${shopId}`),
+    CONFIG,
   );
 
-  return { ...result, data: result.data as StaffMemberRow };
+  const rawData = (result?.data as StaffMemberRow[]) || [];
+  const staffMembers = mapStaffList(rawData || []);
+
+  return {
+    staffMembers,
+    data: staffMembers,
+    isLoading: result.isLoading,
+    error: result.error as Error,
+  };
+}
+
+export function useGetStaffMember(id: string) {
+  const result: SWRResponse = useSWR(
+    id ? `staff-member-${id}` : null,
+    () => fetchStaffMembers(`/${id}`),
+    CONFIG,
+  );
+  const rawData = result?.data as StaffMemberRow;
+  const [staffMember] = mapStaffList([rawData]);
+
+  return {
+    staffMember,
+    data: staffMember,
+    isLoading: result.isLoading,
+    error: result.error as Error,
+  };
 }
 
 export function useCreateStaffMember() {

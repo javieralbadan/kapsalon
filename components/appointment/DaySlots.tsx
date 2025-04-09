@@ -1,13 +1,20 @@
 import { Loading } from '@/components/ui/Loading';
 import { SCHEDULE_APPOINTMENT } from '@/constants/dates';
-import { SlotContentProps } from '@/types/appointments';
+import { SetOptionParams } from '@/types/appointments';
+import { StaffAvailabilityRow } from '@/types/staffAvailability';
 import { GroupListItem } from '@/types/ui';
 import { getDayTimeRange, getUpcomingDays } from '@/utils/mappers/staffAvailability';
 import { Button, Empty } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
 import GroupListButton from './GroupListButton';
 
-const DaySlots = ({ availablities, selectedItemId, setOption }: SlotContentProps) => {
+interface Props {
+  availablities: StaffAvailabilityRow[] | [];
+  selectedItemId: string | number | null;
+  setOption: (params: SetOptionParams) => void;
+}
+
+const DaySlots = ({ availablities, selectedItemId, setOption }: Props) => {
   const [dayTimeMap, setDayTimeMap] = useState<Map<string, GroupListItem[]>>(new Map());
   const [extensionCount, setExtensionCount] = useState<number>(0);
   const [isLoading, setIsLoading] = useState(true);

@@ -6,11 +6,11 @@ export type ServiceRow = Database['public']['Tables']['services']['Row'];
 export type ServiceInsert = Database['public']['Tables']['services']['Insert'];
 export type ServiceUI = {
   id: string;
+  name: string;
+  price: string;
+  staffMemberId: string;
   description?: string | null;
   duration?: number;
-  name: string;
-  price: number;
-  staffMemberId: string;
 };
 
 export interface ServiceResponseType {
