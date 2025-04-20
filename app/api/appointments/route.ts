@@ -1,4 +1,5 @@
 import { AppointmentApiResponse, AppointmentInsert } from '@/types/appointments';
+import { nowInColombia } from '@/utils/formatters';
 import {
   API_CODES,
   DB_CODES,
@@ -28,11 +29,12 @@ export async function POST(request: Request): Promise<NextResponse<AppointmentAp
       return handleNextErrorResponse(CONFLICT_ERROR);
     }
 
-    // Validación 2: Límite de citas activas por cliente
+    // Validación 2: Límite de citas futuras activas por cliente
     const { count: activeAppointmentsCount } = await supabase
       .from('appointments')
       .select('*', { count: 'exact', head: true })
       .eq('customer_id', appointmentData.customer_id)
+      .gte('date_time', nowInColombia().toISOString())
       .eq('status', 'confirmed');
 
     if (activeAppointmentsCount && activeAppointmentsCount >= MAX_ACTIVE_APPOINTMENTS) {
@@ -46,9 +48,7 @@ export async function POST(request: Request): Promise<NextResponse<AppointmentAp
       .select()
       .single();
 
-    if (!error) {
-      return handleNextSuccessResponse(data, API_CODES.CREATED);
-    }
+    if (!error) return handleNextSuccessResponse(data, API_CODES.CREATED);
 
     if (error.code === DB_CODES.UNIQUE_VIOLATION) {
       return handleNextErrorResponse(CONFLICT_ERROR);

@@ -27,6 +27,7 @@ export async function GET(
       .from('staff_availability')
       .select('*')
       .eq(rowAttribute, rowValue);
+    // .eq('is_available', true);
 
     if (error) {
       return handleNextErrorResponse(error as Error);

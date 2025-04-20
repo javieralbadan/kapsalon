@@ -57,11 +57,6 @@ export const useAppointmentCreation = ({ onSuccess, onError }: Props) => {
         throw new Error('Error al crear la cita');
       }
 
-      console.log(
-        '🚀 ~ useAppointmentCreation ~ new appointment id:',
-        appointmentResponse.id,
-        appointmentData.shop,
-      );
       await sendConfirmationMessages({
         appointment: appointmentResponse,
         customer: finalCustomer,

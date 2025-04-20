@@ -5,6 +5,7 @@ export const DB_CODES = {
   NOT_FOUND: 'PGRST116',
   UNIQUE_VIOLATION: '23505',
 };
+// CHECK_CONSTRAINT_VIOLATION: '23514',
 
 export const API_CODES = {
   OK: 200,
@@ -23,10 +24,14 @@ export const handleNextSuccessResponse = <T>(data: T, status: number = API_CODES
   return NextResponse.json({ data: data || null, error: null }, { status });
 };
 
-export const handleNextErrorResponse = (errorParam: PostgrestError | Error | string) => {
+export const handleNextErrorResponse = (
+  errorParam: PostgrestError | Error | string,
+  statusCode?: number,
+) => {
   console.error('🔎 handleNextErrorResponse - Unexpected error:', errorParam);
+  // TODO: Implement sentry || datadog
   let error;
-  let status = API_CODES.INTERNAL_SERVER_ERROR;
+  let status = statusCode || API_CODES.INTERNAL_SERVER_ERROR;
 
   if (typeof errorParam === 'string') {
     error = errorParam || 'Error interno';

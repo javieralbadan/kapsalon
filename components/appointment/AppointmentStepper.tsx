@@ -1,7 +1,7 @@
 import { GroupList } from '@/components/appointment/GroupList';
+import { APPOINTMENT_STEPPER_STYLES as STYLES } from '@/constants/styles';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { useGetServicesByStaff } from '@/hooks/useServices';
-import { useGetAvailsByStaff } from '@/hooks/useStaffAvailabilities';
 import { useGetStaffMembersByShop } from '@/hooks/useStaffMembers';
 import {
   APPOINTMENT_INIT_VALUE,
@@ -9,7 +9,6 @@ import {
   BarbersContentProps,
   ServicesContentProps,
   SetOptionParams,
-  SlotContentProps,
 } from '@/types/appointments';
 import { ShopUI } from '@/types/shops';
 import { mapServicesAsList } from '@/utils/mappers/services';
@@ -17,15 +16,7 @@ import { Button, Result, Steps } from 'antd';
 import { useState } from 'react';
 import { Loading } from '../ui/Loading';
 import AppointmentConfirmation from './AppointmentConfirmation';
-import DaySlots from './DaySlots';
-
-const STYLES = {
-  CONTAINER:
-    'max-w-[800px] mx-auto p-4 border border-gray-300 rounded-2xl flex flex-col min-h-[calc(100vh-180px)]',
-  CONTENT: 'flex flex-col items-center flex-grow overflow-y-auto',
-  CONTENT_INNER: 'w-full py-4',
-  TITLE: 'mb-4 text-lg font-semibold',
-};
+import SlotsContent from './SlotsContent';
 
 const AppointmentStepper = ({ shop }: { shop: ShopUI }) => {
   const isMobile = useIsMobile();
@@ -143,20 +134,6 @@ const ServicesContent = ({ barber, selectedItemId, setOption }: ServicesContentP
         onSelectOption={(listItem) => setOption({ key: 'service', listItem })}
         selectedItemId={selectedItemId}
       />
-    </>
-  );
-};
-
-const SlotsContent = ({ barber, selectedItemId, setOption }: SlotContentProps) => {
-  const { data: slots, isLoading, error } = useGetAvailsByStaff(barber.id);
-
-  if (isLoading) return <Loading />;
-  if (error) return <div>Error cargando disponibilidad</div>;
-
-  return (
-    <>
-      <h2 className={STYLES.TITLE}>Selecciona día y hora:</h2>
-      <DaySlots availablities={slots} selectedItemId={selectedItemId} setOption={setOption} />
     </>
   );
 };

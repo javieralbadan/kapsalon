@@ -63,8 +63,7 @@ export const useSendConfirmationMessages = () => {
       if (!staffMsg.success || !customerMsg.success) {
         message.warning(ERROR_MESSAGE);
       }
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (e) {
+    } catch {
       message.warning(ERROR_MESSAGE);
     }
   };

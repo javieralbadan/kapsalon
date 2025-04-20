@@ -23,8 +23,8 @@ interface CurrencyProps {
 const DEFAULT_DATE_OPTIONS: Intl.DateTimeFormatOptions = {
   weekday: 'long',
   day: 'numeric',
-  month: 'short',
-  // timeZone: 'America/Bogota',
+  month: 'long',
+  timeZone: 'America/Bogota',
 };
 
 export const SHORT_DATE_OPTIONS: Intl.DateTimeFormatOptions = {
@@ -56,12 +56,24 @@ export const DEFAULT_DATE_TIME_OPTIONS: Intl.DateTimeFormatOptions = {
   hour: 'numeric',
   minute: 'numeric',
   hour12: true,
+  timeZone: 'America/Bogota',
+};
+
+export const nowInColombia = (): Date => {
+  // TODO: Update others new Date();
+  const nowUTC = new Date();
+  const offsetBogota = -5 * 60; // UTC-5 en minutos
+  const offsetLocal = nowUTC.getTimezoneOffset();
+  const difference = offsetBogota - offsetLocal;
+
+  return new Date(nowUTC.getTime() + difference * 60 * 1000);
 };
 
 // Función para crear fechas con hora local específica
-export const createDateWithLocalTime = (date: string, time: string): Date => {
+export const createDateWithLocalTime = (date: Date, time: string): Date => {
   // Combina fecha y hora manteniendo la zona horaria local
   const [year, month, day] = date
+    .toISOString()
     .split('T')[0]
     .split('-')
     .map((num) => parseInt(num));
@@ -113,6 +125,7 @@ export const formatTime = ({
 
   const formattedTime = new Intl.DateTimeFormat(locale, options).format(date);
   const finalTime = formattedTime.replace(/\.\s?/g, '').replace(/\s/g, ' ');
+  // Ej: 11:00 am, 11:30 am, 7:00 pm
   return finalTime;
 };
 
