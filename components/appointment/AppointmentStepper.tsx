@@ -1,5 +1,4 @@
 import { GroupList } from '@/components/appointment/GroupList';
-import { APPOINTMENT_STEPPER_STYLES as STYLES } from '@/constants/styles';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { useGetServicesByStaff } from '@/hooks/useServices';
 import { useGetStaffMembersByShop } from '@/hooks/useStaffMembers';
@@ -77,7 +76,7 @@ const AppointmentStepper = ({ shop }: { shop: ShopUI }) => {
   ];
 
   return (
-    <div className={STYLES.CONTAINER}>
+    <div className="mx-auto flex flex-col p-0 md:p-4" style={{ width: '100%', maxWidth: '800px' }}>
       <div className="mb-4">
         <Steps
           current={currentStep}
@@ -92,8 +91,8 @@ const AppointmentStepper = ({ shop }: { shop: ShopUI }) => {
         </Button>
       </div>
 
-      <section className={STYLES.CONTENT}>
-        <div className={STYLES.CONTENT_INNER}>{steps[currentStep].content}</div>
+      <section className="flex flex-grow flex-col items-center overflow-y-auto">
+        <div className="mb-4 w-full py-4">{steps[currentStep].content}</div>
       </section>
     </div>
   );
@@ -107,7 +106,7 @@ const BarbersContent = ({ selectedItemId, shop, setOption }: BarbersContentProps
 
   return (
     <>
-      <h2 className={STYLES.TITLE}>Selecciona un barbero:</h2>
+      <h2 className="mb-4 text-xl font-semibold">Selecciona un barbero:</h2>
       <GroupList
         dataList={staffMembers}
         onSelectOption={(listItem) => setOption({ key: 'barber', listItem })}
@@ -128,7 +127,7 @@ const ServicesContent = ({ barber, selectedItemId, setOption }: ServicesContentP
 
   return (
     <>
-      <h2 className={STYLES.TITLE}>Selecciona un servicio:</h2>
+      <h2 className="mb-4 text-xl font-semibold">Selecciona un servicio:</h2>
       <GroupList
         dataList={mapServicesAsList(services)}
         onSelectOption={(listItem) => setOption({ key: 'service', listItem })}

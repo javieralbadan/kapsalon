@@ -1,40 +1,36 @@
-// import AppointmentStepper from '@/components/appointment/AppointmentStepper';
+'use client';
 import ClientErrorBoundary from '@/components/ui/ClientErrorBoundary';
 import { Loading } from '@/components/ui/Loading';
-// import { useGetAllServices } from '@/hooks/useServices';
-// import { useGetShop } from '@/hooks/useShops';
-// import { useGetAllAvails } from '@/hooks/useStaffAvailabilities';
-// import { useGetAllStaff } from '@/hooks/useStaffMembers';
-// import { GroupListItem } from '@/types/ui';
-import { Suspense } from 'react';
+import { useGetAppointment } from '@/hooks/useAppointments';
+import { Card } from 'antd';
+import { Suspense, use } from 'react';
 
-const EditAppointment = async ({ params }: { params: Promise<{ id: string }> }) => {
-  const { id } = await params;
-  console.log('🚀 ~ id:', id);
-
-  // const { data: shop, isLoading: isLoadingShops } = useGetShop(INITIAL_SHOP);
-  // const { staffMembers, isLoading: isLoadingStaff } = useGetAllStaff();
-  // const { services, isLoading: isLoadingServices } = useGetAllServices();
-  // const { availabilities, isLoading: isLoadingAvails } = useGetAllAvails();
-  const isLoading = false;
+const EditAppointment = ({ params }: { params: Promise<{ id: string }> }) => {
+  const resolvedParams = use(params);
+  console.log('🚀 ~ id:', resolvedParams.id);
+  const { data: appt, isLoading } = useGetAppointment(resolvedParams.id);
 
   return (
-    <div className="p-4 text-center">
-      <h1>Editar cita</h1>
+    <div className="mt-0 p-4 text-center md:mt-4">
+      <h1>Reagendar cita</h1>
       <ClientErrorBoundary>
         <Suspense fallback={<Loading />}>
-          {isLoading ? (
+          {isLoading || !appt ? (
             <Loading />
           ) : (
-            <>
-              <p>Cita a editar: {id}</p>
-              {/* <AppointmentStepper
-                shop={shop as GroupListItem}
-                barbers={staffMembers}
-                services={services}
-                availablities={availabilities}
-              /> */}
-            </>
+            <Card className="m-auto max-w-[400px]">
+              <div className="flex flex-col items-center justify-center gap-0">
+                <p>💇 Servicio: {`${appt.service_id} → ${appt.status}`}</p>
+                <p>🍺 Barbero: {appt.staff_member_id}</p>
+                <p>📅 {appt.date_time}</p>
+                <p>📅 {appt.customer_id}</p>
+                <p>📅 {appt.id}</p>
+
+                <p className="my-3 leading-5 text-gray-500">
+                  Si todo pinta bien, porfa confirma el nuevo horario
+                </p>
+              </div>
+            </Card>
           )}
         </Suspense>
       </ClientErrorBoundary>

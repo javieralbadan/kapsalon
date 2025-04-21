@@ -1,9 +1,9 @@
 'use client';
-
 import { AppLogo } from '@/components/AppLogo';
 import { Button } from 'antd';
 import Link from 'next/link';
 
+const INITIAL_SHOP = 'c9446b20';
 const CLASSES = {
   FLEX_CENTER: 'flex flex-col items-center justify-center',
   CONTAINER: 'h-[calc(100vh-39px)] max-w-[1400px]',
@@ -20,7 +20,7 @@ const HomePage = () => {
         <h1 className="mb-8 text-center text-4xl font-bold text-black md:text-6xl">
           Agenda tu cita de <span className="-highlight-text font-bold">barbería</span> en segundos
         </h1>
-        <Link href="/agendar-cita">
+        <Link href={`/${INITIAL_SHOP}/agendar-cita`}>
           <Button type="primary">Agendar</Button>
         </Link>
       </div>
