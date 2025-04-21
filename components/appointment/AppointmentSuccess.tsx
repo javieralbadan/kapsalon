@@ -1,4 +1,3 @@
-import { formatDateTime } from '@/utils/formatters';
 import { CheckCircleFilled } from '@ant-design/icons';
 import { Button, Card, Result, Typography } from 'antd';
 import Link from 'next/link';
@@ -12,8 +11,6 @@ interface Props {
 }
 
 const AppointmentSuccess = ({ barberName, serviceName, dateTime }: Props) => {
-  const formattedDate = formatDateTime({ dateString: dateTime });
-
   return (
     <Card className="m-auto max-w-[500px] text-center">
       <Result
@@ -31,7 +28,7 @@ const AppointmentSuccess = ({ barberName, serviceName, dateTime }: Props) => {
         <Text strong>Barbero:</Text> {barberName}
       </Paragraph>
       <Paragraph>
-        <Text strong>Fecha:</Text> {formattedDate}
+        <Text strong>Fecha:</Text> {dateTime}
       </Paragraph>
 
       <div className="mt-6 flex justify-center">

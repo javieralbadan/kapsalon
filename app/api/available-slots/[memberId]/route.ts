@@ -1,6 +1,7 @@
 import { SCHEDULE_APPOINTMENT } from '@/constants/appointment';
 import { StaffAvailableSlotsApiResponse } from '@/types/staffAvailability';
-import { generateAvailableSlots, getDateRange } from '@/utils/server/date-utils';
+import { setAppoinmentTimeZone } from '@/utils/mappers/appointment';
+import { generateAvailableSlots, getDateRange } from '@/utils/server/appointment-utils';
 import { createClient } from '@/utils/supabase/server';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -59,8 +60,10 @@ export async function GET(
       throw new Error(appointmentsError as unknown as string);
     }
 
-    // 4. Generar los slots disponibles
-    const availableSlots = generateAvailableSlots(availabilities, appointments, dateRange);
+    // 4. Ajustar timeZone a Colombia
+    const apptsInTimeZone = appointments.map((item) => setAppoinmentTimeZone(item));
+    // 5. Generar los slots disponibles
+    const availableSlots = generateAvailableSlots(availabilities, apptsInTimeZone, dateRange);
 
     return NextResponse.json({
       data: availableSlots,

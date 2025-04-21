@@ -1,5 +1,6 @@
-import { AppointmentApiResponse, AppointmentInsert } from '@/types/appointments';
+import { AppointmentApiResponse, AppointmentInsert, AppointmentRow } from '@/types/appointments';
 import { nowInColombia } from '@/utils/formatters';
+import { setAppoinmentTimeZone } from '@/utils/mappers/appointment';
 import {
   API_CODES,
   DB_CODES,
@@ -48,7 +49,8 @@ export async function POST(request: Request): Promise<NextResponse<AppointmentAp
       .select()
       .single();
 
-    if (!error) return handleNextSuccessResponse(data, API_CODES.CREATED);
+    const apptInTimeZone = setAppoinmentTimeZone(data as AppointmentRow);
+    if (!error) return handleNextSuccessResponse(apptInTimeZone, API_CODES.CREATED);
 
     if (error.code === DB_CODES.UNIQUE_VIOLATION) {
       return handleNextErrorResponse(CONFLICT_ERROR);

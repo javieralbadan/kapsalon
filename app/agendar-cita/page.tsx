@@ -11,7 +11,7 @@ const ScheduleAppointment = () => {
   const { data: shop, isLoading } = useGetShop(INITIAL_SHOP);
 
   return (
-    <div className="p-4 text-center">
+    <div className="mt-0 p-4 text-center md:mt-4">
       <h1>Agendar cita</h1>
       <ClientErrorBoundary>
         <Suspense fallback={<Loading />}>

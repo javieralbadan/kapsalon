@@ -1,4 +1,5 @@
 import { AppointmentApiResponse, AppointmentUpdate } from '@/types/appointments';
+import { setAppoinmentTimeZone } from '@/utils/mappers/appointment';
 import { handleNextErrorResponse, handleNextSuccessResponse } from '@/utils/mappers/nextResponse';
 import { createClient } from '@/utils/supabase/server';
 import { NextRequest, NextResponse } from 'next/server';
@@ -16,7 +17,8 @@ export async function GET(
       return handleNextErrorResponse(error as Error);
     }
 
-    return handleNextSuccessResponse(data);
+    const apptInTimeZone = setAppoinmentTimeZone(data);
+    return handleNextSuccessResponse(apptInTimeZone);
   } catch (error) {
     return handleNextErrorResponse(error as Error);
   }
@@ -41,7 +43,8 @@ export async function PATCH(
       return handleNextErrorResponse(error as Error);
     }
 
-    return handleNextSuccessResponse(data);
+    const apptInTimeZone = setAppoinmentTimeZone(data);
+    return handleNextSuccessResponse(apptInTimeZone);
   } catch (error) {
     return handleNextErrorResponse(error as Error);
   }

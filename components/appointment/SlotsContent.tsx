@@ -3,6 +3,7 @@ import { Loading } from '@/components/ui/Loading';
 import { useAvailableSlots } from '@/hooks/useAvailableSlots';
 import { SetOptionParams } from '@/types/appointments';
 import { StaffMemberUI } from '@/types/staffMembers';
+import { mapApptDateTime } from '@/utils/mappers/appointment';
 import { Button, Empty } from 'antd';
 import GroupListButton from './GroupListButton';
 
@@ -42,7 +43,7 @@ const SlotsContent = ({ barber, selectedItemId, setOption }: SlotContentProps) =
                   id={id}
                   name={name}
                   isSelected={selectedItemId === id}
-                  onSelectOption={(listItem) => setOption({ key: 'dayTime', listItem })}
+                  onSelectOption={(slot) => setOption(mapApptDateTime(slot.id as string))}
                 />
               ))
             )}

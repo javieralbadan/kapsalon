@@ -1,6 +1,5 @@
 import { AppointmentUI } from '@/types/appointments';
 import { CustomerUI } from '@/types/customers';
-import { formatDateTime } from '@/utils/formatters';
 import {
   getCustomerConfirmationComponents,
   getStaffConfirmationComponents,
@@ -31,10 +30,8 @@ export const useSendConfirmationMessages = () => {
     shopAddress,
   }: Props) => {
     try {
-      const formattedDate = formatDateTime({ dateString: appointment.dateTime });
-
       const staffComponents = getStaffConfirmationComponents({
-        date: formattedDate,
+        date: appointment.dateTime,
         service: serviceName,
         price: servicePrice,
         client: `${customer.firstName} ${customer.lastName}`,
@@ -42,7 +39,7 @@ export const useSendConfirmationMessages = () => {
       const clientComponents = getCustomerConfirmationComponents({
         service: serviceName,
         price: servicePrice,
-        date: formattedDate,
+        date: appointment.dateTime,
         address: shopAddress,
         appointmentId: appointment.id,
       });

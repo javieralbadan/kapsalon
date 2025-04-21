@@ -1,7 +1,6 @@
 import { useAppointmentCreation } from '@/hooks/useAppointmentCreation';
 import { AppointmentCreationType } from '@/types/appointments';
 import { FormUserInfoType } from '@/types/messages';
-import { formatDateTime } from '@/utils/formatters';
 import { Button, Card, Divider, Modal } from 'antd';
 import Link from 'next/link';
 import { Suspense, useState } from 'react';
@@ -73,7 +72,7 @@ const AppointmentConfirmation = ({ appointment, goBack }: Props) => {
               <AppointmentSuccess
                 serviceName={appointment.service.name}
                 barberName={appointment.barber.name}
-                dateTime={appointment.dayTime.id as string}
+                dateTime={appointment.dayTime.name}
               />
             </Modal>
           </>
@@ -93,7 +92,7 @@ const SummaryInfo = ({ service, barber, dayTime, codeOTP, goBack }: AppointmentC
     <div className="flex flex-col items-center justify-center gap-0">
       <p>💇 Servicio: {`${service.name} → ${service.description}`}</p>
       <p>🍺 Barbero: {barber.name}</p>
-      <p>📅 {formatDateTime({ dateString: dayTime.id as string })}</p>
+      <p>📅 {dayTime.name}</p>
 
       <p className="my-3 leading-5 text-gray-500">
         Si todo pinta bien, porfa añade tu info. <br />

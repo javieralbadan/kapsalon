@@ -24,7 +24,6 @@ const DEFAULT_DATE_OPTIONS: Intl.DateTimeFormatOptions = {
   weekday: 'long',
   day: 'numeric',
   month: 'long',
-  timeZone: 'America/Bogota',
 };
 
 export const SHORT_DATE_OPTIONS: Intl.DateTimeFormatOptions = {
@@ -56,7 +55,6 @@ export const DEFAULT_DATE_TIME_OPTIONS: Intl.DateTimeFormatOptions = {
   hour: 'numeric',
   minute: 'numeric',
   hour12: true,
-  timeZone: 'America/Bogota',
 };
 
 export const nowInColombia = (): Date => {
