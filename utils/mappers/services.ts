@@ -20,3 +20,8 @@ export const mapServicesAsList = (serviceList: ServiceUI[]): GroupListItem[] => 
     description: price,
   }));
 };
+
+export const mapServiceSummaryInfo = (service: GroupListItem): string => {
+  // Using description instead of price since service comes as GroupListItem
+  return `${service.name} → ${service.description}`;
+};

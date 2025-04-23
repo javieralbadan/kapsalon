@@ -32,7 +32,7 @@ export const mapAppointmentToInsert = (
     customer_id: customerId,
     service_id: appointment.service.id.toString(),
     staff_member_id: appointment.barber.id.toString(),
-    date_time: `${appointment.dayTime.id}[America/Bogota]`,
+    date_time: `${appointment.dateTime.id}[America/Bogota]`,
     status: AppointmentStatus.Confirmed,
   };
 };
@@ -41,7 +41,7 @@ export const mapApptDateTime = (slotId: string): SetOptionParams => {
   const apptDateTime = new Date(slotId).toISOString();
   // Se usa solo el id: "2025-04-20T13:30", porque name viene en formato 12hs: "1:30 pm"
   return {
-    key: 'dayTime',
+    key: 'dateTime',
     listItem: {
       id: slotId,
       name: formatDateTime({ dateString: apptDateTime }),

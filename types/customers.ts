@@ -6,14 +6,15 @@ export type CustomerRow = Database['public']['Tables']['customers']['Row'];
 export type CustomerInsert = Database['public']['Tables']['customers']['Insert'];
 export type CustomerUpdate = Database['public']['Tables']['customers']['Update'];
 export type CustomerUI = {
+  id: string;
+  firstName: string;
+  lastName: string;
+  fullName?: string;
+  phoneNumber: string;
+  phoneVerified?: boolean;
   createdAt?: string;
   email?: string | null;
-  firstName: string;
-  id: string;
-  lastName: string;
   lastSession?: string | null;
-  phoneNumber: string;
-  phoneVerified: boolean;
 };
 
 export interface CustomerResponseType {

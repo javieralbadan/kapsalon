@@ -61,7 +61,7 @@ export const useAppointmentCreation = ({ onSuccess, onError }: Props) => {
         appointment: appointmentResponse,
         customer: finalCustomer,
         serviceName: appointmentData.service.name,
-        servicePrice: appointmentData.service.description || '',
+        servicePrice: appointmentData.service.description || '', // Since service is GroupListItem -> description = price
         barberPhone: appointmentData.barber.phoneNumber,
         shopAddress: appointmentData.shop.address,
       });
