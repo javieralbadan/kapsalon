@@ -57,14 +57,41 @@ export const DEFAULT_DATE_TIME_OPTIONS: Intl.DateTimeFormatOptions = {
   hour12: true,
 };
 
+export const ISO_DATE_TIME_OPTIONS: Intl.DateTimeFormatOptions = {
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+  hour: '2-digit',
+  minute: '2-digit',
+  second: '2-digit',
+  hour12: false,
+};
+
 export const nowInColombia = (): Date => {
-  // TODO: Update others new Date();
+  // Only server util - TODO: Update others new Date();
   const nowUTC = new Date();
   const offsetBogota = -5 * 60; // UTC-5 en minutos
   const offsetLocal = nowUTC.getTimezoneOffset();
   const difference = offsetBogota - offsetLocal;
 
   return new Date(nowUTC.getTime() + difference * 60 * 1000);
+};
+
+export const getColombiaNowISO = () => {
+  // Only client util
+  const now = new Date();
+  const formatter = new Intl.DateTimeFormat('en-CA', {
+    ...ISO_DATE_TIME_OPTIONS,
+    timeZone: 'America/Bogota',
+  });
+
+  const parts = formatter.formatToParts(now).reduce((acc, part) => {
+    if (part.type !== 'literal') acc[part.type] = part.value;
+    return acc;
+  }, {} as Record<string, string>);
+
+  const iso = `${parts.year}-${parts.month}-${parts.day}T${parts.hour}:${parts.minute}:${parts.second}`;
+  return new Date(iso);
 };
 
 // Función para crear fechas con hora local específica

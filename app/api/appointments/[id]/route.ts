@@ -1,24 +1,46 @@
-import { AppointmentApiResponse, AppointmentUpdate } from '@/types/appointments';
+import {
+  AppointmentApiResponse,
+  AppointmentDetailsApiResponse,
+  AppointmentUpdate,
+} from '@/types/appointments';
 import { setAppoinmentTimeZone } from '@/utils/mappers/appointment';
-import { handleNextErrorResponse, handleNextSuccessResponse } from '@/utils/mappers/nextResponse';
+import {
+  API_CODES,
+  handleNextErrorResponse,
+  handleNextSuccessResponse,
+} from '@/utils/mappers/nextResponse';
 import { createClient } from '@/utils/supabase/server';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(
-  request: NextRequest,
+  _: NextRequest,
   { params }: { params: Promise<{ id: string }> },
-): Promise<NextResponse<AppointmentApiResponse>> {
+): Promise<NextResponse<AppointmentDetailsApiResponse>> {
   try {
     const { id } = await params;
     const supabase = await createClient();
-    const { data, error } = await supabase.from('appointments').select('*').eq('id', id).single();
+    const { data, error } = await supabase
+      .from('appointments')
+      .select(
+        `
+        *,
+        customers (first_name, last_name, phone_number),
+        services (name, price),
+        staff (first_name, last_name, phone_number, shops (*))`,
+      )
+      .eq('id', id)
+      .single();
 
     if (error) {
       return handleNextErrorResponse(error as Error);
     }
 
-    const apptInTimeZone = setAppoinmentTimeZone(data);
-    return handleNextSuccessResponse(apptInTimeZone);
+    if (!data) {
+      return handleNextErrorResponse(new Error(`Cita [${id}] no encontrada.`), API_CODES.NOT_FOUND);
+    }
+
+    const appointmentDetails = setAppoinmentTimeZone(data);
+    return handleNextSuccessResponse(appointmentDetails);
   } catch (error) {
     return handleNextErrorResponse(error as Error);
   }
@@ -51,7 +73,7 @@ export async function PATCH(
 }
 
 export async function DELETE(
-  request: NextRequest,
+  _: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ): Promise<NextResponse<AppointmentApiResponse>> {
   try {

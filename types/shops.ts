@@ -8,7 +8,7 @@ export type ShopUI = {
   id: string;
   name: string;
   address: string;
-  logo?: string;
+  logo?: string | null;
 };
 
 export interface ShopResponseType {

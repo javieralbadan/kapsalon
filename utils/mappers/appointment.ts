@@ -1,12 +1,15 @@
 import {
   AppointmentCreationType,
+  AppointmentEditionType,
   AppointmentInsert,
   AppointmentRow,
   AppointmentStatus,
   AppointmentUI,
+  AppointmentUpdate,
+  AppointmentValidDetailsData,
   SetOptionParams,
 } from '@/types/appointments';
-import { formatDateTime } from '../formatters';
+import { formatCurrency, formatDateTime } from '../formatters';
 
 export const mapAppointmentUI = (appointmentAPI: AppointmentRow): AppointmentUI | null => {
   if (Object.keys(appointmentAPI).length === 0) return null;
@@ -16,6 +19,7 @@ export const mapAppointmentUI = (appointmentAPI: AppointmentRow): AppointmentUI 
     id: appointmentAPI.id,
     customerId: appointmentAPI.customer_id,
     dateTime: dateTimeFormatted,
+    dateTimeISO: appointmentAPI.date_time,
     serviceId: appointmentAPI.service_id,
     staffMemberId: appointmentAPI.staff_member_id,
     status: appointmentAPI.status,
@@ -24,16 +28,56 @@ export const mapAppointmentUI = (appointmentAPI: AppointmentRow): AppointmentUI 
   };
 };
 
+export const mapApptDetailsIntoEditionUI = ({
+  customers,
+  services,
+  staff,
+  ...appt
+}: AppointmentValidDetailsData): AppointmentEditionType => {
+  return {
+    appt: mapAppointmentUI(appt) as AppointmentUI,
+    customer: {
+      id: appt.customer_id,
+      firstName: customers?.first_name || '',
+      lastName: customers?.last_name || '',
+      fullName: `${customers?.first_name} ${customers?.last_name}` || '',
+      phoneNumber: customers?.phone_number || '',
+    },
+    shop: staff.shops,
+    barber: {
+      id: appt.staff_member_id,
+      name: `${staff?.first_name} ${staff?.last_name}`,
+      phoneNumber: '',
+    },
+    service: {
+      id: appt.service_id,
+      name: services?.name,
+      description: formatCurrency({ value: services?.price }),
+    },
+    dateTime: { id: '', name: '' },
+  };
+};
+
 export const mapAppointmentToInsert = (
   appointment: AppointmentCreationType,
   customerId: string,
 ): AppointmentInsert => {
   return {
-    customer_id: customerId,
-    service_id: appointment.service.id.toString(),
-    staff_member_id: appointment.barber.id.toString(),
-    date_time: `${appointment.dateTime.id}[America/Bogota]`,
     status: AppointmentStatus.Confirmed,
+    date_time: `${appointment.dateTime.id}[America/Bogota]`,
+    customer_id: customerId,
+    staff_member_id: appointment.barber.id.toString(),
+    service_id: appointment.service.id.toString(),
+  };
+};
+
+export const mapAppointmentToUpdate = (appointment: AppointmentEditionType): AppointmentUpdate => {
+  return {
+    id: appointment.appt.id,
+    status: AppointmentStatus.Rescheduled,
+    date_time: `${appointment.dateTime.id}[America/Bogota]`,
+    original_date: `${appointment.appt.dateTimeISO}[America/Bogota]`,
+    // updated_at: new Date().toISOString(),
   };
 };
 
