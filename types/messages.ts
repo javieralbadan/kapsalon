@@ -49,12 +49,12 @@ export interface FormUserInfoType {
   phone: string;
 }
 
-export interface UseSendVerificationCodeProps {
+export interface UseVerificationCodeProps {
   setCodeOTP: (val: string) => void;
   userForm: FormInstance;
 }
 
-export interface UseSendVerificationCodeReturn {
+export interface UseVerificationCodeReturn {
   isSending: boolean;
-  sendVerificationCode: (phoneNumber: string) => void;
+  sendCode: (phoneNumber: string) => void;
 }

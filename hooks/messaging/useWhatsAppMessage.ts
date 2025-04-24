@@ -2,7 +2,7 @@ import { MessageBodyRequest } from '@/types/messages';
 import { formatPhoneNumber } from '@/utils/formatters';
 import { useState } from 'react';
 
-export const useSendWhatsAppMessage = () => {
+export const useWhatsAppMessage = () => {
   const [isSending, setIsSending] = useState<boolean>(false);
 
   const sendMessage = async ({ templateName, to, components }: MessageBodyRequest) => {

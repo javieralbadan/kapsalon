@@ -1,13 +1,11 @@
+import { WHATSAPP_TEMPLATES } from '@/constants/whatsappTemplates';
 import { AppointmentUI } from '@/types/appointments';
 import { CustomerUI } from '@/types/customers';
-import {
-  getCustomerConfirmationComponents,
-  getStaffConfirmationComponents,
-} from '@/utils/messageComponents';
+import { getApptCreationComponents } from '@/utils/messageComponents';
 import { message } from 'antd';
-import { useSendWhatsAppMessage } from './useSendWhatsAppMessage';
+import { useWhatsAppMessage } from './useWhatsAppMessage';
 
-const ERROR_MESSAGE = 'Cita creada pero falló el envío de la confirmación al whatsapp';
+const ERROR_MESSAGE = 'Cita creada pero falló el envío de confirmaciones al whatsapp';
 
 interface Props {
   appointment: AppointmentUI;
@@ -18,8 +16,8 @@ interface Props {
   shopAddress: string;
 }
 
-export const useSendConfirmationMessages = () => {
-  const { sendMessage } = useSendWhatsAppMessage();
+export const useApptCreationMessages = () => {
+  const { sendMessage } = useWhatsAppMessage();
 
   const sendConfirmationMessages = async ({
     appointment,
@@ -30,13 +28,14 @@ export const useSendConfirmationMessages = () => {
     shopAddress,
   }: Props) => {
     try {
-      const staffComponents = getStaffConfirmationComponents({
+      const staffComponents = getApptCreationComponents.staffComponents({
         date: appointment.dateTime,
         service: serviceName,
         price: servicePrice,
         client: `${customer.firstName} ${customer.lastName}`,
+        appointmentId: appointment.id,
       });
-      const clientComponents = getCustomerConfirmationComponents({
+      const clientComponents = getApptCreationComponents.customerComponents({
         service: serviceName,
         price: servicePrice,
         date: appointment.dateTime,
@@ -46,12 +45,12 @@ export const useSendConfirmationMessages = () => {
 
       const [staffMsg, customerMsg] = await Promise.all([
         sendMessage({
-          templateName: 'confirm_appointment_staff',
+          templateName: WHATSAPP_TEMPLATES.confirmAppt.staff.main,
           to: barberPhone,
           components: staffComponents,
         }),
         sendMessage({
-          templateName: 'confirm_appointment_user',
+          templateName: WHATSAPP_TEMPLATES.confirmAppt.customer.main,
           to: customer.phoneNumber,
           components: clientComponents,
         }),

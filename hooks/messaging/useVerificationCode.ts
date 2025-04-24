@@ -1,14 +1,14 @@
-import { UseSendVerificationCodeProps, UseSendVerificationCodeReturn } from '@/types/messages';
+import { UseVerificationCodeProps, UseVerificationCodeReturn } from '@/types/messages';
 import { getVerificationComponents } from '@/utils/messageComponents';
-import { useSendWhatsAppMessage } from './useSendWhatsAppMessage';
+import { useWhatsAppMessage } from './useWhatsAppMessage';
 
-export const useSendVerificationCode = ({
+export const useVerificationCode = ({
   setCodeOTP,
   userForm,
-}: UseSendVerificationCodeProps): UseSendVerificationCodeReturn => {
-  const { sendMessage, isSending } = useSendWhatsAppMessage();
+}: UseVerificationCodeProps): UseVerificationCodeReturn => {
+  const { sendMessage, isSending } = useWhatsAppMessage();
 
-  const sendVerificationCode = async (phoneNumber: string) => {
+  const sendCode = async (phoneNumber: string) => {
     const generateOTP = () => Math.floor(1000 + Math.random() * 9000).toString();
     const randomCode: string = generateOTP();
 
@@ -37,6 +37,6 @@ export const useSendVerificationCode = ({
   return {
     isSending,
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    sendVerificationCode,
+    sendCode,
   };
 };

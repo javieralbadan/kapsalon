@@ -1,4 +1,4 @@
-import { useSendVerificationCode } from '@/hooks/useSendVerificationCode';
+import { useVerificationCode } from '@/hooks/messaging/useVerificationCode';
 import { FormUserInfoType } from '@/types/messages';
 import {
   phoneFormatter,
@@ -18,7 +18,7 @@ interface Props {
 
 const UserInfoForm = ({ codeOTP, setCodeOTP, setCustomerInfo }: Props) => {
   const [userForm] = Form.useForm();
-  const { isSending, sendVerificationCode } = useSendVerificationCode({ setCodeOTP, userForm });
+  const { isSending, sendCode } = useVerificationCode({ setCodeOTP, userForm });
 
   const handleFinish = (values: FormUserInfoType) => {
     const formattedValues = {
@@ -27,7 +27,7 @@ const UserInfoForm = ({ codeOTP, setCodeOTP, setCustomerInfo }: Props) => {
       lastName: prepareNameForDatabase(values.lastName),
     };
     setCustomerInfo(formattedValues);
-    sendVerificationCode(values.phone);
+    sendCode(values.phone);
   };
 
   return (

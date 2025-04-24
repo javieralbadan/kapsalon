@@ -15,7 +15,7 @@ import { message } from 'antd';
 import { useState } from 'react';
 import useSWR, { SWRResponse } from 'swr';
 import { CACHE_TIMES } from '../constants/cache';
-import { useSendConfirmationMessages } from './useSendConfirmationMessages';
+import { useApptEditionMessages } from './messaging/useApptEditionMessages';
 
 const BASE_URL = '/api/appointments';
 const CONFIG = {
@@ -101,7 +101,7 @@ interface UseUpdateAppointmentProps {
 
 export function useUpdateAppointment({ onSuccess, onError }: UseUpdateAppointmentProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { sendConfirmationMessages } = useSendConfirmationMessages();
+  const { sendConfirmationMessages } = useApptEditionMessages();
 
   const updateAppointmentDateTime = async (apptEditionData: AppointmentEditionType) => {
     try {
@@ -114,23 +114,20 @@ export function useUpdateAppointment({ onSuccess, onError }: UseUpdateAppointmen
 
       if (!response.ok) {
         const errorResponse = (await response.json()) as { error: string };
-        throw new Error(errorResponse.error || 'Error al crear la cita');
+        throw new Error(errorResponse.error || 'Error al actualizar la cita');
       }
 
       const responseData = (await response.json()) as { data: AppointmentRow };
       const apptUpdated = mapAppointmentUI(responseData.data);
 
       if (!apptUpdated?.id) {
-        throw new Error('Error al crear la cita');
+        throw new Error('Error al actualizar la cita');
       }
 
       await sendConfirmationMessages({
         appointment: apptUpdated,
         customer: apptEditionData.customer,
-        serviceName: apptEditionData.service.name,
-        servicePrice: apptEditionData.service.description || '', // Since service is GroupListItem -> description = price
         barberPhone: apptEditionData.barber.phoneNumber,
-        shopAddress: apptEditionData.shop.address,
       });
       onSuccess();
       return true;

@@ -5,9 +5,9 @@ import { mapAppointmentToInsert } from '@/utils/mappers/appointment';
 import { mapCustomerToInsert, mapCustomerUI } from '@/utils/mappers/customer';
 import { message } from 'antd';
 import { useState } from 'react';
+import { useApptCreationMessages } from './messaging/useApptCreationMessages';
 import { useCreateAppointment } from './useAppointments';
 import { fetchCustomer, useCreateCustomer } from './useCustomers';
-import { useSendConfirmationMessages } from './useSendConfirmationMessages';
 
 interface Props {
   onSuccess: () => void;
@@ -20,7 +20,7 @@ export const useAppointmentCreation = ({ onSuccess, onError }: Props) => {
 
   const createCustomer = useCreateCustomer();
   const createAppointment = useCreateAppointment();
-  const { sendConfirmationMessages } = useSendConfirmationMessages();
+  const { sendConfirmationMessages } = useApptCreationMessages();
 
   const createCustomerAndAppointment = async (
     customerParam: FormUserInfoType,
