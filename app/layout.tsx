@@ -2,21 +2,16 @@ import AppFooter, { FOOTER_STYLES } from '@/components/layout/AppFooter';
 import '@ant-design/v5-patch-for-react-19';
 import { Layout } from 'antd';
 import { Content, Footer } from 'antd/es/layout/layout';
-import type { Metadata } from 'next';
 import React from 'react';
 import { Providers } from './providers';
 import '/styles/globals.scss';
-
-export const metadata: Metadata = {
-  title: 'Kapsalon · Agenda tu cita de barbería en pocos minutos',
-};
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es">
       <head>
         <meta name="title" content="Kapsalon" />
-        <meta name="description" content="Agenda tu cita de barbería en pocos minutos" />
+        <meta name="description" content="Agenda tu cita de barbería en segundos" />
         <meta name="keywords" content="Barbería, Corte de cabello, Barba, Afeitado, Hombre, Niño" />
         <meta name="robots" content="index, follow" />
         <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
@@ -26,6 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="theme-color" content="#1d4ed8" />
         <meta name="msapplication-navbutton-color" content="#1d4ed8" />
         <meta name="apple-mobile-web-app-status-bar-style" content="#1d4ed8" />
+        <title>Kapsalon · Agenda tu cita de barbería en segundos</title>
       </head>
       <body>
         <Providers>

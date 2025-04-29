@@ -1,38 +1,36 @@
 import { WHATSAPP_TEMPLATES } from '@/constants/whatsappTemplates';
-import { AppointmentUI } from '@/types/appointments';
-import { CustomerUI } from '@/types/customers';
+import { AppointmentEditionType } from '@/types/appointments';
+import { formatDateTime } from '@/utils/formatters';
 import { getApptEditionComponents } from '@/utils/messageComponents';
 import { message } from 'antd';
 import { useWhatsAppMessage } from './useWhatsAppMessage';
 
 const ERROR_MESSAGE = 'Cita actualizada pero falló el envío de confirmaciones al whatsapp';
 
-interface Props {
-  appointment: AppointmentUI;
-  customer: CustomerUI;
-  barberPhone: string;
-}
-
 export const useApptEditionMessages = () => {
   const { sendMessage } = useWhatsAppMessage();
 
-  const sendConfirmationMessages = async ({ appointment, customer, barberPhone }: Props) => {
+  const sendEditionMessages = async (apptUpdateData: AppointmentEditionType) => {
+    const { appt, dateTime, customer, barber } = apptUpdateData;
+    const newDateTime = dateTime.name; // formatted as martes, 29 de abril, 10:00 a. m.
+    const originalDate = formatDateTime({ dateString: appt.dateTimeISO || '' });
+
     try {
       const staffComponents = getApptEditionComponents.staffComponents({
-        date: appointment.dateTime,
+        date: newDateTime,
         client: `${customer.firstName} ${customer.lastName}`,
-        original_date: appointment.dateTimeISO || '',
-        appointmentId: appointment.id,
+        original_date: originalDate,
+        appointmentId: appt.id,
       });
       const clientComponents = getApptEditionComponents.customerComponents({
-        date: appointment.dateTime,
-        appointmentId: appointment.id,
+        date: newDateTime,
+        appointmentId: appt.id,
       });
 
       const [staffMsg, customerMsg] = await Promise.all([
         sendMessage({
           templateName: WHATSAPP_TEMPLATES.updateAppt.staff,
-          to: barberPhone,
+          to: barber.phoneNumber,
           components: staffComponents,
         }),
         sendMessage({
@@ -50,5 +48,5 @@ export const useApptEditionMessages = () => {
     }
   };
 
-  return { sendConfirmationMessages };
+  return { sendEditionMessages };
 };

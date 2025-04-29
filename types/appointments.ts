@@ -10,6 +10,7 @@ import { StaffMemberRow, StaffMemberUI } from './staffMembers';
 export type AppointmentRow = Database['public']['Tables']['appointments']['Row'];
 export type AppointmentInsert = Database['public']['Tables']['appointments']['Insert'];
 export type AppointmentUpdate = Database['public']['Tables']['appointments']['Update'];
+export type AppointmentCancel = Pick<AppointmentRow, 'status' | 'updated_at'>;
 export type AppointmentUI = {
   id: string;
   dateTime: string;
@@ -69,12 +70,15 @@ export interface AppointmentCreationType {
   goBack: () => void;
 }
 
-export interface AppointmentEditionType {
+export interface AppointmentToEditType {
   appt: AppointmentUI;
   customer: CustomerUI;
   shop: ShopUI;
   barber: StaffMemberUI;
   service: GroupListItem;
+}
+
+export interface AppointmentEditionType extends AppointmentToEditType {
   dateTime: GroupListItem;
 }
 

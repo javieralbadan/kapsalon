@@ -28,7 +28,7 @@ const ApptCreationStepper = ({ shop }: { shop: ShopUI }) => {
   const nextStep = () => setCurrentStep(currentStep + 1);
 
   const setOption = ({ key, listItem }: SetOptionParams) => {
-    setAppointment({ ...appointment, [key]: listItem });
+    setAppointment((prev) => ({ ...prev, [key]: listItem }));
     nextStep();
   };
 

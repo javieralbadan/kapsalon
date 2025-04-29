@@ -36,7 +36,7 @@ export async function POST(request: Request): Promise<NextResponse<AppointmentAp
       .select('*', { count: 'exact', head: true })
       .eq('customer_id', appointmentData.customer_id)
       .gte('date_time', nowInColombia().toISOString())
-      .eq('status', 'confirmed');
+      .in('status', ['confirmed', 'rescheduled']);
 
     if (activeAppointmentsCount && activeAppointmentsCount >= MAX_ACTIVE_APPOINTMENTS) {
       return handleNextErrorResponse(MAX_APPOINTMENTS_ERROR);

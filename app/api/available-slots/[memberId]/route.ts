@@ -52,7 +52,7 @@ export async function GET(
       .from('appointments')
       .select('*')
       .eq('staff_member_id', memberId)
-      .eq('status', 'confirmed')
+      .in('status', ['confirmed', 'rescheduled'])
       .gte('date_time', dateRange.start.toISOString())
       .lt('date_time', dateRange.end.toISOString());
 

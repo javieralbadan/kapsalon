@@ -118,7 +118,7 @@ TEMPLATE: update_appointment_staff
 {{client}} ha cambiado su cita. La nueva fecha es:
 📆 {{date}}
 
-El espacio liberado es (fecha anterior):
+Espacio liberado (fecha anterior):
 ✂️ {{original_date}}
 Botón 1 [Cancelar cita] (url dinámica): https://kapsalon.vercel.app/cancelar-cita/{{appointmentId}}
 Botón 1 [Ver citas] (url estática): https://kapsalon.vercel.app/dashboard/agenda
@@ -135,8 +135,8 @@ const getApptEditionStaff = (params: ApptEditionStaff): UtilityComponentsType =>
   {
     type: 'body',
     parameters: [
-      { type: 'text', parameter_name: 'date', text: params.date },
       { type: 'text', parameter_name: 'client', text: params.client },
+      { type: 'text', parameter_name: 'date', text: params.date },
       { type: 'text', parameter_name: 'original_date', text: params.original_date },
     ],
   },
@@ -149,7 +149,7 @@ const getApptEditionStaff = (params: ApptEditionStaff): UtilityComponentsType =>
 ];
 
 /*
-TEMPLATE: confirm_appointment_user
+TEMPLATE: update_appointment_user
 La nueva fecha de tu cita es:
 📆 {{date}}
 
@@ -189,4 +189,53 @@ interface ApptEditionComponents {
 export const getApptEditionComponents: ApptEditionComponents = {
   staffComponents: getApptEditionStaff,
   customerComponents: getApptEditionCustomer,
+};
+
+// ******** APPOINTMENT CANCELATION ********
+/*
+TEMPLATE: cancel_appointment_staff
+⛔ {{client}} ha cancelado la cita del {{date}}
+Botón 1 [Ver citas] (url estática): https://kapsalon.vercel.app/dashboard/agenda
+*/
+
+interface ApptCancelStaff {
+  client: string;
+  date: string;
+}
+
+const getApptCancelStaff = (params: ApptCancelStaff): UtilityComponentsType => [
+  {
+    type: 'body',
+    parameters: [
+      { type: 'text', parameter_name: 'date', text: params.date },
+      { type: 'text', parameter_name: 'client', text: params.client },
+    ],
+  },
+];
+
+/*
+TEMPLATE: cancel_appointment_user
+Tu cita para el día {{date}} ha sido cancelada.👍
+Botón 1 [Agendar nueva cita] (url estática): https://kapsalon.vercel.app/
+*/
+
+interface ApptCancelCustomer {
+  date: string;
+}
+
+const getApptCancelCustomer = (params: ApptCancelCustomer): UtilityComponentsType => [
+  {
+    type: 'body',
+    parameters: [{ type: 'text', parameter_name: 'date', text: params.date }],
+  },
+];
+
+interface ApptCancelComponents {
+  staffComponents: (params: ApptCancelStaff) => UtilityComponentsType;
+  customerComponents: (params: ApptCancelCustomer) => UtilityComponentsType;
+}
+
+export const getApptCancelComponents: ApptCancelComponents = {
+  staffComponents: getApptCancelStaff,
+  customerComponents: getApptCancelCustomer,
 };

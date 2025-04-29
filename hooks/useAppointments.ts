@@ -3,10 +3,12 @@ import {
   AppointmentEditionType,
   AppointmentInsert,
   AppointmentRow,
+  AppointmentToEditType,
   AppointmentUI,
   AppointmentValidDetailsData,
 } from '@/types/appointments';
 import {
+  mapAppointmentToCancel,
   mapAppointmentToUpdate,
   mapAppointmentUI,
   mapApptDetailsIntoEditionUI,
@@ -15,6 +17,7 @@ import { message } from 'antd';
 import { useState } from 'react';
 import useSWR, { SWRResponse } from 'swr';
 import { CACHE_TIMES } from '../constants/cache';
+import { useApptCancelMessages } from './messaging/useApptCancelMessages';
 import { useApptEditionMessages } from './messaging/useApptEditionMessages';
 
 const BASE_URL = '/api/appointments';
@@ -101,9 +104,10 @@ interface UseUpdateAppointmentProps {
 
 export function useUpdateAppointment({ onSuccess, onError }: UseUpdateAppointmentProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { sendConfirmationMessages } = useApptEditionMessages();
+  const { sendEditionMessages } = useApptEditionMessages();
 
   const updateAppointmentDateTime = async (apptEditionData: AppointmentEditionType) => {
+    setIsLoading(true);
     try {
       const apptUpdateData = mapAppointmentToUpdate(apptEditionData);
       const response = await fetch(`${BASE_URL}/${apptUpdateData.id}`, {
@@ -124,11 +128,7 @@ export function useUpdateAppointment({ onSuccess, onError }: UseUpdateAppointmen
         throw new Error('Error al actualizar la cita');
       }
 
-      await sendConfirmationMessages({
-        appointment: apptUpdated,
-        customer: apptEditionData.customer,
-        barberPhone: apptEditionData.barber.phoneNumber,
-      });
+      await sendEditionMessages(apptEditionData);
       onSuccess();
       return true;
     } catch (error) {
@@ -142,6 +142,50 @@ export function useUpdateAppointment({ onSuccess, onError }: UseUpdateAppointmen
 
   return {
     updateAppointmentDateTime,
+    isLoading,
+  };
+}
+
+export function useCancelAppointment({ onSuccess, onError }: UseUpdateAppointmentProps) {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { sendCancelMessages } = useApptCancelMessages();
+
+  const cancelAppointment = async (apptEditionData: AppointmentToEditType) => {
+    setIsLoading(true);
+    try {
+      const apptCancelData = mapAppointmentToCancel();
+      const response = await fetch(`${BASE_URL}/${apptEditionData.appt.id}`, {
+        method: 'PATCH',
+        headers: HEADERS,
+        body: JSON.stringify(apptCancelData),
+      });
+
+      if (!response.ok) {
+        const errorResponse = (await response.json()) as { error: string };
+        throw new Error(errorResponse.error || 'Error al cancelar la cita');
+      }
+
+      const responseData = (await response.json()) as { data: AppointmentRow };
+      const apptUpdated = mapAppointmentUI(responseData.data);
+
+      if (!apptUpdated?.id) {
+        throw new Error('Error al cancelar la cita');
+      }
+
+      await sendCancelMessages(apptEditionData);
+      onSuccess();
+      return true;
+    } catch (error) {
+      message.error(`${error as string}`, 8);
+      onError();
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return {
+    cancelAppointment,
     isLoading,
   };
 }

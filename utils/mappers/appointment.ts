@@ -1,4 +1,5 @@
 import {
+  AppointmentCancel,
   AppointmentCreationType,
   AppointmentEditionType,
   AppointmentInsert,
@@ -47,7 +48,7 @@ export const mapApptDetailsIntoEditionUI = ({
     barber: {
       id: appt.staff_member_id,
       name: `${staff?.first_name} ${staff?.last_name}`,
-      phoneNumber: '',
+      phoneNumber: staff?.phone_number || '',
     },
     service: {
       id: appt.service_id,
@@ -72,12 +73,15 @@ export const mapAppointmentToInsert = (
 };
 
 export const mapAppointmentToUpdate = (appointment: AppointmentEditionType): AppointmentUpdate => {
+  // appointment es AppointmentEditionType y contiene appt que es AppointmentUI
+  // appointment.appt.dateTimeISO = original_date
+  // appointment.dateTime.id = nueva fecha
   return {
     id: appointment.appt.id,
     status: AppointmentStatus.Rescheduled,
     date_time: `${appointment.dateTime.id}[America/Bogota]`,
     original_date: `${appointment.appt.dateTimeISO}[America/Bogota]`,
-    // updated_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
   };
 };
 
@@ -103,3 +107,10 @@ export function setAppoinmentTimeZone(appointmentAPI: AppointmentRow): Appointme
 
   return { ...appointmentAPI, date_time };
 }
+
+export const mapAppointmentToCancel = (): AppointmentCancel => {
+  return {
+    status: AppointmentStatus.Cancelled,
+    updated_at: new Date().toISOString(),
+  };
+};

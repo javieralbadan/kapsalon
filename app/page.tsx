@@ -2,6 +2,7 @@
 import { AppLogo } from '@/components/AppLogo';
 import { Button } from 'antd';
 import Link from 'next/link';
+import { useEffect } from 'react';
 
 const INITIAL_SHOP = 'c9446b20';
 const CLASSES = {
@@ -11,6 +12,10 @@ const CLASSES = {
 };
 
 const HomePage = () => {
+  useEffect(() => {
+    document.title = 'Kapsalon · Agenda tu cita de barbería en segundos';
+  }, []);
+
   return (
     <div className={`${CLASSES.CONTAINER} ${CLASSES.FLEX_CENTER} m-auto md:flex-row-reverse`}>
       <div className={`${CLASSES.FLEX_CENTER} ${CLASSES.LOGO}`}>
