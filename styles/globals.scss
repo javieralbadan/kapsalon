@@ -67,6 +67,11 @@ a {
   text-decoration: none;
 }
 
+input.ant-input,
+input.ant-input-number-input {
+  font-size: 16px !important;
+}
+
 .-highlight-text {
   color: var(--color-blue);
 }

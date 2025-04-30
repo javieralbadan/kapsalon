@@ -38,7 +38,7 @@ const UserInfoForm = ({ codeOTP, setCodeOTP, setCustomerInfo }: Props) => {
         rules={USER_INFO_RULES('nombre')}
         validateTrigger={['onChange', 'onBlur']}
       >
-        <Input className="text-base" prefix={<UserOutlined />} placeholder="Nombre" />
+        <Input prefix={<UserOutlined />} placeholder="Nombre" />
       </Form.Item>
 
       <Form.Item
@@ -47,7 +47,7 @@ const UserInfoForm = ({ codeOTP, setCodeOTP, setCustomerInfo }: Props) => {
         rules={USER_INFO_RULES('apellido')}
         validateTrigger={['onChange', 'onBlur']}
       >
-        <Input className="text-base" prefix={<UserOutlined />} placeholder="Apellido" />
+        <Input prefix={<UserOutlined />} placeholder="Apellido" />
       </Form.Item>
 
       <Form.Item
@@ -61,7 +61,6 @@ const UserInfoForm = ({ codeOTP, setCodeOTP, setCustomerInfo }: Props) => {
           formatter={phoneFormatter}
           maxLength={12}
           parser={(value) => value!.replace(/\D/g, '')}
-          className="text-base"
           prefix={<WhatsAppOutlined />}
           placeholder="WhatsApp"
           style={{ width: '100%' }}
