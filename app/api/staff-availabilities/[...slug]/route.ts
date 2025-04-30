@@ -4,7 +4,7 @@ import { createClient } from '@/utils/supabase/server';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(
-  request: NextRequest,
+  _: NextRequest,
   { params }: { params: Promise<{ slug?: string[] }> },
 ): Promise<NextResponse<StaffAvailabilitiesApiResponse>> {
   const { slug = [] } = await params;

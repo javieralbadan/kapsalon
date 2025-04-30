@@ -22,15 +22,15 @@ import { useApptEditionMessages } from './messaging/useApptEditionMessages';
 
 const BASE_URL = '/api/appointments';
 const CONFIG = {
-  dedupingInterval: CACHE_TIMES.ONE_DAY,
+  dedupingInterval: CACHE_TIMES.ONE_MINUTE,
 };
 const HEADERS = {
   'Content-Type': 'application/json',
 };
 
-export function useGetAllAppointments() {
-  const getAll = async () => {
-    const response = await fetch('/api/appointments');
+export function useGetApptsByStaff(memberId: string) {
+  const fetcher = async (endpoint: string) => {
+    const response = await fetch(`${BASE_URL}/${endpoint}`);
 
     if (!response.ok) {
       const errorResponse = (await response.json()) as { error: string };
@@ -41,9 +41,19 @@ export function useGetAllAppointments() {
     return responseData.data;
   };
 
-  const config = { dedupingInterval: CACHE_TIMES.ONE_HOUR };
+  const result: SWRResponse = useSWR(
+    memberId ? `appointments-by-member-${memberId}` : null,
+    () => fetcher(`/staff-member/${memberId}`),
+    CONFIG,
+  );
+  const staffAppts = (result?.data as AppointmentRow[]) || [];
 
-  return useSWR('appointments', getAll, config);
+  return {
+    staffAppts,
+    data: staffAppts,
+    isLoading: result.isLoading,
+    error: result.error as Error,
+  };
 }
 
 export function useGetAppointment(id: string) {

@@ -52,6 +52,7 @@ export type AppointmentValidDetailsData = AppointmentRow & {
   };
 };
 export type AppointmentDetailsApiResponse = ApiResponse<AppointmentDetailsData>;
+export type AppointmentsDetailsApiResponse = ApiResponse<AppointmentDetailsData[]>;
 
 export enum AppointmentStatus {
   Pending = 'pending',
