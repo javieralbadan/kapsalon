@@ -16,7 +16,7 @@ export const useWhatsAppMessage = () => {
         components,
       };
 
-      const response = await fetch('/api/sendMessage', {
+      const response = await fetch('/api/send-message', {
         method: 'POST',
         body: JSON.stringify(bodyRequest),
       });

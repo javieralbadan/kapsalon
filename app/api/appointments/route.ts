@@ -8,13 +8,13 @@ import {
   handleNextSuccessResponse,
 } from '@/utils/mappers/nextResponse';
 import { createClient } from '@/utils/supabase/server';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 const MAX_ACTIVE_APPOINTMENTS = 3;
 const MAX_APPOINTMENTS_ERROR = `Has alcanzado el límite de ${MAX_ACTIVE_APPOINTMENTS} citas activas.`;
 const CONFLICT_ERROR = 'Horario no disponible. Por favor selecciona otro.';
 
-export async function POST(request: Request): Promise<NextResponse<AppointmentApiResponse>> {
+export async function POST(request: NextRequest): Promise<NextResponse<AppointmentApiResponse>> {
   try {
     const appointmentData = (await request.json()) as AppointmentInsert;
     const supabase = await createClient();

@@ -5,9 +5,9 @@ import {
   handleNextSuccessResponse,
 } from '@/utils/mappers/nextResponse';
 import { createClient } from '@/utils/supabase/server';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
-export async function POST(request: Request): Promise<NextResponse<CustomerApiResponse>> {
+export async function POST(request: NextRequest): Promise<NextResponse<CustomerApiResponse>> {
   try {
     const customerData = (await request.json()) as CustomerInsert;
     const supabase = await createClient();
