@@ -239,3 +239,28 @@ export const getApptCancelComponents: ApptCancelComponents = {
   staffComponents: getApptCancelStaff,
   customerComponents: getApptCancelCustomer,
 };
+
+// ******** MAGIC LINK ********
+/*
+TEMPLATE: magic_link
+🔓 Hola de nuevo {{barber}}
+Botón 1 [Ir al dashboard] (url dinámica): https://kapsalon.vercel.app/dashboard/{{barberId}}
+*/
+
+interface BarberAccess {
+  barberName: string;
+  link: string;
+}
+
+export const getBarberAccessComponents = (params: BarberAccess): UtilityComponentsType => [
+  {
+    type: 'body',
+    parameters: [{ type: 'text', parameter_name: 'barber', text: params.barberName }],
+  },
+  {
+    type: 'button',
+    sub_type: 'url',
+    index: 0,
+    parameters: [{ type: 'text', text: params.link }],
+  },
+];
