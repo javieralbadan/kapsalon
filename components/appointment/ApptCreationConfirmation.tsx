@@ -70,8 +70,9 @@ const ApptCreationConfirmation = ({ appt, goBack }: Props) => {
             />
             <CodeOTPForm
               codeOTP={codeOTP}
-              confirmAppointment={handleConfirmAppointment}
               isSending={isLoading}
+              submitButtonText="Confirmar cita"
+              onFinish={handleConfirmAppointment}
             />
             <LegalLinksAndCancelProcess />
             <ApptSuccessModal

@@ -28,7 +28,7 @@ export const useVerificationCode = ({
       userForm.setFields([
         {
           name: 'phone',
-          errors: ['No se pudo enviar el código. Por favor, contacta directamente a la barbería.'],
+          errors: ['Falló el envío del código. Intenta más tarde.'],
         },
       ]);
     }

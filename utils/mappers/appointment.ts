@@ -114,3 +114,38 @@ export const mapAppointmentToCancel = (): AppointmentCancel => {
     updated_at: new Date().toISOString(),
   };
 };
+
+export const statusMapper = {
+  pending: {
+    text: 'Pendiente',
+    color: 'gold',
+  },
+  confirmed: {
+    text: 'Confirmada',
+    color: 'blue',
+  },
+  completed: {
+    text: 'Completada',
+    color: 'green',
+  },
+  rescheduled: {
+    text: 'Reprogramada',
+    color: 'geekblue',
+  },
+  // no_show: {
+  // text: 'No se presentó',
+  // color: 'magenta',
+  // },
+  // cancelled_by_client: {
+  // text: 'Cancelada por el cliente',
+  // color: 'volcano',
+  // },
+  // cancelled_by_staff: {
+  // text: 'Cancelada por el personal',
+  // color: 'orange',
+  // },
+  cancelled: {
+    text: 'Cancelada',
+    color: 'red',
+  },
+};

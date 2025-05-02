@@ -5,8 +5,9 @@ import { SubmitButton } from '../ui/SubmitButton';
 
 interface Props {
   codeOTP: string;
-  confirmAppointment: () => void;
   isSending: boolean;
+  submitButtonText: string;
+  onFinish: () => void;
 }
 
 const OTP_LENGTH = 4; // TODO: Move to a constant file
@@ -17,7 +18,7 @@ const INPUT_STYLE: CSSProperties = {
   paddingRight: '0.3em',
 };
 
-const CodeOTPForm = ({ codeOTP, confirmAppointment, isSending }: Props) => {
+const CodeOTPForm = ({ codeOTP, isSending, submitButtonText, onFinish }: Props) => {
   const [otpForm] = Form.useForm();
   const [currentOTP, setCurrentOTP] = useState<string>('');
 
@@ -31,7 +32,7 @@ const CodeOTPForm = ({ codeOTP, confirmAppointment, isSending }: Props) => {
   const isCurrentCodeWrong = isCodeComplete && currentOTP !== codeOTP;
 
   return (
-    <Form form={otpForm} disabled={!codeOTP} onFinish={confirmAppointment}>
+    <Form form={otpForm} disabled={!codeOTP} onFinish={onFinish}>
       <Form.Item
         name="verificationCode"
         className="mb-6"
@@ -52,7 +53,7 @@ const CodeOTPForm = ({ codeOTP, confirmAppointment, isSending }: Props) => {
         isDisabled={!isCodeComplete || isCurrentCodeWrong}
         isLoading={isSending}
       >
-        Confirmar cita
+        {submitButtonText}
       </SubmitButton>
     </Form>
   );
