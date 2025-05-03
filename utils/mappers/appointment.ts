@@ -44,7 +44,7 @@ export const mapApptDetailsIntoEditionUI = ({
       fullName: `${customers?.first_name} ${customers?.last_name}` || '',
       phoneNumber: customers?.phone_number || '',
     },
-    shop: staff.shops,
+    shop: staff?.shops,
     barber: {
       id: appt.staff_member_id,
       name: `${staff?.first_name} ${staff?.last_name}`,
@@ -55,6 +55,7 @@ export const mapApptDetailsIntoEditionUI = ({
       name: services?.name,
       description: formatCurrency({ value: services?.price }),
     },
+    // dateTime se deja vacío para ser asignado en la edición
     dateTime: { id: '', name: '' },
   };
 };

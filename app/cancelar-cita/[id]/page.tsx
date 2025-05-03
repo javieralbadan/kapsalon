@@ -23,15 +23,7 @@ const CancelAppointment = ({ params }: { params: Promise<{ id: string }> }) => {
   });
 
   return (
-    <ApptActionLayout
-      params={resolvedParams}
-      title="Cancelar cita"
-      actionMessage={(isInTheFuture) =>
-        isInTheFuture
-          ? '¿Estás seguro de cancelar esta cita?'
-          : 'No se puede cancelar una cita pasada'
-      }
-    >
+    <ApptActionLayout params={resolvedParams} title="Cancelar cita" actionType="cancel">
       {({ isInTheFuture, ...dataFromActionLayout }) => (
         <div className="mt-4">
           {isInTheFuture ? (

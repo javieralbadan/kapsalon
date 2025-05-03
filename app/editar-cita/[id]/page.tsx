@@ -13,15 +13,7 @@ const EditAppointment = ({ params }: { params: Promise<{ id: string }> }) => {
   }, []);
 
   return (
-    <ApptActionLayout
-      params={resolvedParams}
-      title="Reagendar cita"
-      actionMessage={(isInTheFuture) =>
-        isInTheFuture
-          ? 'Porfa selecciona el nuevo horario...'
-          : 'Ya no es posible modificar la cita'
-      }
-    >
+    <ApptActionLayout params={resolvedParams} title="Reagendar cita" actionType="edit">
       {({ isInTheFuture, ...dataFromActionLayout }) =>
         isInTheFuture ? (
           <ApptEditionStepper {...dataFromActionLayout} />

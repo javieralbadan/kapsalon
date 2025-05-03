@@ -12,7 +12,7 @@ interface Props {
 
 const OTP_LENGTH = 4; // TODO: Move to a constant file
 const INPUT_STYLE: CSSProperties = {
-  width: '80px',
+  width: '90px',
   letterSpacing: '0.5em',
   textAlign: 'center',
   paddingRight: '0.3em',

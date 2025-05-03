@@ -1,5 +1,5 @@
 import { WHATSAPP_TEMPLATES } from '@/constants/whatsappTemplates';
-import { AppointmentToEditType } from '@/types/appointments';
+import { AppointmentEditionType } from '@/types/appointments';
 import { getApptCancelComponents } from '@/utils/messageComponents';
 import { message } from 'antd';
 import { useWhatsAppMessage } from './useWhatsAppMessage';
@@ -9,7 +9,7 @@ const ERROR_MESSAGE = 'Cita actualizada pero falló el envío de confirmaciones 
 export const useApptCancelMessages = () => {
   const { sendMessage } = useWhatsAppMessage();
 
-  const sendCancelMessages = async (apptUpdateData: AppointmentToEditType) => {
+  const sendCancelMessages = async (apptUpdateData: AppointmentEditionType) => {
     const { appt, customer, barber } = apptUpdateData;
     // appt.dateTime is already formatted as martes, 29 de abril, 10:00 a. m.
 

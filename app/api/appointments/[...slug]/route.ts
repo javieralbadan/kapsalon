@@ -83,16 +83,18 @@ async function getOneApptByCustomer({ supabase, id }: HandlerProps): HandlerRetu
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
+  { params }: { params: Promise<{ slug?: string[] }> },
 ): Promise<NextResponse<AppointmentApiResponse>> {
   try {
-    const { id } = await params;
+    const { slug = [] } = await params;
+    const [apptId] = slug;
     const appointmentData = (await request.json()) as AppointmentUpdate;
+    console.log('🚀 ~ PATCH apptId/appointmentData:', apptId, appointmentData);
     const supabase = await createClient();
     const { data, error } = await supabase
       .from('appointments')
       .update(appointmentData)
-      .eq('id', id)
+      .eq('id', apptId)
       .select()
       .single();
 
@@ -109,12 +111,13 @@ export async function PATCH(
 
 export async function DELETE(
   _: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
+  { params }: { params: Promise<{ slug?: string[] }> },
 ): Promise<NextResponse<AppointmentApiResponse>> {
   try {
-    const { id } = await params;
+    const { slug = [] } = await params;
+    const [apptId] = slug;
     const supabase = await createClient();
-    const { error } = await supabase.from('appointments').delete().eq('id', id);
+    const { error } = await supabase.from('appointments').delete().eq('id', apptId);
 
     if (error) {
       return handleNextErrorResponse(error as Error);

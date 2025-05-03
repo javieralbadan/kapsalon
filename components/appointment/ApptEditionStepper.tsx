@@ -1,20 +1,13 @@
-import {
-  AppointmentEditionType,
-  AppointmentToEditType,
-  SetOptionParams,
-} from '@/types/appointments';
+import { AppointmentEditionType, SetOptionParams } from '@/types/appointments';
 import { useState } from 'react';
 import ApptEditionConfirmation from './ApptEditionConfirmation';
 import ApptStepper from './ApptStepper';
 import ApptStepperFinalStep from './ApptStepperFinalStep';
 import SlotsContent from './SlotsContent';
 
-const AppointmentEditionStepper = (appointmentToEdit: AppointmentToEditType) => {
+const AppointmentEditionStepper = (appointmentToEdit: AppointmentEditionType) => {
   const [currentStep, setCurrentStep] = useState(0);
-  const [appointment, setAppointment] = useState<AppointmentEditionType>({
-    ...appointmentToEdit,
-    dateTime: { id: '', name: '' },
-  });
+  const [appointment, setAppointment] = useState<AppointmentEditionType>(appointmentToEdit);
 
   const prevStep = () => setCurrentStep((s) => s - 1);
   const nextStep = () => setCurrentStep((s) => s + 1);

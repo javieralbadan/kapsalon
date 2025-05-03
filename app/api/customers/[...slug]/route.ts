@@ -46,6 +46,7 @@ export async function PATCH(
   try {
     const { id } = await params;
     const customerData = (await request.json()) as CustomerUpdate;
+    console.log('🚀 ~ PATCH/customerData:', customerData);
     const supabase = await createClient();
     const { data, error } = await supabase
       .from('customers')

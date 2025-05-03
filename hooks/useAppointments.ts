@@ -3,7 +3,6 @@ import {
   AppointmentEditionType,
   AppointmentInsert,
   AppointmentRow,
-  AppointmentToEditType,
   AppointmentUI,
   AppointmentValidDetailsData,
 } from '@/types/appointments';
@@ -29,35 +28,43 @@ const HEADERS = {
 };
 
 export function useGetApptsByStaff(memberId: string) {
-  const fetcher = async (endpoint: string) => {
-    const response = await fetch(`${BASE_URL}/${endpoint}`);
+  const fetcher = async (): Promise<AppointmentDetailsData[] | null> => {
+    const response = await fetch(`${BASE_URL}/staff-member/${memberId}`);
 
     if (!response.ok) {
       const errorResponse = (await response.json()) as { error: string };
       throw new Error(errorResponse.error || 'Error al obtener las citas');
     }
 
-    const responseData = (await response.json()) as { data: AppointmentRow[] };
+    const responseData = (await response.json()) as { data: AppointmentDetailsData[] };
     return responseData.data;
   };
 
-  const result: SWRResponse = useSWR(
-    memberId ? `appointments-by-member-${memberId}` : null,
-    () => fetcher(`/staff-member/${memberId}`),
-    CONFIG,
+  const swrKey = memberId ? `appointments-by-member-${memberId}` : null;
+  const result: SWRResponse = useSWR(swrKey, () => fetcher(), CONFIG);
+  const rawData = (result?.data as AppointmentDetailsData[]) || [];
+
+  if (rawData.length === 0) {
+    return {
+      data: null,
+      isLoading: result.isLoading,
+      error: new Error('Citas no encontradas'),
+    };
+  }
+
+  const staffAppts = rawData.map((item) =>
+    mapApptDetailsIntoEditionUI(item as AppointmentValidDetailsData),
   );
-  const staffAppts = (result?.data as AppointmentRow[]) || [];
 
   return {
-    staffAppts,
-    data: staffAppts,
+    data: staffAppts, // staffAppts is AppointmentEditionType
     isLoading: result.isLoading,
     error: result.error as Error,
   };
 }
 
 export function useGetAppointment(id: string) {
-  const getById = async (id: string): Promise<AppointmentDetailsData | null> => {
+  const getById = async (): Promise<AppointmentDetailsData | null> => {
     const response = await fetch(`${BASE_URL}/${id}`);
 
     if (!response.ok) {
@@ -69,7 +76,8 @@ export function useGetAppointment(id: string) {
     return responseData.data;
   };
 
-  const result: SWRResponse = useSWR(id ? `appointment-${id}` : null, () => getById(id), CONFIG);
+  const swrKey = id ? `appointment-${id}` : null;
+  const result: SWRResponse = useSWR(swrKey, () => getById(), CONFIG);
   const rawData = (result?.data as AppointmentDetailsData) || {};
   const isInvalidData = !rawData.id || !rawData.customers || !rawData.services || !rawData.staff;
 
@@ -83,7 +91,7 @@ export function useGetAppointment(id: string) {
 
   const apptDetails = mapApptDetailsIntoEditionUI(rawData as AppointmentValidDetailsData);
   return {
-    data: apptDetails,
+    data: apptDetails, // apptDetails is AppointmentEditionType
     isLoading: result.isLoading,
     error: result.error as Error,
   };
@@ -160,7 +168,7 @@ export function useCancelAppointment({ onSuccess, onError }: UseUpdateAppointmen
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { sendCancelMessages } = useApptCancelMessages();
 
-  const cancelAppointment = async (apptEditionData: AppointmentToEditType) => {
+  const cancelAppointment = async (apptEditionData: AppointmentEditionType) => {
     setIsLoading(true);
     try {
       const apptCancelData = mapAppointmentToCancel();

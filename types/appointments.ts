@@ -71,16 +71,17 @@ export interface AppointmentCreationType {
   goBack: () => void;
 }
 
-export interface AppointmentToEditType {
+export interface AppointmentEditionType {
   appt: AppointmentUI;
   customer: CustomerUI;
   shop: ShopUI;
   barber: StaffMemberUI;
   service: GroupListItem;
+  dateTime: GroupListItem;
 }
 
-export interface AppointmentEditionType extends AppointmentToEditType {
-  dateTime: GroupListItem;
+export interface ApptActionEditionType extends AppointmentEditionType {
+  isInTheFuture: boolean;
 }
 
 export const APPOINTMENT_INIT_VALUE = {

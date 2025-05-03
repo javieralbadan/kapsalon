@@ -3,7 +3,7 @@ import { AppointmentCreationType } from '@/types/appointments';
 import { FormUserInfoType } from '@/types/messages';
 import { mapServiceSummaryInfo } from '@/utils/mappers/services';
 import { Card } from 'antd';
-import { Suspense, useState } from 'react';
+import { useState } from 'react';
 import { Loading } from '../ui/Loading';
 import { LegalLinksAndCancelProcess } from './ApptStepperFinalStep';
 import ApptSuccessModal from './ApptSuccessModal';
@@ -39,26 +39,26 @@ const ApptCreationConfirmation = ({ appt, goBack }: Props) => {
   };
 
   return (
-    <Card className="m-auto max-w-[400px]">
-      <h2>Confirma tu cita</h2>
-      <div className="flex flex-col items-center justify-center gap-0">
-        <p>💇 Servicio: {mapServiceSummaryInfo(appt.service)}</p>
-        <p>🍺 Barbero: {appt.barber.name}</p>
-        <p>📅 {appt.dateTime.name}</p>
+    <>
+      <Card className="m-auto max-w-[400px]">
+        <h2>Confirma tu cita</h2>
+        <div className="flex flex-col items-center justify-center gap-0">
+          <p>💇 Servicio: {mapServiceSummaryInfo(appt.service)}</p>
+          <p>🍺 Barbero: {appt.barber.name}</p>
+          <p>📅 {appt.dateTime.name}</p>
 
-        <p className="my-3 leading-5 text-gray-500">
-          Si todo pinta bien, porfa añade tu info. <br />
-          Si no, puedes
-          <span
-            className={`ml-1 ${!codeOTP ? linkEnabled : linkDisabled}`}
-            onClick={() => !codeOTP && goBack()}
-          >
-            volver y editar
-          </span>
-        </p>
-      </div>
+          <p className="my-3 leading-5 text-gray-500">
+            Si todo pinta bien, porfa añade tu info. <br />
+            Si no, puedes
+            <span
+              className={`ml-1 ${!codeOTP ? linkEnabled : linkDisabled}`}
+              onClick={() => !codeOTP && goBack()}
+            >
+              volver y editar
+            </span>
+          </p>
+        </div>
 
-      <Suspense fallback={<Loading />}>
         {isLoading ? (
           <Loading />
         ) : (
@@ -75,16 +75,17 @@ const ApptCreationConfirmation = ({ appt, goBack }: Props) => {
               onFinish={handleConfirmAppointment}
             />
             <LegalLinksAndCancelProcess />
-            <ApptSuccessModal
-              showSuccessModal={showSuccessModal}
-              serviceName={appt.service.name}
-              barberName={appt.barber.name}
-              dateTime={appt.dateTime.name}
-            />
           </>
         )}
-      </Suspense>
-    </Card>
+      </Card>
+
+      <ApptSuccessModal
+        showSuccessModal={showSuccessModal}
+        serviceName={appt.service.name}
+        barberName={appt.barber.name}
+        dateTime={appt.dateTime.name}
+      />
+    </>
   );
 };
 
