@@ -4,7 +4,7 @@ import { Tag } from 'antd';
 
 const ApptStatusTag = ({ status }: { status: AppointmentStatus }) => {
   if (!status) {
-    return;
+    return null;
   }
 
   return (

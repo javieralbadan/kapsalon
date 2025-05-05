@@ -43,15 +43,6 @@ export function useGetApptsByStaff(memberId: string) {
   const swrKey = memberId ? `appointments-by-member-${memberId}` : null;
   const result: SWRResponse = useSWR(swrKey, () => fetcher(), CONFIG);
   const rawData = (result?.data as AppointmentDetailsData[]) || [];
-
-  if (rawData.length === 0) {
-    return {
-      data: null,
-      isLoading: result.isLoading,
-      error: new Error('Citas no encontradas'),
-    };
-  }
-
   const staffAppts = rawData.map((item) =>
     mapApptDetailsIntoEditionUI(item as AppointmentValidDetailsData),
   );

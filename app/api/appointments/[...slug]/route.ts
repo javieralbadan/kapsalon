@@ -27,13 +27,18 @@ export async function GET(
 
     if (slug1 === 'staff-member' && memberId) {
       const { data, error } = await getApptsByStaff({ supabase, id: memberId });
+
       if (error) {
         return handleNextErrorResponse(error as Error);
       }
 
-      if (!data || data.length === 0) {
+      if (!data) {
         const errorMsg = `Citas nos encontradas para el barbero [${memberId}].`;
         return handleNextErrorResponse(new Error(errorMsg), API_CODES.NOT_FOUND);
+      }
+
+      if (data.length === 0) {
+        return handleNextSuccessResponse([]);
       }
 
       const appointmentsDetails = data.map((item) => setAppoinmentTimeZone(item));
@@ -65,10 +70,19 @@ type HandlerReturnSingle = Promise<SupabaseResponse<AppointmentDetailsData>>;
 type HandlerReturnMultiple = Promise<SupabaseResponse<AppointmentDetailsData[]>>;
 
 async function getApptsByStaff({ supabase, id }: HandlerProps): HandlerReturnMultiple {
-  return (await supabase)
-    .from('appointments')
-    .select('*, customers (first_name, last_name, phone_number), services (name, price)')
-    .eq('staff_member_id', id);
+  const nowUTC = new Date().toISOString();
+  return (
+    (await supabase)
+      .from('appointments')
+      .select(
+        '*, customers (first_name, last_name, phone_number), services (name, price), staff (first_name, last_name, phone_number)',
+      )
+      .eq('staff_member_id', id)
+      // .in('status', ['confirmed', 'rescheduled'])
+      .gte('date_time', nowUTC)
+      // .lt('date_time', dateRange.end.toISOString())
+      .order('date_time', { ascending: true })
+  );
 }
 
 async function getOneApptByCustomer({ supabase, id }: HandlerProps): HandlerReturnSingle {

@@ -5,6 +5,7 @@ import { SetOptionParams } from '@/types/appointments';
 import { StaffMemberUI } from '@/types/staffMembers';
 import { mapApptDateTime } from '@/utils/mappers/appointment';
 import { Button, Empty } from 'antd';
+import { usePathname } from 'next/navigation';
 import GroupListButton from './GroupListButton';
 
 interface SlotContentProps {
@@ -17,6 +18,8 @@ const SlotsContent = ({ barber, selectedItemId, setOption }: SlotContentProps) =
   const { slots, isLoading, isLoadingMore, error, pagination, loadMore } = useAvailableSlots(
     barber.id,
   );
+  const pathname = usePathname();
+  const gridCols = pathname !== '/dashboard' && 'md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8';
 
   if (isLoading) {
     return <Loading />;
@@ -33,7 +36,7 @@ const SlotsContent = ({ barber, selectedItemId, setOption }: SlotContentProps) =
       {slots.map((slotGroup) => (
         <div key={slotGroup.id} className="border-b pb-4 last:border-b-0">
           <h3 className="mb-2 text-lg font-medium">{slotGroup.title}</h3>
-          <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8">
+          <div className={`grid grid-cols-3 gap-2 sm:grid-cols-4 ${gridCols}`}>
             {slotGroup.slots.length === 0 ? (
               <Empty description="No hay horarios disponibles" />
             ) : (

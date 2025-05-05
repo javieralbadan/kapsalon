@@ -9,7 +9,7 @@ interface Props {
 
 const ApptSummaryCard = ({ apptToEdit, actionType, isInTheFuture }: Props) => {
   if (!apptToEdit) {
-    return;
+    return null;
   }
 
   const { appt, customer, service, barber } = apptToEdit;

@@ -28,7 +28,7 @@ Una nueva cita ha sido confirmada:
 ‍💈 {{service}} → {{price}}
 👨‍ {{client}}
 Botón 1 [Cancelar cita] (url dinámica): https://kapsalon.vercel.app/cancelar-cita/{{appointmentId}}
-Botón 1 [Ver citas] (url estática): https://kapsalon.vercel.app/dashboard/agenda
+Botón 1 [Ver citas] (url estática): https://kapsalon.vercel.app/dashboard
 */
 
 interface ApptCreationStaff {
@@ -115,13 +115,14 @@ export const getApptCreationComponents: ApptCreationComponents = {
 // ******** APPOINTMENT EDITION ********
 /*
 TEMPLATE: update_appointment_staff
-{{client}} ha cambiado su cita. La nueva fecha es:
-📆 {{date}}
+🔃 Cita reagendada
+Cliente: {{client}}
+Fecha: {{date}}
 
 Espacio liberado (fecha anterior):
 ✂️ {{original_date}}
 Botón 1 [Cancelar cita] (url dinámica): https://kapsalon.vercel.app/cancelar-cita/{{appointmentId}}
-Botón 1 [Ver citas] (url estática): https://kapsalon.vercel.app/dashboard/agenda
+Botón 1 [Ver citas] (url estática): https://kapsalon.vercel.app/dashboard
 */
 
 interface ApptEditionStaff {
@@ -150,8 +151,8 @@ const getApptEditionStaff = (params: ApptEditionStaff): UtilityComponentsType =>
 
 /*
 TEMPLATE: update_appointment_user
-La nueva fecha de tu cita es:
-📆 {{date}}
+🔃 Cita reagendada
+La nueva fecha es *{{date}}*
 
 Botón 1 [Reagendar] (url dinámica): https://kapsalon.vercel.app/editar-cita/{{appointmentId}}
 Botón 2 [Cancelar] (url dinámica): https://kapsalon.vercel.app/cancelar-cita/{{appointmentId}}
@@ -194,8 +195,10 @@ export const getApptEditionComponents: ApptEditionComponents = {
 // ******** APPOINTMENT CANCELATION ********
 /*
 TEMPLATE: cancel_appointment_staff
-⛔ {{client}} ha cancelado la cita del {{date}}
-Botón 1 [Ver citas] (url estática): https://kapsalon.vercel.app/dashboard/agenda
+⛔ Cita cancelada
+Cliente: {{client}}
+Fecha: {{date}}
+Botón 1 [Ver citas] (url estática): https://kapsalon.vercel.app/dashboard
 */
 
 interface ApptCancelStaff {
@@ -215,7 +218,7 @@ const getApptCancelStaff = (params: ApptCancelStaff): UtilityComponentsType => [
 
 /*
 TEMPLATE: cancel_appointment_user
-Tu cita para el día {{date}} ha sido cancelada.👍
+⛔ La cita para el día {{date}} ha sido cancelada
 Botón 1 [Agendar nueva cita] (url estática): https://kapsalon.vercel.app/
 */
 

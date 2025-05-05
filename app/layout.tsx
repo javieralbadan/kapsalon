@@ -21,7 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="theme-color" content="#1d4ed8" />
         <meta name="msapplication-navbutton-color" content="#1d4ed8" />
         <meta name="apple-mobile-web-app-status-bar-style" content="#1d4ed8" />
-        <title>Kapsalon · Agenda tu cita de barbería en segundos</title>
+        <title>Kapsalon</title>
       </head>
       <body>
         <Providers>

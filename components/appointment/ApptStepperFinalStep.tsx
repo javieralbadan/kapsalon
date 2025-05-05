@@ -1,6 +1,7 @@
 import { AppointmentCreationType } from '@/types/appointments';
 import { Button, Divider, Result } from 'antd';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 interface Props {
   children: React.ReactNode;
@@ -10,7 +11,8 @@ interface Props {
 
 const ApptStepperFinalStep = ({ children, appt, goBack }: Props) => {
   // children is ApptCreationConfirmation or ApptEditionConfirmation
-  const isApptReady = Boolean(appt.shop && appt.barber?.id && appt.service.id && appt.dateTime);
+  // isApptReady no depende de appt.shop, dado que al editar en dashboard no existe
+  const isApptReady = Boolean(appt.barber?.id && appt.service.id && appt.dateTime);
   if (isApptReady) return children;
 
   return (
@@ -30,10 +32,12 @@ const ApptStepperFinalStep = ({ children, appt, goBack }: Props) => {
 export default ApptStepperFinalStep;
 
 export const LegalLinksAndCancelProcess = () => {
+  const pathname = usePathname();
+
   return (
     <>
       <p className="my-3 text-xs text-gray-500">
-        Pagas directamente al barbero. Al confirmar tu cita aceptas las{' '}
+        Pago directamente al barbero. Al confirmar la cita se aceptan las{' '}
         <Link className="underline" href="/legal/condiciones-del-servicio" target="_blank">
           Condiciones del Servicio
         </Link>{' '}
@@ -42,12 +46,16 @@ export const LegalLinksAndCancelProcess = () => {
           Política de Privacidad
         </Link>
       </p>
-      <Divider />
-      <Link href="/">
-        <Button type="link" color="danger" variant="dashed">
-          Cancelar proceso
-        </Button>
-      </Link>
+      {pathname !== '/dashboard' && (
+        <>
+          <Divider />
+          <Link href="/">
+            <Button type="link" color="danger" variant="dashed">
+              Cancelar proceso
+            </Button>
+          </Link>
+        </>
+      )}
     </>
   );
 };

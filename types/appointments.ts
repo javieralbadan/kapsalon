@@ -40,7 +40,7 @@ export type AppointmentDetailsData = AppointmentRow & {
   services?: Pick<ServiceRow, 'name' | 'price'> | null;
   staff?:
     | (Pick<StaffMemberRow, 'first_name' | 'last_name' | 'phone_number'> & {
-        shops: ShopRow;
+        shops?: ShopRow | null;
       })
     | null;
 };

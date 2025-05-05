@@ -3,10 +3,13 @@ import ApptCreationStepper from '@/components/appointment/ApptCreationStepper';
 import ClientErrorBoundary from '@/components/ui/ClientErrorBoundary';
 import { Loading } from '@/components/ui/Loading';
 import { useGetShop } from '@/hooks/useShops';
-import { Suspense, use } from 'react';
+import { Suspense, use, useEffect } from 'react';
 
 const ScheduleAppointment = ({ params }: { params: Promise<{ shopId: string }> }) => {
   const resolvedParams = use(params);
+  useEffect(() => {
+    document.title = 'Kapsalon · Agenda tu cita de barbería en segundos';
+  }, []);
   const { data: shop, isLoading } = useGetShop(resolvedParams.shopId);
 
   return (

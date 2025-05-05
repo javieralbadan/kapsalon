@@ -47,7 +47,7 @@ export const mapApptDetailsIntoEditionUI = ({
     shop: staff?.shops,
     barber: {
       id: appt.staff_member_id,
-      name: `${staff?.first_name} ${staff?.last_name}`,
+      name: staff ? `${staff.first_name} ${staff.last_name}` : '',
       phoneNumber: staff?.phone_number || '',
     },
     service: {
