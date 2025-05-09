@@ -1,3 +1,4 @@
+import { WHATSAPP_TEMPLATES } from '@/constants/whatsappTemplates';
 import { UseVerificationCodeProps, UseVerificationCodeReturn } from '@/types/messages';
 import { getVerificationComponents } from '@/utils/messageComponents';
 import { useWhatsAppMessage } from './useWhatsAppMessage';
@@ -14,7 +15,7 @@ export const useVerificationCode = ({
 
     try {
       const { error } = await sendMessage({
-        templateName: 'verify_whatsapp',
+        templateName: WHATSAPP_TEMPLATES.verifyPhoneNumber,
         to: phoneNumber,
         components: getVerificationComponents(randomCode),
       });
